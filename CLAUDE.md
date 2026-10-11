@@ -26,11 +26,12 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 - `npm run ds:sync`: copy `./reference` into `src/ds/` and check the contract
   (`ds:check` only checks).
 - `npm run typecheck`, `npm run lint:rules` (the hard rules below that can be
-  checked mechanically).
+  checked mechanically, plus: every `var(--token)` used must exist in `src/ds`).
 - `npm run test:framesync`: renders TypingDots stills at frames 0/10/40, twice
   each. They must differ from each other and repeat exactly. Add `-- --harness`
   to run without `src/ds`.
-- `npm run render:test`: 2 s test render to `out/test.mp4`.
+- `npm run render:scene1`: Scene 1 (9:16) to `out/scene1.mp4`.
+- `npm run render:test`: 2 s setup test (`Dev/Test-9x16`) to `out/test.mp4`.
 - If Remotion can't download its Chrome, pass
   `--browser-executable <chrome-headless-shell>` to renders.
 
@@ -38,6 +39,10 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 - 30 fps. Three compositions (`Deltalk-9x16` 1080x1920, `Deltalk-16x9` 1920x1080,
   `Deltalk-1x1` 1080x1080) render one scene tree, `<Promo>`. Layout comes from
   `useLayout()` (orientation, unit `u`, safe area), never from the composition id.
+  Scenes live in `src/scenes/` (built so far: `Scene1`, 0-4 s).
+- Real DS components go inside `<DeviceScale>`: it lays them out at the logical
+  393 dp device width and scales the subtree with one transform (393 dp maps to the
+  frame's short edge). Never re-derive component sizes by hand.
 - `src/ds/` mirrors the design system: `styles.css` (imported once in `Root.tsx`),
   `tokens/`, `assets/`, and `components/**/*.jsx` + `.d.ts`. Import components from
   `src/ds` (generated barrel over the source `.jsx`). Never use `_ds_bundle.js`.
@@ -100,7 +105,8 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
   readme's ZWNJ example writes «گفت‌وگو».
 - Vocabulary: «لایک» and «مچ». Never «پسند» or «همدل» («همدل» is a competitor's
   name).
-- On-screen copy lives in `src/copy/fa.ts`.
+- All on-screen copy lives in `src/copy.ts` (the single source; scenes import it,
+  never inline strings). Use `\u00a0` there to keep a phrase on one line.
 
 ### Verify
 - Render stills (`npx remotion still ... --frame N`) and look at them before

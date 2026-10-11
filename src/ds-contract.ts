@@ -65,3 +65,11 @@ export const DURATION_TOKENS = {
 	slow: '--dur-slow',
 	unfold: '--dur-unfold',
 } as const;
+
+/** Easing tokens (tokens/motion.css), each a cubic-bezier(). */
+export const EASING_TOKENS = {
+	standard: '--ease-standard',
+	outSoft: '--ease-out-soft',
+	inOut: '--ease-in-out',
+	gentleOver: '--ease-gentle-over',
+} as const;

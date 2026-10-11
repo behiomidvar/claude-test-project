@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "lint:rules": "node scripts/check-rules.mjs",
     "test:framesync": "node scripts/test-framesync.mjs",
-    "render:test": "remotion render src/index.ts Deltalk-9x16 out/test.mp4 --codec h264"
+    "render:test": "remotion render src/index.ts Test-9x16 out/test.mp4 --codec h264",
+    "render:scene1": "remotion render src/index.ts Deltalk-9x16 out/scene1.mp4 --codec h264"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",

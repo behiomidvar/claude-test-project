@@ -1,6 +1,6 @@
 import React from 'react';
 import {TypingDots} from '../ds';
-import {COPY} from '../copy/fa';
+import {COPY} from '../copy';
 import {InlineLogo} from '../core/InlineLogo';
 import {useLayout} from '../core/layout';
 
@@ -56,7 +56,7 @@ export const TestScene: React.FC = () => {
 						maxInlineSize: (isLandscape ? 1000 : 860) * u,
 					}}
 				>
-					{COPY.testSentence}
+					{COPY.dev.testSentence}
 				</p>
 				<div style={{scale: String(TYPING_DOTS_SCALE * u)}}>
 					<TypingDots size="lg" />

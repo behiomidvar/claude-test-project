@@ -4,7 +4,7 @@ import {FontGate} from './core/FontGate';
 import {FrameSync} from './core/FrameSync';
 import {LogoBudget} from './core/InlineLogo';
 import {ThemeScope} from './core/ThemeScope';
-import {TestScene} from './scenes/TestScene';
+import {Scene1} from './scenes/Scene1';
 
 /**
  * The one scene tree shared by every format. Layout comes from useLayout(),
@@ -24,17 +24,10 @@ export const Promo: React.FC = () => {
 			<LogoBudget>
 				<AbsoluteFill dir="rtl" lang="fa">
 					<Series>
-						<Series.Sequence durationInFrames={1 * fps} name="Test / light">
+						<Series.Sequence durationInFrames={4 * fps} name="Scene 1 / question">
 							<ThemeScope theme="light">
 								<FrameSync>
-									<TestScene />
-								</FrameSync>
-							</ThemeScope>
-						</Series.Sequence>
-						<Series.Sequence durationInFrames={1 * fps} name="Test / dark">
-							<ThemeScope theme="dark">
-								<FrameSync>
-									<TestScene />
+									<Scene1 />
 								</FrameSync>
 							</ThemeScope>
 						</Series.Sequence>

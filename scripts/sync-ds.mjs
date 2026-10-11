@@ -92,7 +92,7 @@ if (existsSync(path.join(dest, 'components'))) {
 }
 
 // ---------------------------------------------------------------- checks
-const {THEME_SCOPE_TOKENS, RULE_TOKENS, DURATION_TOKENS, DS_KEYFRAMES, FONT, LOGOS} = await import(
+const {THEME_SCOPE_TOKENS, RULE_TOKENS, DURATION_TOKENS, EASING_TOKENS, DS_KEYFRAMES, FONT, LOGOS} = await import(
 	path.resolve('src/ds-contract.ts')
 );
 
@@ -102,7 +102,7 @@ const css = cssFiles.map(read).join('\n');
 const jsx = components.map((f) => read(path.join('components', f))).join('\n');
 
 const declared = new Set([...css.matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]));
-for (const token of [...Object.values(THEME_SCOPE_TOKENS), ...Object.values(RULE_TOKENS), ...Object.values(DURATION_TOKENS)]) {
+for (const token of [...Object.values(THEME_SCOPE_TOKENS), ...Object.values(RULE_TOKENS), ...Object.values(DURATION_TOKENS), ...Object.values(EASING_TOKENS)]) {
 	if (!declared.has(token)) problems.push(`token ${token} (src/ds-contract.ts) is not declared in the DS CSS.`);
 }
 

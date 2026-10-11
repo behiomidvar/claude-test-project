@@ -62,6 +62,32 @@ for (const file of files(ROOT)) {
 	});
 }
 
+// Every literal var(--token) we use must be declared by the design system.
+const dsDir = path.join(ROOT, 'ds');
+const dsCss = (dir) =>
+	readdirSync(dir).flatMap((name) => {
+		const full = path.join(dir, name);
+		if (statSync(full).isDirectory()) return dsCss(full);
+		return /\.(css|jsx)$/.test(name) ? [readFileSync(full, 'utf8')] : [];
+	});
+let dsTokens = null;
+try {
+	dsTokens = new Set(dsCss(dsDir).flatMap((text) => [...text.matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1])));
+} catch {
+	console.log('src/ds not found; token check skipped (run npm run ds:sync).');
+}
+if (dsTokens) {
+	for (const file of files(ROOT)) {
+		readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+			for (const m of line.matchAll(/var\((--[\w-]+)/g)) {
+				if (!dsTokens.has(m[1])) {
+					findings.push(`${path.relative(process.cwd(), file)}:${i + 1}  [unknown-token] ${m[1]} is not declared in src/ds\n    ${line.trim()}`);
+				}
+			}
+		});
+	}
+}
+
 if (findings.length > 0) {
 	console.log(findings.join('\n'));
 	console.log(`\n${findings.length} rule violation(s).`);
