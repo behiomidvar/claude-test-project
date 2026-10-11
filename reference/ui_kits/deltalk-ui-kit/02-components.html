@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" data-theme="light"><head><meta charset="utf-8"><title>Deltalk UI Kit — 02 Components</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="kit.css">
+<style>
+.stage{position:relative;transform:translateZ(0);height:440px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);background:var(--surface-well)}
+.stage-bg{position:absolute;inset:0;padding:16px;display:flex;flex-direction:column;gap:10px;opacity:.5}
+.stage-bg i{display:block;height:13px;border-radius:var(--radius-hairline);background:var(--border)}
+.grpintro{max-width:82ch;font-family:var(--font-latin);font-size:13px;line-height:1.75;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate;text-align:left;margin:0 auto 30px 0}
+.count{display:flex;gap:26px;margin:0 0 30px;direction:ltr}
+.count div{display:flex;flex-direction:column;gap:3px}
+.count dt{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-subtle)}
+.count dd{margin:0;font-family:var(--font-latin);font-size:15px;font-weight:600}
+</style></head><body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="specs-a.jsx"></script>
+<script type="text/babel" src="specs-b.jsx"></script>
+<script type="text/babel" src="specs-c.jsx"></script>
+<script type="text/babel">
+const GROUPS = [...window.KIT_A, ...window.KIT_B, ...window.KIT_C];
+const TOTAL = GROUPS.reduce((n, g) => n + g.items.length, 0);
+
+function Spec({ item }) {
+  return <div className="spec">
+    <div className="hd"><span className="nm">{item.name}</span><span className="ds">{item.desc}</span></div>
+    <div className="grid2">
+      <div className="tp" data-theme="light"><div className="tl">Light</div>{item.render()}</div>
+      <div className="tp" data-theme="dark"><div className="tl">Dark</div>{item.render()}</div>
+    </div>
+  </div>;
+}
+
+function Group({ g, first }) {
+  return <section className="sheet">
+    <div className="rh"><a className="rh-l" href="index.html" style={{color:'var(--text-subtle)'}}>← Deltalk UI Kit · v1.0</a><span className="rh-r">02 Components — {g.group}</span></div>
+    <div className="sh"><span className="num">{g.num}</span><h2>{g.group}</h2></div>
+    {first && <dl className="count">
+      <div><dt>Components</dt><dd>{TOTAL}</dd></div>
+      <div><dt>Groups</dt><dd>{GROUPS.length}</dd></div>
+      <div><dt>Themes</dt><dd>Light + Dark, every specimen</dd></div>
+      <div><dt>Source</dt><dd>window.DeltalkDesignSystem_288455</dd></div>
+    </dl>}
+    <p className="grpintro">{g.intro}</p>
+    {g.items.map(it => <Spec key={it.name} item={it} />)}
+  </section>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.Fragment>{GROUPS.map((g, i) => <Group key={g.group} g={g} first={i === 0} />)}</React.Fragment>
+);
+</script>
+</body></html>

@@ -1,0 +1,129 @@
+<!-- @dsCard group="Feedback" viewport="960x3560" name="Feedback — overlays: dialog, confirm, bottom sheet" subtitle="The three modal surfaces, each shown open inside its own phone-sized stage: Dialog (bottom-sheet dialog), ConfirmDialog (info / destructive), BottomSheet (standard / full)." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+/* 428px = ConfirmDialog max-width 380 + 24px scrim padding per side. Do not narrow it:
+   below 428 every h2 title wraps. Derivation in readme.md under "Overlays". */
+.grid{display:grid;grid-template-columns:repeat(2,428px);gap:18px;justify-content:center;align-items:start}
+/* 2x2 comparison: one row per theme, one column per media form. Keep 2 tracks — the
+   3-up .grid orphans the dark halo panel a row below its pair. */
+.grid--pairs{grid-template-columns:repeat(2,428px)}
+.cap{font-size:var(--text-micro);font-weight:var(--fw-bold);color:var(--text-subtle);margin-bottom:8px;direction:ltr;text-align:left;unicode-bidi:isolate}
+/* STAGE — keep the transform: it makes a containing block so the fixed scrim stays
+   inside the stage instead of covering the card. height 520 = tallest panel (destructive
+   ConfirmDialog, 452px) + 24px scrim padding top and bottom. Do not shrink without
+   re-measuring .dt-cdlg / .dt-dialog / .dt-bsheet. */
+.stage{position:relative;transform:translateZ(0);height:520px;border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--border-subtle);background:var(--surface-well)}
+.bg{position:absolute;inset:0;padding:16px;display:flex;flex-direction:column;gap:10px;opacity:.5}
+.bg i{display:block;height:13px;border-radius:var(--radius-hairline);background:var(--border)}
+/* Set direction on the container, never per mono fragment — isolating fragments
+   individually scrambles the sentence order. */
+.note{direction:ltr;text-align:left;max-width:756px;margin:20px auto 0;padding:14px 16px;border-radius:var(--radius-md);
+  background:var(--surface-well);color:var(--text-secondary);font-size:var(--text-body-sm);line-height:var(--lh-normal);font-family:var(--font-sans)}
+.note b{color:var(--text-primary)}
+.note span{font-family:var(--font-mono);font-size:11px}
+.note code{font-family:var(--font-mono);font-size:11px}
+.metrics{direction:ltr;border-collapse:collapse;max-width:756px;margin:12px auto 0;width:100%;font-size:11.5px;text-align:left;font-family:var(--font-mono)}
+.metrics th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-subtle);font-weight:700;padding:7px 9px;border-bottom:2px solid var(--border-strong);white-space:nowrap}
+.metrics td{padding:7px 9px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
+.metrics tr.fail td{color:var(--danger-text)}
+.metrics b{color:var(--text-primary)}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Dialog, ConfirmDialog, BottomSheet, Button, Radio, Avatar } = window.DeltalkDesignSystem_288455;
+/* Unique gradient id per instance — this renders once per theme panel, so a
+   hard-coded id would duplicate element ids in the document. */
+let heartUid = 0;
+function Heart(){
+  const gid = React.useMemo(()=>`dt-cdlg-heart${++heartUid}`,[]);
+  return <svg viewBox="0 0 24 24" fill={`url(#${gid})`} aria-hidden="true"><defs><linearGradient id={gid} x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="var(--brand-pink)"/><stop offset="100%" stopColor="var(--brand-purple)"/></linearGradient></defs><path d="M12 21s-7.5-4.7-9.3-9A5.3 5.3 0 0 1 12 6.5a5.3 5.3 0 0 1 9.3 5.5C19.5 16.3 12 21 12 21z"/></svg>;
+}
+const Filler = () => <div className="bg"><i style={{width:'52%'}}/><i style={{width:'86%'}}/><i style={{width:'74%'}}/><i style={{width:'90%'}}/><i style={{width:'40%'}}/><i style={{width:'80%'}}/></div>;
+function Stage({ label, children }){
+  return <div><div className="cap">{label}</div><div className="stage"><Filler/>{children}</div></div>;
+}
+function Demo(){
+  return <>
+  <div className="grid">
+    <Stage label="Dialog — bottom-sheet dialog">
+      <Dialog open title="گفت‌وگو را ببندیم؟"
+        actions={<><Button block onClick={()=>{}}>بله، ببند</Button><Button block variant="secondary" onClick={()=>{}}>بی‌خیال</Button></>}>
+        این گفت‌وگو بایگانی می‌شود. هر وقت خواستی می‌توانی پیام تازه‌ای بفرستی.
+      </Dialog>
+    </Stage>
+    <Stage label="ConfirmDialog — info">
+      <ConfirmDialog open variant="info" title="شمارهٔ تازه ثبت شود؟"
+        confirmLabel="ثبت می‌کنم" cancelLabel="انصراف" onConfirm={()=>{}} onCancel={()=>{}}>
+        کد تأیید به شمارهٔ جدید فرستاده می‌شود.
+      </ConfirmDialog>
+    </Stage>
+    <Stage label="ConfirmDialog — destructive">
+      <ConfirmDialog open variant="destructive" title="سارا مسدود شود؟"
+        confirmLabel="مسدود کن" cancelLabel="انصراف" onConfirm={()=>{}} onCancel={()=>{}}>
+        او دیگر نمی‌تواند تو را ببیند یا پیام بدهد و مچ شما برداشته می‌شود.
+      </ConfirmDialog>
+    </Stage>
+    <Stage label="BottomSheet — standard">
+      <BottomSheet open size="standard" title="مرتب‌سازی" onClose={()=>{}}>
+        <Radio value="newest" options={[
+          {value:'newest',label:'تازه‌ترین'},
+          {value:'nearest',label:'نزدیک‌ترین'},
+          {value:'talkative',label:'بیشترین گفت‌وگو'},
+        ]} onChange={()=>{}}/>
+      </BottomSheet>
+    </Stage>
+    <Stage label="BottomSheet — full">
+      <BottomSheet open size="full" title="راهنمای ایمنی" onClose={()=>{}}>
+        <p style={{margin:'0 0 12px',fontSize:'var(--text-body-sm)',lineHeight:'var(--lh-relaxed)',color:'var(--text-muted)'}}>
+          نشانی خانه یا محل کارت را در گفت‌وگوهای اول نگو. اولین دیدار را جای عمومی بگذار.</p>
+        <p style={{margin:'0 0 12px',fontSize:'var(--text-body-sm)',lineHeight:'var(--lh-relaxed)',color:'var(--text-muted)'}}>
+          کسی که خیلی زود پول یا اطلاعات شخصی می‌خواهد، پرچم قرمز است — گزارشش کن.</p>
+        <p style={{margin:0,fontSize:'var(--text-body-sm)',lineHeight:'var(--lh-relaxed)',color:'var(--text-muted)'}}>
+          هر گفت‌وگو را هر وقت خواستی می‌توانی ترک کنی. لازم نیست توضیح بدهی.</p>
+      </BottomSheet>
+    </Stage>
+    <Stage label="BottomSheet — no title, grab only">
+      <BottomSheet open size="standard" showClose={false} onClose={()=>{}}>
+        <div style={{display:'flex',flexDirection:'column',gap:10}}>
+          <Button block onClick={()=>{}}>اشتراک‌گذاری پروفایل</Button>
+          <Button block variant="secondary" onClick={()=>{}}>گزارش</Button>
+          <Button block variant="ghost" onClick={()=>{}}>بستن</Button>
+        </div>
+      </BottomSheet>
+    </Stage>
+  </div>
+  <div className="cap" style={{marginTop:22}}>THE MEDIA SLOT — both forms, both themes · same stage and scale as the panels above</div>
+  <div className="grid grid--pairs">
+    {['light','dark'].map(t=>(
+      <React.Fragment key={t}>
+        <div data-theme={t}><div className="cap">{t} · media = Avatar xl + heart · {t==='light'?'light warm portrait #E8D5C4':'dark slate portrait #2E3542'}</div><div className="stage"><Filler/>
+          <ConfirmDialog open variant="info" title="شروع خوبیه"
+            media={<Avatar size="xl" src={t==='light'?'../../assets/portrait-tone-light.png':'../../assets/portrait-tone-dark.png'} alt="سارا"/>}
+            mediaBadge={<Heart/>}
+            confirmLabel="باشه" cancelLabel="" onConfirm={()=>{}} onCancel={()=>{}}>
+            اگه اونم تو رو لایک کنه، مچ می‌شید و می‌تونید حرف بزنید.
+          </ConfirmDialog></div></div>
+        <div data-theme={t}><div className="cap">{t} · icon halo — unchanged</div><div className="stage"><Filler/>
+          <ConfirmDialog open variant="info" title="شمارهٔ تازه ثبت شود؟"
+            confirmLabel="ثبت می‌کنم" cancelLabel="انصراف" onConfirm={()=>{}} onCancel={()=>{}}>
+            کد تأیید به شمارهٔ جدید فرستاده می‌شود.
+          </ConfirmDialog></div></div>
+      </React.Fragment>))}
+  </div>
+  <table className="metrics"><thead><tr><th>boundary</th><th>light warm #E8D5C4</th><th>cream #F4EDE3</th><th>dark #2E3542</th><th>near-black #14181F</th></tr></thead><tbody>
+    <tr className="fail"><td>heart alone — pink stop</td><td><b>2.35 ✗</b></td><td><b>2.88 ✗</b></td><td>3.67 ✓</td><td>5.30 ✓</td></tr>
+    <tr className="fail"><td>heart alone — purple stop</td><td><b>2.74 ✗</b></td><td>3.36 ✓</td><td>3.14 ✓</td><td>4.54 ✓</td></tr>
+    <tr><td>backing — ink fill</td><td><b>12.36 ✓</b></td><td><b>15.15 ✓</b></td><td>1.43</td><td>1.01</td></tr>
+    <tr><td>backing — 2dp white ring</td><td>1.42</td><td>1.16</td><td><b>12.32 ✓</b></td><td><b>17.79 ✓</b></td></tr>
+    <tr><td>heart on the ink backing</td><td colSpan="4">5.16 ✓ · ring vs fill 17.61</td></tr>
+  </tbody></table>
+  <div className="note"><b>1. Pick by shape, not by content.</b> <span>Dialog</span> = prose plus any number of actions. <span>ConfirmDialog</span> = the fixed two-action confirmation, centred, with the media slot. <span>BottomSheet</span> = a list of options; single-select inside one is <span>Radio</span>, never settings rows.<br/><b>2. A destructive confirm uses <span>Button variant="destructive"</span>.</b> It is the only place the danger fill belongs on a button.<br/><b>3. The media slot owns position, ground and backing — pass the bare glyph.</b> <span>icon</span> is shorthand resolving into <span>media</span>; Avatar in the slot is xl / 112dp. Never rely on a glyph's own contrast: rows 1–2 above are the heart <i>without</i> its backing.<br/><br/><i>Close buttons keep their 40px visual and a transparent 48dp hit area. Derivation — panel choice, the media-slot contract, the stage geometry — is in readme.md under "Overlays".</i></div>
+  </>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

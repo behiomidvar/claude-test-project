@@ -1,0 +1,96 @@
+<!-- @dsCard group="4. Spacing" viewport="1080x1360" name="Size scale & the declared-height rule" subtitle="Element dimensions on the 4px grid. Every fixed-shape pill declares its height from a --size-* step — shown here at true scale in both themes." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+.scale{display:flex;flex-wrap:wrap;gap:10px;direction:ltr;margin:0 0 6px}
+.scale .s{display:flex;flex-direction:column;align-items:center;gap:6px}
+.scale .bar{background:var(--gradient-chip,var(--surface-well));border:1px solid var(--border);border-radius:var(--radius-sm);width:26px}
+.scale .n{font-family:var(--font-mono);font-size:10px;color:var(--text-subtle)}
+.summary{direction:ltr;text-align:left;margin:14px 0 0;padding:12px 14px;border-radius:var(--radius-md);font-family:var(--font-latin);font-size:13.5px;background:var(--surface-well);color:var(--text-secondary)}
+.summary b{color:var(--text-primary)}
+.stage{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 0}
+.stage>div{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-card);padding:16px;color:var(--text-primary)}
+.tl{direction:ltr;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-subtle);margin:0 0 12px}
+.specs{display:flex;flex-direction:column;gap:14px}
+.spec-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.spec-row>.sl{font-family:var(--font-mono);font-size:9.5px;color:var(--text-subtle);direction:ltr;width:100%}
+.hostbox{width:300px}
+.hostbox--wide{width:360px}
+.hostbox--photo{width:400px}
+</style></head>
+<body>
+<header class="card-h"><h1>Size scale &amp; the declared-height rule</h1>
+<p>Spacing is the gap between things; <b>size</b> is the dimension of a thing. Element dimensions come from <span class="mono">--size-*</span>, never a raw pixel and never from vertical padding.</p></header>
+
+<h2 class="sec">The scale — 4px grid</h2>
+<div class="scale" id="scale"></div>
+<p class="lead">Marks (8 / 12 / 16) are dots and indicators below the control floor. Controls start at 20. Steps are named by pixel value so the mapping is self-evident at the call site. If a design needs a value between steps, the step list is wrong — add the step, do not hardcode.</p>
+
+<h2 class="sec">The rule</h2>
+<div class="rules">
+<section class="rules--do"><h3>Fixed-shape components — declare the height</h3><ul>
+<li><b>height</b> comes from a <span class="mono">--size-*</span> step.</li>
+<li><b>display:inline-flex</b> + <span class="mono">align-items:center</span> centres the content.</li>
+<li>Padding is <b>horizontal only</b>, from a spacing token.</li>
+<li>Applies to every pill and capsule: Badge, Chip, VerificationBadge, AgeChip, DistanceChip, dots, count badges, tab items, segments.</li>
+<li>Mark the declaration <span class="mono">h: --size-24 declared</span> in a comment, so a reviewer can see the height was chosen.</li>
+</ul></section>
+<section class="rules--no"><h3>Never</h3><ul>
+<li><b>No emergent heights.</b> Padding + line-height must never be what produces a pill's height — that is how Badge shipped at 23px, a number nobody chose.</li>
+<li>No <span class="mono">min-height</span> on a fixed shape; it invites growth and hides the real value.</li>
+<li>No raw pixel dimension where a step exists.</li>
+<li>Exempt but still tokenised: cards, message bubbles, list rows, textareas grow with content — their <b>padding</b> must still come from spacing tokens.</li>
+</ul></section>
+</div>
+
+<h2 class="sec">Every fixed shape, both themes</h2>
+<p class="lead">Each row is one component at its declared rung. The heights were verified by measuring the live client rect in both themes; the measured before/after table lives in the readme.</p>
+<div class="stage">
+<div class="theme-light"><p class="tl">light</p><div class="specs" id="stage-light"></div></div>
+<div class="theme-dark"><p class="tl">dark</p><div class="specs" id="stage-dark"></div></div>
+</div>
+
+<p class="readmore">Derivation, the measured before/after table and the retired values: readme.md § Size scale &amp; declared heights.</p>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="text/babel">
+const DS = window.DeltalkDesignSystem_288455;
+const { Badge, Chip, AgeChip, DistanceChip, VerificationBadge, PresenceIndicator,
+  SegmentedControl, ChatListItem, DateSeparator, PhotoGrid, Snackbar, OtpInput, InterestPicker } = DS;
+
+/* Each entry: label · the rung it must land on · the specimen. */
+const SPECS = [
+  ['Badge — tinted · --size-24', <Badge variant="warm">تازه</Badge>],
+  ['Badge — active dot · --size-8', <Badge variant="active">فعال</Badge>],
+  ['Badge — count · --size-24', <Badge variant="count">۳</Badge>],
+  ['AgeChip — chip · --size-24', <AgeChip years={27}/>],
+  ['DistanceChip · --size-24', <DistanceChip km={3}/>],
+  ['VerificationBadge — lg · --size-28', <VerificationBadge/>],
+  ['VerificationBadge — sm · --size-20', <VerificationBadge size="sm"/>],
+  ['VerificationBadge — mini · --size-24', <VerificationBadge size="mini"/>],
+  ['PresenceIndicator — inline dot · --size-8', <PresenceIndicator status="online"/>],
+  ['PresenceIndicator — bare dot · --size-16', <PresenceIndicator status="online" bare/>],
+  ['Chip · --size-48', <Chip>موسیقی</Chip>],
+  ['InterestPicker — chip · --size-48', <InterestPicker options={[{value:'a',label:'کتاب'}]} value={[]} onChange={()=>{}}/>],
+  ['SegmentedControl — segment · --size-40', <SegmentedControl options={[{value:'a',label:'همه'},{value:'b',label:'جدید'}]} value="a" onChange={()=>{}}/>],
+  ['ChatListItem — new-match pill · --size-20', <div className="hostbox"><ChatListItem name="نگار" preview="سلام" time="۱۲:۳۰" state="newMatch"/></div>],
+  ['DateSeparator — label · --size-28', <div className="hostbox"><DateSeparator/></div>],
+  ['PhotoGrid — primary marker · --size-24', <div className="hostbox hostbox--photo"><PhotoGrid count={3} slots={[{state:'uploaded',src:'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='}]}/></div>],
+  ['Snackbar — action · --size-32', <div className="hostbox"><Snackbar actionLabel="واگرد" onAction={()=>{}}>پیام حذف شد</Snackbar></div>],
+  ['OtpInput — resend · --size-36', <div className="hostbox hostbox--wide"><OtpInput resendSeconds={0} onResend={()=>{}}/></div>],
+];
+
+function Stage(){
+  return <>{SPECS.map(([label,el],i)=>(
+    <div className="spec-row" key={i}><span className="sl">{label}</span>{el}</div>
+  ))}</>;
+}
+
+const SIZES = [8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,72,76];
+document.getElementById('scale').innerHTML = SIZES.map(n=>
+  `<div class="s"><div class="bar" style="height:${n}px"></div><div class="n">${n}</div></div>`).join('');
+
+['light','dark'].forEach(t=>ReactDOM.createRoot(document.getElementById('stage-'+t)).render(<Stage/>));
+</script><script src="../theme-toggle.js"></script></body></html>

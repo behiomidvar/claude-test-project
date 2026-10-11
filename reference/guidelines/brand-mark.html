@@ -1,0 +1,64 @@
+<!-- @dsCard group="1. Brand" viewport="820x760" name="App Icon / Mark" subtitle="Opaque OS tile with safe-area padding, and the in-layout mark" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+/* The app-icon strip is deliberately NOT a light/dark split: an OS tile has no
+   theme variant, so showing one would misdescribe the asset. */
+.strip{display:flex;align-items:center;gap:40px;padding:40px;border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface-well);direction:ltr;flex-wrap:wrap;margin:0 0 10px}
+.ico{display:block;flex-shrink:0;overflow:hidden;box-shadow:var(--shadow-card)}
+.ico svg{display:block;width:100%;height:auto}
+.i1{width:44px;border-radius:9.84px}.i2{width:64px;border-radius:14.32px}.i3{width:96px;border-radius:21.48px}
+.masks{display:flex;align-items:flex-end;gap:28px;margin-inline-start:auto}
+.mask{display:flex;flex-direction:column;align-items:center;gap:10px}
+.mask .ico{width:88px}
+.m-squircle{border-radius:19.69px}.m-circle{border-radius:50%}.m-round{border-radius:28px}
+.tag{font-size:11px;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;color:var(--text-subtle)}
+.split{display:grid;grid-template-columns:1fr 1fr;direction:ltr;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;margin:0 0 10px}
+.half{display:flex;align-items:center;justify-content:center;gap:38px;padding:44px 40px}
+.half--dark{background:#0B0B0F}.half--light{background:#FFFFFF}
+.bare{display:block;flex-shrink:0}
+.bare svg{display:block;width:100%;height:auto}
+h3.sub{direction:ltr;text-align:left;margin:24px 0 10px;font-family:var(--font-latin);font-size:14px;font-weight:700;color:var(--text-primary)}
+</style></head><body>
+<div class="card-h"><h1>App Icon / Mark</h1></div>
+
+<h3 class="sub">App icon — <span class="mono">app-icon.svg</span></h3>
+<div class="strip">
+  <span class="ico i1 m-squircle" id="a1"></span><span class="ico i2 m-squircle" id="a2"></span><span class="ico i3 m-squircle" id="a3"></span>
+  <span class="masks">
+    <span class="mask"><span class="ico m-squircle" id="a4"></span><span class="tag">iOS squircle</span></span>
+    <span class="mask"><span class="ico m-circle" id="a5"></span><span class="tag">Android circle</span></span>
+    <span class="mask"><span class="ico m-round" id="a6"></span><span class="tag">rounded square</span></span>
+  </span>
+</div>
+<dl class="spec">
+  <div><dt>Artwork</dt><dd>384 × 384, opaque</dd></div>
+  <div><dt>Tile</dt><dd>Fixed white, both themes</dd></div>
+  <div><dt>Padding</dt><dd>16.67% per side (64 of 384)</dd></div>
+  <div><dt>Survives</dt><dd>Every launcher mask</dd></div>
+</dl>
+<p class="lead" style="margin-top:12px">The OS paints this tile outside the app, where our theme tokens do not reach — so it stays fixed white in both themes. Surfaces <b>inside</b> the app stay tokenised; do not "correct" this one to match them.</p>
+
+<h3 class="sub">In-layout mark — <span class="mono">logo-mark.svg</span></h3>
+<div class="split">
+  <div class="half half--dark" data-theme="dark"><span class="bare" id="m1" style="width:36px"></span><span class="bare" id="m2" style="width:56px"></span><span class="bare" id="m3" style="width:88px"></span></div>
+  <div class="half half--light" data-theme="light"><span class="bare" id="n1" style="width:36px"></span><span class="bare" id="n2" style="width:56px"></span><span class="bare" id="n3" style="width:88px"></span></div>
+</div>
+<dl class="spec">
+  <div><dt>Minimum</dt><dd>36 × 36</dd></div>
+  <div><dt>Use for</dt><dd>Favicon, loading states, inline mark</dd></div>
+  <div><dt>Never</dt><dd>Anywhere the wordmark fits</dd></div>
+  <div><dt>Background</dt><dd>None — transparent</dd></div>
+</dl>
+
+<p class="readmore">Safe-zone derivation and why these are two files → readme.md § LOGO LOCKUP SPEC</p>
+<script>
+/* several copies of one file: gradient ids must be uniquified per copy, or every
+   instance after the first resolves its fill against the same defs and drops out. */
+function put(id,file){var el=document.getElementById(id);if(!el)return;
+  fetch('../assets/'+file).then(function(r){return r.text()}).then(function(t){
+    t=t.replace(/(id="|url\(#)([\w-]+)/g,function(m,p,n){return p+n+'_'+id;});
+    el.insertAdjacentHTML('afterbegin',t.replace('<svg ','<svg style="display:block;width:100%;height:auto" '));});}
+['a1','a2','a3','a4','a5','a6'].forEach(function(id){put(id,'app-icon.svg')});
+['m1','m2','m3','n1','n2','n3'].forEach(function(id){put(id,'logo-mark.svg')});
+</script>
+<script src="../theme-toggle.js"></script></body></html>

@@ -2,3 +2,10 @@ node_modules/
 out/
 .remotion/
 temporary screenshots/
+
+# ./reference is extracted from "Motions/Deltalk Design System.zip".
+# These parts are superseded or off-limits for this project (see CLAUDE.md).
+reference/uploads/
+reference/scraps/
+reference/.thumbnail
+reference/ui_kits/deltalk-app/

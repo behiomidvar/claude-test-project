@@ -1,0 +1,85 @@
+/* Deltalk elevation — soft, warm-tinted shadows (never hard grey drop-shadows).
+   Shadows are tinted toward the ink/warm so they sit naturally on paper. */
+:root {
+  /* diffuse, warm-tinted */
+  --shadow-xs: 0 1px 2px rgba(26, 22, 38, 0.05);
+  --shadow-sm: 0 2px 8px rgba(26, 22, 38, 0.06);
+  --shadow-md: 0 6px 20px rgba(26, 22, 38, 0.08);
+  --shadow-lg: 0 16px 40px rgba(26, 22, 38, 0.12);
+  --shadow-xl: 0 28px 64px rgba(26, 22, 38, 0.16);
+
+  /* Colored glows for the one hero action per screen. DERIVED from the live
+     tokens so they can never drift: --glow-warm was rgba(235,76,166) = #EB4CA6,
+     the pre-merge pink, and --glow-cool was #5852E4, the pre-merge cool violet. */
+  --glow-warm: 0 8px 24px color-mix(in srgb, var(--accent) 28%, transparent);
+  --glow-cool: 0 8px 24px color-mix(in srgb, var(--conversation-active) 24%, transparent);
+
+  /* On-photo separation. A chip whose own fill is dark ink (the verified badge)
+     merges into a photo's dark scrim gradient, so on-photo placements get an
+     outer shadow to lift them off it. Plain-background placements must NOT use
+     this — there is no scrim to separate from, and it would read as elevation
+     the badge does not have. */
+  --shadow-on-photo: 0 2px 10px rgba(0, 0, 0, 0.5);
+
+  /* ═══ FOCUS RING — TWO-TONE, THEME-INDEPENDENT (2026-08-08) ═══
+     One chromatic ring cannot work. Swept over 256 greys it floors at 1.00:1 on the
+     grey that matches its own luminance, and over free photography that grey always
+     exists; the accent at FULL opacity still reads only 2.98:1 on the light well.
+     The hue was never the problem — one colour was.
+
+     So the ring is a PAIR at opposite ends of the neutral ladder — rungs 100 and 900,
+     the same pairing principle as --ink-fixed-edge (26a) and --on-media-halo. Whichever
+     tone the ground swallows, the other separates. Measured best-of-two, worst case:
+       free photography (256-grey sweep)  4.22:1  @ #7C7C7C   — both themes
+       --surface-card   17.61 light / 15.55 dark
+       --bg             16.83 light / 17.61 dark
+       --surface-well   15.66 light / 16.89 dark
+       on-media plate    8.01 light /  6.52 dark
+     4.22 is near the ceiling for ANY two-tone pair: pure #FFF/#000 reaches 4.58, and
+     buying those 0.36 would mean inventing two values the ramp does not have.
+
+     THE ACCENT IS GONE FROM THIS RING, deliberately. Measured as a third band between
+     the two tones it changes the worst case by 0.00 at every ground — it is dominated
+     everywhere, so it would be 2px of width that no figure credits. Focus still reads
+     as brand pink where a bordered control can carry it: Select and Input recolour
+     their border to --focus-ring. See readme "Focus ring".
+
+     THEME-INDEPENDENT for the same reason --ink-fixed is: the ring's ground includes a
+     user photograph, which has no theme. Declared ONCE — unlike --glow-* below, it now
+     composes NO theme token, so the three-site rule does not apply. If you ever put a
+     theme-following var() back in here, it must move to all three sites again. */
+  --ring-ink:  var(--neutral-900); /* #121926 — inner contour */
+  --ring-edge: var(--neutral-100); /* #FFFFFF — outer contour */
+  /* WIDTH IS PER COMPONENT, COLOUR IS NOT — but width CANNOT be a var() inside --ring.
+     A var() in a custom property resolves WHERE THE PROPERTY IS DECLARED, so a
+     --ring-w-in set locally on a focused handle would never reach a --ring declared
+     here; it would silently keep 2px. (Same mechanism as the theme freeze fixed
+     earlier today — the third time this shape has bitten this file.) So the two widths
+     the system actually uses are two TOKENS with literal widths, and a component picks
+     one. Each consumer SPLITS its existing ring width rather than adding to it, so only
+     the 3px controls grow, by 1px: 3→2+2, 4→2+2, 6→3+3.
+     A new width means a new token here, never a local replica. */
+  --ring:      0 0 0 2px var(--ring-ink), 0 0 0 4px var(--ring-edge);
+  --ring-wide: 0 0 0 3px var(--ring-ink), 0 0 0 6px var(--ring-edge);
+}
+
+/* ═══ THEME-FOLLOWING COMPOSED SHADOWS — declared in all THREE sites ═══
+   A custom property whose value contains var(--x) resolves the substitution WHERE
+   IT IS DECLARED, not where it is used. These three compose theme-dependent colour
+   tokens (--accent, --conversation-active, --focus-ring), so a single :root
+   declaration freezes the LIGHT value and dark inherits it already computed.
+   That is exactly what happened: --ring rendered #F24C9A in dark theme while
+   --focus-ring correctly read #E481AF, so dark never had its own focus colour.
+   Fixed 2026-08-08; --ring then went two-tone and theme-independent the same day,
+   so only the two --glow-* live here now. Keep these blocks in sync with :root
+   above — the same three-site rule the --on-media-* family follows in colors.css. */
+[data-theme="light"], .theme-light {
+  --glow-warm: 0 8px 24px color-mix(in srgb, var(--accent) 28%, transparent);
+  --glow-cool: 0 8px 24px color-mix(in srgb, var(--conversation-active) 24%, transparent);
+  /* --ring is NOT repeated here: it composes no theme token any more. */
+}
+[data-theme="dark"], .theme-dark {
+  --glow-warm: 0 8px 24px color-mix(in srgb, var(--accent) 28%, transparent);
+  --glow-cool: 0 8px 24px color-mix(in srgb, var(--conversation-active) 24%, transparent);
+  /* --ring is NOT repeated here: it composes no theme token any more. */
+}

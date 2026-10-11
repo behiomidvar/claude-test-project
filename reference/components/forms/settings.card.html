@@ -1,0 +1,50 @@
+<!-- @dsCard group="8. Selection & Forms" viewport="920x860" name="SettingsRow — list rows" subtitle="The divided list: stacked rows draw their own 1dp hairline between each other, inside Card pad=&quot;none&quot;. Switch (enabling + restricting), chevron, value, destructive, chevron={false}, divider={false}. Both themes." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl;font-family:var(--font-sans)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:872px;margin:0 auto}
+.panel{border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);background:var(--bg);color:var(--text-primary);display:flex;flex-direction:column;gap:6px}
+.plbl{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text-subtle);margin-bottom:6px}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);margin:12px 0 2px}
+.note{direction:ltr;text-align:left;unicode-bidi:isolate;max-width:872px;margin:16px auto 0;font-size:11.5px;line-height:1.7;color:var(--text-secondary);background:var(--surface-well);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px}
+.note+.note{margin-top:8px}.note b{color:var(--text-primary)}.note code{font-family:var(--font-mono);font-size:10.5px;color:var(--text-primary)}
+.sect{direction:rtl;font-size:var(--text-caption);font-weight:var(--fw-semibold);color:var(--text-muted);padding:0 4px 6px;margin-top:10px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { SettingsRow, Switch, Card } = window.DeltalkDesignSystem_288455;
+const I = window.DeltalkIcons;
+function Demo({theme}){
+  const [n,setN]=React.useState(true);
+  const [inc,setInc]=React.useState(true);
+  return <div className="panel" data-theme={theme}>
+    <div className="plbl">{theme} theme</div>
+    <div className="sect">گفت‌وگو</div>
+    <Card pad="none">
+      <SettingsRow variant="switch" icon={<I.ChatHeart size={20}/>} title="اعلان‌ها" subtitle="پیام‌ها و مچ‌های تازه" trailing={<Switch checked={n} onChange={()=>setN(v=>!v)}/>}/>
+      <SettingsRow variant="switch" icon={<I.Eye size={20}/>} title="حالت ناشناس" subtitle="پروفایلت به کسی نشان داده نمی‌شود" trailing={<Switch variant="restricting" checked={inc} onChange={()=>setInc(v=>!v)}/>}/>
+      <SettingsRow variant="value" icon={<I.Compass size={20}/>} title="زبان" value="فارسی" onClick={()=>{}}/>
+      <SettingsRow variant="chevron" icon={<I.Shield size={20}/>} title="حریم خصوصی و ایمنی" onClick={()=>{}}/>
+      <SettingsRow variant="destructive" icon={<I.Close size={20}/>} title="خروج از حساب" onClick={()=>{}}/>
+    </Card>
+    <div className="cap">chevron — the navigation promise</div>
+    <Card pad="none">
+      <SettingsRow variant="chevron" icon={<I.ChatHeart size={20}/>} title="اعلان‌ها" subtitle="chevron (default) — navigates" onClick={()=>{}}/>
+      <SettingsRow variant="destructive" chevron={false} icon={<I.Close size={20}/>} title="خروج از حساب" subtitle="chevron={false} — opens a dialog" onClick={()=>{}}/>
+    </Card>
+    <div className="cap">divider={'{false}'} — a row set deliberately apart</div>
+    <Card pad="none">
+      <SettingsRow variant="value" title="شمارهٔ موبایل" value="۰۹۱۲ ۳۴۵ ۶۷۸۹"/>
+      <SettingsRow variant="chevron" title="تغییر شماره" onClick={()=>{}}/>
+      <SettingsRow variant="destructive" divider={false} chevron={false} title="حساب را غیرفعال کن" subtitle="divider={false} — no hairline above" onClick={()=>{}}/>
+    </Card>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<React.Fragment>
+  <div className="pair"><Demo theme="light"/><Demo theme="dark"/></div>
+  <p className="note" dir="ltr"><b>A divided list is what stacked rows look like — there is no prop for it.</b> The hairline is an adjacent-sibling rule inside the component (<code>.dt-setrow + .dt-setrow</code>), so it draws <b>only between two rows</b>: the first gets no rule above it, the last none below, automatically. A row cannot know whether it is last — a React child can't inspect its siblings — so a <code>divider</code> flag set by the parent would have been consumer bookkeeping. <b>Copy this shape:</b> <code>&lt;Card pad="none"&gt;</code> holding rows directly, never a hand-rolled surface + radius + overflow wrapper. The divider is <code>--border</code>, not <code>--border-control</code>: a decorative separator inside a card whose surface already carries the boundary.</p>
+  <p className="note" dir="ltr"><b>The two withdrawals.</b> <code>chevron={'{false}'}</code> withdraws the <b>navigation promise</b> — the row opens a dialog or fires an action instead of going to a screen, so the promise is never made falsely. <code>divider={'{false}'}</code> withdraws the <b>hairline above this row</b>, for a row set deliberately apart (a destructive action separated from the group). Both are design decisions; neither is for hand-managing position.</p>
+</React.Fragment>);
+</script><script src="../../theme-toggle.js"></script></body></html>

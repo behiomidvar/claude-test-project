@@ -1,0 +1,47 @@
+<!-- @dsCard group="1. Brand" viewport="820x1030" name="Logo — vertical" subtitle="One shared axis; gap 0.20 × icon height" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+.grid{display:grid;grid-template-columns:1fr 1fr;direction:ltr;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;margin:0 0 18px}
+.panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px 18px;min-height:170px}
+.panel.tall{min-height:250px}
+.light{background:#FFFFFF}.dark{background:#121926}
+.clear{position:relative;padding:20px 26px;border:1.5px dashed rgba(137,110,244,.55);border-radius:12px}
+.tag{font-size:11.5px;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:center;line-height:1.5}
+.lighttag{color:#746D80}.darktag{color:#9AA4B2}
+.lock,.lockv{color:var(--logo-wordmark)}
+.lock svg{display:block;height:40px;width:auto}
+.lockv svg{display:block;height:128px;width:auto}
+</style></head><body>
+<div class="card-h"><h1>Logo — vertical</h1></div>
+<div class="grid">
+  <div class="panel tall light" data-theme="light"><div class="clear"><img src="../assets/wordmark-vertical-light.svg" height="161.33" alt="لوگوی عمودی دلتاک روی روشن"></div><span class="tag lighttag">Full · light</span></div>
+  <div class="panel tall dark" data-theme="dark"><div class="clear"><img src="../assets/wordmark-vertical-dark.svg" height="161.33" alt="لوگوی عمودی دلتاک روی تیره"></div><span class="tag darktag">Full · dark</span></div>
+  <div class="panel tall light" data-theme="light"><div class="clear"><span class="lockv" id="v1"></span></div><span class="tag lighttag">Compact · light</span></div>
+  <div class="panel tall dark" data-theme="dark"><div class="clear"><span class="lockv" id="v2"></span></div><span class="tag darktag">Compact · dark</span></div>
+</div>
+<table class="k"><thead><tr><th></th><th>artwork</th><th>icon</th><th>gap</th><th>minimum</th></tr></thead><tbody>
+  <tr><td><b>Compact</b></td><td class="mono">186.67 × 128</td><td class="mono">73.33 × 73.33</td><td class="mono">14.67px</td><td class="mono">60px tall</td></tr>
+  <tr><td><b>Full</b></td><td class="mono">186.67 × 161.33</td><td class="mono">73.33 × 73.33</td><td class="mono">14.67px</td><td class="mono">78px tall</td></tr>
+</tbody></table>
+<div class="rules">
+  <section class="rules--do"><h3>Do</h3><ul>
+    <li>Centre icon, wordmark and tagline on <b>one shared axis</b>.</li>
+    <li>Measure the gap to the wordmark's <b>ink top</b>, not its box.</li>
+  </ul></section>
+  <section class="rules--no"><h3>Never</h3><ul>
+    <li>Apply the <b>baseline rule</b> — a stack has none.</li>
+    <li>Reuse the horizontal 0.25 gap.</li>
+    <li>Use this where the horizontal fits.</li>
+  </ul></section>
+</div>
+<p class="lead" style="margin-top:12px">Wordmark and tagline colour → the <b>Logo — horizontal</b> card.</p>
+<p class="readmore">Why the stack runs tighter than the horizontal → readme.md § LOGO LOCKUP SPEC</p>
+
+<script>
+function put(id,file,mode){var el=document.getElementById(id);if(!el)return;
+  fetch('../'+file).then(function(r){return r.text()}).then(function(t){
+    if(mode==='fit')t=t.replace('<svg ','<svg style="display:block;width:100%;height:auto" ');
+    el.insertAdjacentHTML('afterbegin',t);});}
+['v1','v2'].forEach(function(id){put(id,'assets/logo-compact-vertical.svg')});
+</script>
+<script src="../theme-toggle.js"></script></body></html>

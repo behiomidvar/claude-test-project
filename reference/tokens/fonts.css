@@ -1,0 +1,13 @@
+/* Deltalk webfonts — Persian-first / RTL.
+   PRIMARY  : IRANSans Mobile (NoEn) — self-hosted, used throughout the whole system & all
+              components (UI, body, headings). The brand-supplied Persian typeface.
+   Latin    : Hanken Grotesk — ONLY for stray Latin ("Deltalk" logotype is an SVG mark).
+   Mono     : JetBrains Mono — spec numbers / code only. */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@font-face { font-family: 'IRANSansMobile'; src: url('../assets/fonts/IRANSansMobile-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IRANSansMobile'; src: url('../assets/fonts/IRANSansMobile-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IRANSansMobile'; src: url('../assets/fonts/IRANSansMobile-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IRANSansMobile'; src: url('../assets/fonts/IRANSansMobile-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IRANSansMobile'; src: url('../assets/fonts/IRANSansMobile-Black.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+

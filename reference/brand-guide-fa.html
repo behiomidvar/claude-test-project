@@ -1,0 +1,453 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>راهنمای برند دل‌تاک</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text-primary);font-family:var(--font-sans);line-height:var(--lh-normal);-webkit-font-smoothing:antialiased}
+a{color:var(--brand-navy-400);text-decoration:none}a:hover{color:var(--accent)}
+[data-theme="dark"] a{color:var(--brand-lavender-400)}
+.wrap{max-width:1060px;margin:0 auto;padding:0 32px 120px}
+.mono{font-family:var(--font-mono);font-size:11.5px;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.lat{font-family:var(--font-latin);direction:ltr;unicode-bidi:isolate;display:inline-block}
+/* cover */
+.cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:34px;text-align:center;padding:80px 32px 60px}
+.cover img{display:block}
+.cover .tag{font-size:var(--text-h3);color:var(--text-secondary);margin:0;max-width:34ch}
+.cover .meta{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;font-size:var(--text-caption);color:var(--text-subtle)}
+.strip{display:flex;width:100%;max-width:520px;height:8px;border-radius:var(--radius-hairline);overflow:hidden}
+.strip span{flex:1}
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav .in{max-width:1060px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:6px;min-height:60px;flex-wrap:wrap}
+.nav a{padding:9px 14px;border-radius:var(--radius-pill);font-size:var(--text-body-sm);font-weight:var(--fw-medium);color:var(--text-secondary)}
+.nav a:hover{background:var(--surface-well);color:var(--text-primary)}
+.tt{margin-inline-start:auto;width:44px;height:44px;border-radius:var(--radius-pill);border:1px solid var(--border-control);background:transparent;color:var(--text-primary);font-size:17px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.tt:hover{background:var(--surface-well)}
+/* sections */
+section.s{padding-top:96px}
+.sh{display:flex;align-items:baseline;gap:16px;padding-bottom:14px;border-bottom:2px solid var(--text-primary);margin-bottom:34px}
+.sh .n{font-family:var(--font-mono);font-size:13px;color:var(--accent)}
+.sh h2{margin:0;font-size:var(--text-h1);font-weight:var(--fw-bold);line-height:var(--lh-snug)}
+.sh p{margin:0 0 0 auto;max-width:44ch;font-size:var(--text-body-sm);color:var(--text-secondary);line-height:var(--lh-normal)}
+h3.b{margin:52px 0 8px;font-size:var(--text-h3);font-weight:var(--fw-bold)}
+h4.b{margin:30px 0 8px;font-size:var(--text-body);font-weight:var(--fw-bold);color:var(--text-secondary)}
+p.lead{margin:0 0 20px;max-width:74ch;color:var(--text-secondary);line-height:var(--lh-relaxed)}
+p.lead b{color:var(--text-primary);font-weight:var(--fw-bold)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.box{border:1px solid var(--border);border-radius:var(--radius-card);padding:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:180px}
+.box .cap{font-family:var(--font-mono);font-size:10.5px;direction:ltr;unicode-bidi:isolate;color:var(--text-subtle);text-align:center}
+.lt{background:#F8FAFC}.dk{background:#121926}
+.lock svg{display:block;height:48px;width:auto}
+.lock{color:var(--logo-wordmark)}
+/* tables */
+table.k{width:100%;border-collapse:collapse;margin:14px 0 8px;font-size:var(--text-body-sm)}
+table.k th{text-align:start;font-weight:var(--fw-bold);font-size:var(--text-caption);color:var(--text-subtle);padding:0 12px 9px;border-bottom:1px solid var(--border);white-space:nowrap}
+table.k td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-secondary)}
+table.k td b{color:var(--text-primary)}
+/* ramps */
+.ramp{display:grid;grid-template-columns:88px repeat(9,1fr);align-items:stretch;gap:0;margin-bottom:6px;direction:ltr}
+.ramp .nm{display:flex;align-items:center;font-size:var(--text-body-sm);font-weight:var(--fw-bold);direction:rtl;padding-inline-end:12px}
+.sw{height:62px;display:flex;flex-direction:column;justify-content:flex-end;padding:6px;gap:1px}
+.sw i{font-style:normal;font-family:var(--font-mono);font-size:9px;direction:ltr;unicode-bidi:isolate;opacity:.9}
+.sw.k5{outline:2px solid var(--text-primary);outline-offset:-2px;z-index:1}
+.ramphd{display:grid;grid-template-columns:88px repeat(9,1fr);font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate}
+.ramphd span{padding:0 6px 6px}
+.ramphd span:first-child{grid-column:1}
+/* gradients */
+.grad{border-radius:var(--radius-card);padding:24px;min-height:132px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+.grad .t{font-size:var(--text-h3);font-weight:var(--fw-bold)}
+.grad .d{font-size:var(--text-caption);opacity:.94;line-height:1.7}
+/* semantic */
+.semrow{display:grid;grid-template-columns:110px 1fr 1fr;gap:14px;align-items:stretch;margin-bottom:12px}
+.semrow>.lb{display:flex;flex-direction:column;justify-content:center;gap:3px}
+.semrow>.lb b{font-size:var(--text-body)}
+.semrow>.lb span{font-size:var(--text-caption);color:var(--text-subtle)}
+.sembox{border-radius:var(--radius-input);padding:14px;display:flex;flex-direction:column;gap:9px}
+.pillrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{padding:5px 12px;border-radius:var(--radius-pill);font-size:var(--text-caption);font-weight:var(--fw-medium)}
+.sembox .msg{font-size:var(--text-body-sm)}
+.sembox .hex{font-family:var(--font-mono);font-size:9.5px;direction:ltr;unicode-bidi:isolate;opacity:.8}
+/* neutrals */
+.ladder{display:flex;border-radius:var(--radius-input);overflow:hidden;border:1px solid var(--border)}
+.ladder div{flex:1;height:74px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-family:var(--font-mono);font-size:9px;direction:ltr;unicode-bidi:isolate}
+/* type */
+.tspec{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--border)}
+.tspec .m{font-family:var(--font-mono);font-size:10.5px;direction:ltr;unicode-bidi:isolate;color:var(--text-subtle);line-height:1.7}
+.tspec .x{margin:0;line-height:var(--lh-tight)}
+/* component stage */
+.stage{border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden}
+.stage>.hd{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:12px;background:var(--surface-well)}
+.stage>.hd b{font-family:var(--font-latin);font-size:var(--text-body-sm)}
+.stage>.hd span{font-size:var(--text-caption);color:var(--text-secondary)}
+.stage>.bd{display:grid;grid-template-columns:1fr 1fr}
+.stage>.bd>div{padding:26px;display:flex;flex-direction:column;gap:16px}
+.stage>.bd>div:first-child{border-inline-end:1px solid var(--border)}
+.stlb{font-family:var(--font-mono);font-size:9.5px;direction:ltr;unicode-bidi:isolate;color:var(--text-subtle)}
+/* motion */
+.mo{border:1px solid var(--border);border-radius:var(--radius-card);padding:22px;display:flex;flex-direction:column;gap:14px}
+.mo .demo{height:110px;border-radius:var(--radius-input);background:var(--surface-well);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.unf{width:190px;padding:14px 16px;border-radius:var(--radius-card);background:var(--surface-card);border:1px solid var(--border);font-size:var(--text-body-sm);animation:dt-unfold 560ms var(--ease-out-soft) infinite alternate}
+.blurdemo{width:78px;height:78px;border-radius:50%;background:var(--gradient-celebration);animation:dt-unblur 1600ms var(--ease-out-soft) infinite alternate}
+.dot3{display:inline-flex;gap:5px;align-items:center}
+.dot3 i{width:9px;height:9px;border-radius:50%;background:var(--gradient-brand);animation:dt-typing 1.25s infinite}
+.dot3 i:nth-child(2){animation-delay:.16s}.dot3 i:nth-child(3){animation-delay:.32s}
+.durrow{display:flex;gap:10px;flex-wrap:wrap}
+.dur{border:1px solid var(--border);border-radius:var(--radius-input);padding:10px 14px;font-size:var(--text-caption)}
+.dur b{display:block;font-family:var(--font-mono);font-size:12px;color:var(--accent);direction:ltr}
+.foot{margin-top:110px;padding-top:26px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:var(--text-caption);color:var(--text-subtle)}
+@media(max-width:840px){.g2,.g3,.stage>.bd{grid-template-columns:1fr}.wrap{padding:0 20px 80px}.sh{flex-wrap:wrap}.sh p{margin-inline-start:0}}
+</style></head><body>
+
+<header class="cover">
+  <img id="cover-lock" src="assets/wordmark-vertical-light.svg" height="176" alt="دل‌تاک">
+  <p class="tag">گفت‌وگویی که از دل برمی‌آید. اول حرف بزن؛ چهره را گفت‌وگو روشن می‌کند.</p>
+  <div class="strip">
+    <span style="background:var(--brand-gold)"></span><span style="background:var(--brand-pink)"></span><span style="background:var(--brand-lavender)"></span><span style="background:var(--brand-purple)"></span><span style="background:var(--brand-indigo)"></span><span style="background:var(--brand-navy)"></span>
+  </div>
+  <div class="meta"><span>راهنمای برند · نسخهٔ ۱٫۰</span><span>مرداد ۱۴۰۵</span><span>اندروید · راست‌به‌چپ</span></div>
+</header>
+
+<nav class="nav"><div class="in">
+  <a href="#logo">لوگو و نشانه</a><a href="#color">رنگ و پس‌زمینه</a><a href="#type">تایپوگرافی</a><a href="#comp">کامپوننت‌ها</a><a href="#motion">موشن‌گرافیک</a>
+  <button class="tt" id="tt" type="button" aria-label="تغییر تم روشن و تیره">☾</button>
+</div></nav>
+
+<div class="wrap">
+
+<!-- ══════════ ۱. لوگو ══════════ -->
+<section class="s" id="logo">
+  <div class="sh"><span class="n">۰۱</span><h2>لوگو و نشانه</h2><p>قلبی که از حباب گفت‌وگو ساخته شده؛ بازوی گرم «دل» است و بازوی سرد «گفت‌وگو». نشانه تنها جایی است که این دو خانوادهٔ رنگی به هم می‌رسند — و به همین دلیل در هر دو تم یکسان می‌ماند.</p></div>
+
+  <p class="lead">سه قفل‌بندی با سه کار مشخص: <b>Compact</b> (بدون شعار) تنها گونهٔ مجاز در نوار بالای همیشگی است؛ <b>Full</b> (با شعار) برای اسپلش، آنبوردینگ و صفحهٔ درباره است و هرگز در رابط تکرارشونده نمی‌آید؛ <b>Mark Only</b> برای فاوآیکون، آیکون اپ و حالت‌های بارگذاری است.</p>
+
+  <h3 class="b">افقی — Full</h3>
+  <div class="g2">
+    <div class="box lt"><img src="assets/wordmark-horizontal-light.svg" height="73.33" alt="لوگوی افقی روی زمینهٔ روشن"><span class="cap">Full · horizontal · light · 278.33 × 73.33</span></div>
+    <div class="box dk"><img src="assets/wordmark-horizontal-dark.svg" height="73.33" alt="لوگوی افقی روی زمینهٔ تیره"><span class="cap">Full · horizontal · dark · 278.33 × 73.33</span></div>
+  </div>
+
+  <h3 class="b">افقی — Compact</h3>
+  <div class="g2">
+    <div class="box lt" data-theme="light"><span class="lock" id="lk1"></span><span class="cap">Compact · light · 152 × 36</span></div>
+    <div class="box dk" data-theme="dark"><span class="lock" id="lk2"></span><span class="cap">Compact · dark · 152 × 36</span></div>
+  </div>
+
+  <h3 class="b">عمودی</h3>
+  <div class="g2">
+    <div class="box lt"><img src="assets/wordmark-vertical-light.svg" height="161.33" alt="لوگوی عمودی روی زمینهٔ روشن"><span class="cap">Full · vertical · light · 186.67 × 161.33</span></div>
+    <div class="box dk"><img src="assets/wordmark-vertical-dark.svg" height="161.33" alt="لوگوی عمودی روی زمینهٔ تیره"><span class="cap">Full · vertical · dark · 186.67 × 161.33</span></div>
+  </div>
+
+  <h3 class="b">نشانه و آیکون اپ</h3>
+  <div class="g3">
+    <div class="box lt"><img src="assets/logo-mark.svg" height="72" alt="نشانهٔ دل‌تاک"><span class="cap">Mark only · 36 × 36 min</span></div>
+    <div class="box dk"><img src="assets/logo-mark.svg" height="72" alt="نشانهٔ دل‌تاک روی تیره"><span class="cap">Mark only · dark — بدون تغییر</span></div>
+    <div class="box" style="background:var(--surface-well)"><img src="assets/app-icon.svg" height="88" style="border-radius:20px" alt="آیکون اپ"><span class="cap">App icon · 384 tile · 16.67% inset</span></div>
+  </div>
+  <p class="lead" style="margin-top:16px">آیکون اپ و نشانهٔ درون‌چیدمانی <b>دو فایل جدا با دو کار جدا هستند</b> و جای یکدیگر را نمی‌گیرند. آیکون اپ روی کاشی سفید مات ۳۸۴ با ۱۶٫۶۷٪ حاشیه در هر ضلع ساخته شده تا از ماسک‌های دایره، مربع گرد و اسکوئرکل جان سالم به در ببرد؛ کاشی <b>در هر دو تم سفید می‌ماند</b>، چون سیستم‌عامل آن را بیرون از اپ می‌کشد.</p>
+
+  <h3 class="b">رنگ متن لوگو</h3>
+  <table class="k"><thead><tr><th></th><th>لوگوتایپ</th><th>شعار (فقط Full)</th></tr></thead><tbody>
+    <tr><td><b>روشن</b></td><td><span class="mono">--brand-navy-500 #261D82</span> · ۱۲٫۷۰:۱</td><td><span class="mono">--brand-navy-400 #4D54A9</span> · ۶٫۳۶:۱</td></tr>
+    <tr><td><b>تیره</b></td><td><span class="mono">--brand-lavender-400 #B99FFF</span> · ۷٫۹۴:۱</td><td><span class="mono">--brand-lavender-500 #A780FE</span> · ۶٫۰۰:۱</td></tr>
+  </tbody></table>
+  <p class="lead">شعار در <b>هر دو تم</b> عقب می‌نشیند — در تم تیره یک پله <b>تیره‌تر</b> می‌شود، نه روشن‌تر: روی سطح تیره، پلهٔ روشن‌تر بلندتر است و سلسله‌مراتب را وارونه می‌کند. لوگوتایپ تیره به مقدار <span class="mono">--nav-active</span> گره خورده است، چون لوگوتایپ و تب فعال دو جایی هستند که هویت سرد برند رابط را حمل می‌کند.</p>
+
+  <h3 class="b">هندسه — نسبت‌ها، نه پیکسل</h3>
+  <table class="k"><thead><tr><th>قفل‌بندی</th><th>نشانه</th><th>فاصلهٔ نشانه تا متن</th><th>ترازبندی</th><th>حداقل اندازه</th></tr></thead><tbody>
+    <tr><td><b>Compact افقی</b></td><td class="mono">قاب ۳۶ × ۳۶ · جوهر ۲۷ × ۲۷</td><td class="mono">۸٫۵u تا جوهر نشانه</td><td>فقط تراز پایین — لبهٔ پایین جوهر نشانه روی خط کرسی لوگوتایپ</td><td class="mono">32px</td></tr>
+    <tr><td><b>Full افقی</b></td><td class="mono">73.33 × 73.33</td><td class="mono">0.25 × mark = 18.33px</td><td>هم‌ارتفاع و <b>وسط‌چین</b> نسبت به بلوک متن</td><td class="mono">36px</td></tr>
+    <tr><td><b>Compact عمودی</b></td><td class="mono">40 × 40</td><td class="mono">0.20 × mark = 14.67px</td><td>محور مشترک، وسط‌چین</td><td class="mono">60px</td></tr>
+    <tr><td><b>Full عمودی</b></td><td class="mono">73.33 × 73.33</td><td class="mono">0.20 × mark = 14.67px</td><td>محور مشترک، وسط‌چین</td><td class="mono">78px</td></tr>
+    <tr><td><b>Mark only</b></td><td class="mono">36 × 36</td><td>—</td><td>—</td><td class="mono">36 × 36</td></tr>
+  </tbody></table>
+  <p class="lead"><b>نشانه سقف سخت است</b> و متن هرگز از آن بلندتر نمی‌شود. نسبت افقی (۰٫۲۵) عمداً بازتر از عمودی (۰٫۲۰) است: کنار هم، نشانه و متن دو حجم تمام‌قد مجاورند و کانال میانشان باید درز بخواند نه برخورد؛ در چیدمان عمودی، شکست خط خودش جداکننده است و نسبت بازتر ستون را به دو شیء بی‌ربط می‌شکند. <b>هرگز مقدار پیکسلی را ثابت نکنید؛ قاعده نسبت است.</b></p>
+  <p class="lead"><b>حریم آزاد</b> در هر چهار طرف برابر ارتفاع نشانه است. مقیاس‌گذاری فقط <b>از ارتفاع</b> انجام می‌شود — عرض دنبال می‌کند؛ لوگو یک واحد یکپارچه جابه‌جا می‌شود و نشانه و متن هرگز جدا از هم تغییر اندازه نمی‌دهند. در چیدمان راست‌به‌چپ، <b>لوگوتایپ مقدم است و نشانه سمت راست آن</b> — نقطهٔ شروع خواندن.</p>
+  <p class="lead">زیر ۳۶ پیکسل، سه نقطهٔ تایپینگ نشانه به کمتر از ۲ پیکسل می‌رسند و گونهٔ ساده‌شده لازم است — که هنوز طراحی نشده است. اندازهٔ ۲۸ × ۲۸ کنار گذاشته شده است.</p>
+</section>
+
+<!-- ══════════ ۲. رنگ ══════════ -->
+<section class="s" id="color">
+  <div class="sh"><span class="n">۰۲</span><h2>رنگ و پس‌زمینه</h2><p>دوگانگی گرم ↔ سرد هستهٔ رنگ است: گرم (طلایی → صورتی) یعنی کاربر، رساندن، احساس — «دل»؛ سرد (بنفش → نیلی → اسطوخودوسی) یعنی طرف مقابل، پاسخ، ساختار آرام — «گفت‌وگو».</p></div>
+
+  <h3 class="b">شش رنگ پایهٔ برند</h3>
+  <p class="lead">تنها پالت معتبر، برداشت‌شده از خود فایل لوگو و <b>در هر دو تم یکسان</b>. هر نام رنگی دیگری در سیستم نام مستعار یکی از این شش است. هر پایه دقیقاً <b>پلهٔ ۵۰۰</b> رمپ خودش است.</p>
+
+  <div id="stops" class="g3" style="grid-template-columns:repeat(6,1fr);gap:0;border-radius:var(--radius-input);overflow:hidden"></div>
+
+  <h3 class="b">رمپ‌های تُنال — نُه پله برای هر پایه</h3>
+  <p class="lead">پله‌ها با درون‌یابی <b>روشنایی در فضای OKLCH</b> ساخته شده‌اند، نه با ترکیب هگز به سمت سفید و سیاه — ترکیب خطی هگز رنگ‌مایه را خم می‌کند و پله‌های ناهموار می‌دهد. کروما به سمت انتهای روشن کم می‌شود و هر پله به گمات sRGB نگاشته شده است. هر شش رمپ لنگرهای روشنایی یکسانی دارند، پس شمارهٔ یکسان در همهٔ رمپ‌ها تُن هم‌ارز می‌خواند. رمپ‌ها <b>مستقل از تم</b>‌اند.</p>
+  <div class="ramphd"><span></span><span>100</span><span>200</span><span>300</span><span>400</span><span>500</span><span>600</span><span>700</span><span>800</span><span>900</span></div>
+  <div id="ramps"></div>
+  <p class="lead" style="margin-top:16px"><b>قاعدهٔ کاربرد:</b> ۵۰۰ = مقدار مرجع رنگ · ۴۰۰–۶۰۰ = کاربرد تخت پیش‌فرض (تب فعال، آیکون نشان) · ۷۰۰–۹۰۰ = پرکردن تینت‌دار، حالت هاور و حاشیهٔ ظریف روی سطوح روشن · ۱۰۰–۳۰۰ = متن یا آیکون روی همان پرکردن‌های ۷۰۰–۹۰۰. <b>پیش از هر <span class="mono">color-mix()</span> یا هگز دستی‌روشن‌شده، سراغ پلهٔ رمپ بروید</b> — رمپ تنها منبع تغییر تُنال رنگ‌های برند است. رمپ قواعد بالادست را نقض نمی‌کند: هیچ پله‌ای جای گرادیان برند را در حالت برندشده نمی‌گیرد و هیچ پله‌ای دکمهٔ اصلی را پر نمی‌کند.</p>
+
+  <h3 class="b">سه گرادیان و قاعدهٔ استفادهٔ هرکدام</h3>
+  <p class="lead">تصمیم ادغام: تفکیک «روشن = گرم / تیره = سرد» <b>لغو شده است</b>. کاربر همیشه فقط یک تم را تجربه می‌کند، پس رنگ برندِ وابسته به تم شناخت برند را نصف می‌کند. یک گرادیان برند وجود دارد، در هر دو تم یکسان. انضباط: <b>یک لحظهٔ گرادیان در هر صفحه</b> — باقی همه سطح تخت یا تینت است.</p>
+  <div class="g3">
+    <div class="grad" style="background:var(--gradient-brand)"><div class="t">gradient-brand</div><div class="d"><span class="mono" style="color:#fff">#F24C9A → #BB48F8 · 135°</span><br>حالت برندشده: تب فعال، چیپ انتخاب‌شده، نشانگر پیشرفت، ترک روشن سوییچ، نشان اعلان، حلقهٔ تطابق. متن سفید فقط در اندازهٔ بزرگ یا درشت.<br><b>هرگز</b> پرکنندهٔ دکمهٔ اصلی یا پس‌زمینهٔ صفحه.</div></div>
+    <div class="grad" style="background:var(--gradient-brand-strong)"><div class="t">gradient-brand-strong</div><div class="d"><span class="mono" style="color:#fff">#C62277 → #971ECF · 135°</span><br>پله‌های <span class="mono" style="color:#fff">pink-600 → purple-600</span>. برای <b>متن کوچک</b> روی گرادیان: با سفید ۵٫۳۹:۱ و ۶٫۱۷:۱. چیپ انتخاب‌شده و نشان شمارش.</div></div>
+    <div class="grad" style="background:var(--gradient-celebration)"><div class="t">gradient-celebration</div><div class="d"><span class="mono" style="color:#fff">#FFB565 → #F24C9A · 135°</span><br>جاروی گرمِ تنزل‌یافته — <b>فقط جشن</b>: صفحهٔ تطابق، لحظهٔ قهرمان آنبوردینگ. حالت رابط، اکسنت، دکمه یا پس‌زمینه نیست.</div></div>
+  </div>
+
+  <h3 class="b">نردبان خنثی</h3>
+  <p class="lead">خنثی‌ها آبی‌خاکستری‌اند، نه کاغذ گرم. این نردبان <b>عمداً درون‌یابی یکنواخت نیست</b>: هر پله وجود دارد چون یک آستانهٔ اندازه‌گیری‌شده را رد می‌کند (۳:۱ برای خطوط کنترل، ۴٫۵:۱ برای متن)؛ نردبان یکنواخت نُه مورد را به اندازهٔ ۰٫۰۳ تا ۰٫۰۵ روشنایی از دست می‌داد.</p>
+  <div class="ladder" id="ladder"></div>
+  <table class="k" style="margin-top:18px"><thead><tr><th>نقش</th><th>روشن</th><th>تیره</th></tr></thead><tbody>
+    <tr><td><b>پس‌زمینه</b> <span class="mono">--bg</span></td><td class="mono">#F8FAFC</td><td class="mono">#121926</td></tr>
+    <tr><td><b>کارت</b> <span class="mono">--surface-card</span></td><td class="mono">#FFFFFF</td><td class="mono">#1D2432</td></tr>
+    <tr><td><b>حاشیهٔ تزئینی</b> <span class="mono">--border</span></td><td class="mono">#C3CBD6</td><td class="mono">#454D5A</td></tr>
+    <tr><td><b>حاشیهٔ کنترل</b> <span class="mono">--border-control</span></td><td class="mono">#828B9C · ۳٫۴۳:۱</td><td class="mono">#6E7789 · ۳٫۴۵:۱</td></tr>
+    <tr><td><b>متن دوم</b> <span class="mono">--text-secondary</span></td><td class="mono">#5D6675 · ۵٫۵۴:۱</td><td class="mono">#9AA4B2 · ۶٫۹۸:۱</td></tr>
+    <tr><td><b>کنش اصلی</b> <span class="mono">--action-cta</span></td><td class="mono">#121926</td><td class="mono">#F8FAFC</td></tr>
+  </tbody></table>
+  <p class="lead"><b>قاعدهٔ دکمهٔ اصلی:</b> هر کنش اصلی — دکمه، FAB، اقدام اولیه — رنگ <span class="mono">--action-cta</span> است: در روشن <span class="mono">#121926</span> و در تیره <span class="mono">#F8FAFC</span>، بدون استثنا. <b>رنگ‌مایهٔ برند هرگز دکمهٔ اصلی را پر نمی‌کند</b>؛ برند در گرادیان، تینت‌ها و حالت‌های انتخاب زندگی می‌کند.</p>
+
+  <h3 class="b">رنگ‌های معنایی</h3>
+  <p class="lead">هر نقش <b>چهار توکن</b> دارد: <span class="mono">-fill</span> (پرکردن/آیکون)، <span class="mono">-on-fill</span> (متن روی پرکردن)، <span class="mono">-surface</span> (تینت بنر) و <span class="mono">-text</span> (متن روی تینت یا صفحه). پرکردن‌ها به‌تنهایی برای متن کوچک کافی نیستند.</p>
+  <div id="sems"></div>
+
+  <h4 class="b">چرا «خطر» و «موفقیت» از رمپ برند نمی‌آیند — استثنای مستند</h4>
+  <p class="lead"><b>خطا باید جهان‌شمول و بی‌ابهام قرمز خوانده شود.</b> نزدیک‌ترین پایهٔ برند صورتی است، تنها با ۲۴ درجه اختلاف رنگ‌مایه در تم روشن — درون آستانهٔ ۳۰ درجه — پس <b>هیچ پلهٔ رمپ صورتی نمی‌تواند نقش خطر را بازی کند</b> بدون آنکه خطا شبیه برند شود؛ و هیچ پایهٔ دیگری اصلاً قرمز نیست (طلایی ۴۷°، بنفش ۶۹°، اسطوخودوسی ۸۴°، نیلی ۱۰۲°). بنابراین خطر یک <b>خانوادهٔ چهارتوکنی مستقل و غیربرند</b> است و صریحاً از قاعدهٔ «اول رمپ» معاف است. سبز موفقیت و حضور آنلاین به همین دلیل رزرو شده است — و به همین دلیل <b>نشان تأیید هویت هرگز سبز نیست</b>.</p>
+  <p class="lead">در مقابل، <b>هشدار</b> و <b>اطلاع</b> ادعایی برای رنگ‌مایهٔ اختصاصی ندارند: پلهٔ رمپ قاعدهٔ تفکیک را رد می‌کند، پس هشدار از رمپ طلایی و اطلاع از رمپ نیلی/اسطوخودوسی می‌آید. کهربای پیشین <span class="mono">#FEAC6A</span> تنها ۱٫۰۵:۱ از <span class="mono">--brand-gold</span> فاصله داشت — دو کهربای هم‌زمان — و بازنشسته شد.</p>
+
+  <h4 class="b">تفکیک رنگ حالت‌ها</h4>
+  <p class="lead">اکسنت (فوکوس)، خطر (خطا) و پریمیوم می‌توانند هم‌زمان در یک صفحه باشند، پس هر <b>جفت</b> باید دست‌کم در یکی از دو محور جدا باشد: <b>۱٫۵:۱ روشنایی</b> یا <b>۳۰ درجه رنگ‌مایه</b>. دو محور لازم است چون در تم تیره هر سه باید به‌قدر کافی روشن بمانند تا AA را روی <span class="mono">#121926</span> رد کنند و همین روشنایی را فشرده می‌کند. <b>پس‌زمینه‌ها</b> همیشه <span class="mono">--bg</span> یا <span class="mono">--surface-card</span> هستند؛ نه الگوی شلوغ، نه گرادیان تهاجمی. تصاویر تمام‌قاب فقط پشت اسکریم گرادیانی می‌آیند.</p>
+</section>
+
+<!-- ══════════ ۳. تایپوگرافی ══════════ -->
+<section class="s" id="type">
+  <div class="sh"><span class="n">۰۳</span><h2>تایپوگرافی</h2><p>یک خانواده برای همه چیز: <b>IRANSans Mobile</b> — تیتر، متن و رابط. سیستم دقیقاً یک قلم فارسی دارد و بدون جایگاه مصرف مشخص، خانوادهٔ دوم اضافه نمی‌شود.</p></div>
+
+  <div id="scale"></div>
+
+  <h3 class="b">قواعد خط فارسی — در توکن‌ها پخته شده‌اند</h3>
+  <div class="g2">
+    <div class="mo"><h4 class="b" style="margin:0">فاصله‌گذاری حروف صفر است</h4><p class="lead" style="margin:0">همهٔ توکن‌های <span class="mono">--ls-*</span> برابر صفرند. تراکینگ اتصال حروف فارسی را می‌شکند و کلمه را به قطعات جدا تبدیل می‌کند — حتی در اورلاین‌ها.</p><p style="margin:0;font-size:22px;letter-spacing:0">گفت‌وگو را از همین‌جا شروع کن</p></div>
+    <div class="mo"><h4 class="b" style="margin:0">ارتفاع خط سخاوتمند</h4><p class="lead" style="margin:0">فارسی به فضای عمودی بیشتری نیاز دارد: <span class="mono">1.3</span> نمایشی، <span class="mono">1.45</span> تیتر، <span class="mono">1.75</span> متن، <span class="mono">1.9</span> متن بلند.</p><p style="margin:0;font-size:15px;line-height:1.9;color:var(--text-secondary)">وقتی کسی چیزی واقعی می‌نویسد، خواندنش نباید خسته‌کننده باشد؛ فضای بین خطوط همان چیزی است که متن فارسی را قابل تنفس می‌کند.</p></div>
+    <div class="mo"><h4 class="b" style="margin:0">نیم‌فاصله و نشانه‌گذاری</h4><p class="lead" style="margin:0">نیم‌فاصله در همهٔ ترکیب‌ها: «می‌شود»، «گفت‌وگو»، «هم‌صحبت». ویرگول فارسی «،» و پرسش «؟». دنباله‌های لاتین و هگز با <span class="mono">unicode-bidi:isolate</span> جدا می‌شوند تا نشانه‌گذاری نپرد.</p></div>
+    <div class="mo"><h4 class="b" style="margin:0">ارقام فارسی</h4><p class="lead" style="margin:0">ارقام ۰–۹ فارسی همه‌جا: سن، فاصله، زمان، شمارنده، قیمت. <b>دو استثنای دامنه‌دار:</b> فیلد شماره تلفن و خانه‌های کد یک‌بارمصرف ارقام لاتین دارند، چون هر دو رونویسی از پیامک‌اند و باید با ارقام خودِ پیامک بخوانند.</p><p style="margin:0;font-size:20px;font-weight:500">۴۱ ساله · ۱۲ کیلومتر · ۹:۴۱ · ۲ گفتگوی تازه</p></div>
+    <div class="mo"><h4 class="b" style="margin:0">وزن‌ها</h4><p class="lead" style="margin:0">وزن زیر ۴۰۰ در اندازه‌های کوچک استفاده نمی‌شود — خوانایی برای کاربر ۴۷ ساله. وزن‌های موجود: ۳۰۰ / ۴۰۰ / ۵۰۰ / ۷۰۰ / ۹۰۰.</p><p style="margin:0;font-size:19px"><span style="font-weight:400">معمولی</span> · <span style="font-weight:500">متوسط</span> · <span style="font-weight:700">ضخیم</span> · <span style="font-weight:900">سیاه</span></p></div>
+    <div class="mo"><h4 class="b" style="margin:0">راست‌به‌چپ پیش‌فرض است</h4><p class="lead" style="margin:0">فارسی زبان مبدأ است، نه ترجمه. <span class="mono">direction:rtl</span> پیش‌فرض سیستم است و ویژگی‌های منطقی (<span class="mono">margin-inline-start</span>، <span class="mono">inset-inline-*</span>، <span class="mono">text-align:start</span>) جای left/right را می‌گیرند. آیکون‌های جهت‌دار (بازگشت، ارسال) آینه می‌شوند؛ آیکون‌های بی‌جهت (قلب، دوربین، تنظیمات) هرگز.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ ۴. کامپوننت‌ها ══════════ -->
+<section class="s" id="comp">
+  <div class="sh"><span class="n">۰۴</span><h2>کامپوننت‌ها</h2><p>مجموعه‌ای گزیده که شخصیت برند را نشان می‌دهد — نه فهرست کامل کتابخانه. هر نمونه در هر دو تم، با محتوای واقعی فارسی.</p></div>
+  <div id="comps"></div>
+</section>
+
+<!-- ══════════ ۵. موشن ══════════ -->
+<section class="s" id="motion">
+  <div class="sh"><span class="n">۰۵</span><h2>موشن‌گرافیک</h2><p>امضای حرکتی دل‌تاک <b>باز شدن</b> است، نه سوایپ. هیچ چیز کنار زده نمی‌شود؛ چیزها آرام باز می‌شوند و آشکار می‌گردند.</p></div>
+
+  <h3 class="b">اصل باز شدن</h3>
+  <div class="g2">
+    <div class="mo"><b>ورود — dt-unfold</b><div class="demo"><div class="unf">کسی به پرسش تو جواب داد</div></div><p class="lead" style="margin:0">۸ پیکسل بالا آمدن به‌همراه ۰٫۹۸ → ۱ بزرگ‌نمایی و محو شدن به داخل. <span class="mono">560ms · ease-out-soft</span>. کارت‌ها، شیت‌ها و پیام‌های تازه با همین منحنی باز می‌شوند.</p></div>
+    <div class="mo"><b>آشکارسازی چهره — dt-unblur</b><div class="demo"><div class="blurdemo"></div></div><p class="lead" style="margin:0">امضای محصول: عکس‌ها نرم و محو شروع می‌شوند و <b>هرچه گفت‌وگو پیش می‌رود شفاف می‌شوند</b>. چهره با حرف زدن به دست می‌آید — همان قولی که برند می‌دهد، به زبان حرکت.</p></div>
+  </div>
+
+  <h3 class="b">سه نقطه — دستگاه حرکتی برند</h3>
+  <div class="mo">
+    <div class="demo" style="gap:44px;display:flex"><span class="dot3"><i></i><i></i><i></i></span><span class="dot3" style="transform:scale(1.7)"><i></i><i></i><i></i></span></div>
+    <p class="lead" style="margin:0">سه نقطهٔ نشانگر تایپینگ مستقیم از خود نشانه می‌آید و <b>موتیف حرکتی تکرارشوندهٔ برند</b> است: نشانگر تایپ، حالت بارگذاری، مکث بین بخش‌ها، ضرب‌آهنگ ساخت در اسلاید. معنی‌اش همیشه یکی است — «کسی دارد چیزی می‌گوید». هر نقطه با تأخیر ۱۶۰ میلی‌ثانیه ۴ پیکسل بالا می‌رود و شفافیتش از ۰٫۴۵ به ۱ می‌رسد. این تنها آیکون غیرلوسید سیستم است؛ به‌جای اسپینر عمومی از آن استفاده کنید.</p>
+  </div>
+
+  <h3 class="b">مدت‌ها و منحنی‌ها</h3>
+  <div class="durrow">
+    <div class="dur"><b>140ms</b>fast — تغییر حالت ریز</div>
+    <div class="dur"><b>240ms</b>base — پیش‌فرض</div>
+    <div class="dur"><b>420ms</b>slow — گذر صفحه</div>
+    <div class="dur"><b>560ms</b>unfold — باز شدن</div>
+    <div class="dur"><b>cubic-bezier(0.16, 1, 0.3, 1)</b>ease-out-soft</div>
+    <div class="dur"><b>cubic-bezier(0.34, 1.4, 0.64, 1)</b>ease-gentle-over — گرمای ملایم</div>
+  </div>
+  <p class="lead" style="margin-top:20px">لمس = <b>کوچک شدن ملایم</b> (<span class="mono">scale(0.97)</span>)، هرگز جهش سخت. هاور = تیره شدن ظریف یا بلند شدن ۲ پیکسلی کارت. اورشوت فقط به‌اندازه‌ای که گرم بخواند، نه بازیگوش. حرکت هیچ‌گاه کاربر را عجول نمی‌کند — مدت‌ها انسانی‌اند.</p>
+</section>
+
+<div class="foot"><span>راهنمای برند دل‌تاک · نسخهٔ ۱٫۰ · مرداد ۱۴۰۵</span><span>همهٔ مقادیر از توکن‌های سیستم طراحی خوانده می‌شوند.</span></div>
+</div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="_ds_bundle.js"></script>
+<script>
+/* theme toggle */
+(function(){var b=document.getElementById('tt'),h=document.documentElement,L='deltalk-brandguide-theme';
+ /* theme state is the single source of truth: everything below REACTS to
+    data-theme, so any toggle (ours, or the one _ds_bundle.js injects) stays in sync. */
+ function sync(){var t=h.getAttribute('data-theme')==='dark'?'dark':'light';
+   b.textContent=t==='dark'?'☀':'☾';
+   document.getElementById('cover-lock').src='assets/wordmark-vertical-'+t+'.svg';
+   try{localStorage.setItem(L,t)}catch(e){}}
+ new MutationObserver(sync).observe(h,{attributes:true,attributeFilter:['data-theme']});
+ var s='light';try{s=localStorage.getItem(L)||'light'}catch(e){}
+ h.setAttribute('data-theme',s);sync();
+ b.addEventListener('click',function(){h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark')});
+ /* the bundle injects its own floating toggle — one control only in a deliverable */
+ function drop(){var x=document.getElementById('dt-theme-toggle');if(x)x.remove()}
+ drop();new MutationObserver(drop).observe(document.body,{childList:true});})();
+
+/* inline the currentColor Compact lockups */
+fetch('assets/logo-compact.svg').then(function(r){return r.text()}).then(function(t){
+  ['lk1','lk2'].forEach(function(id){var e=document.getElementById(id);if(e)e.insertAdjacentHTML('afterbegin',t)});});
+
+/* ramps */
+(function(){
+ var fams=[['gold','طلایی'],['pink','صورتی'],['lavender','اسطوخودوسی'],['purple','بنفش'],['indigo','نیلی'],['navy','سرمه‌ای']];
+ var cs=getComputedStyle(document.documentElement),out='';
+ document.getElementById('stops').innerHTML=[['gold','Golden','طلایی'],['pink','Hot Pink','صورتی داغ'],['lavender','Lavender','اسطوخودوسی'],['purple','Light Purple','بنفش روشن'],['indigo','Mid Indigo','نیلی'],['navy','Deep Navy','سرمه‌ای']].map(function(s){
+   var hex=cs.getPropertyValue('--brand-'+s[0]).trim();
+   return '<div style="background:'+hex+';color:'+(s[0]==='gold'?'#251000':'#FFFFFF')+';padding:18px 12px;min-height:104px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px"><span style="font-size:13px;font-weight:700">'+s[2]+'</span><span class="mono" style="opacity:.9">'+hex+'</span><span class="mono" style="opacity:.72">= '+s[0]+'-500</span></div>';}).join('');
+ fams.forEach(function(f){
+   out+='<div class="ramp"><div class="nm">'+f[1]+'</div>';
+   [100,200,300,400,500,600,700,800,900].forEach(function(n){
+     var hex=cs.getPropertyValue('--brand-'+f[0]+'-'+n).trim();
+     var ink=n<=400?'#121926':'#FFFFFF';
+     out+='<div class="sw'+(n===500?' k5':'')+'" style="background:'+hex+';color:'+ink+'"><i>'+hex+'</i></div>';
+   });
+   out+='</div>';
+ });
+ document.getElementById('ramps').innerHTML=out;
+ var lad='',ns=[100,200,300,400,500,600,700,800,900];
+ lad=ns.map(function(n){var hex=cs.getPropertyValue('--neutral-'+n).trim();
+   return '<div style="background:'+hex+';color:'+(n<=500?'#121926':'#FFFFFF')+'">'+hex+'</div>'}).join('');
+ document.getElementById('ladder').innerHTML=lad;
+})();
+
+/* semantic roles, both themes */
+(function(){
+ var roles=[
+  ['موفقیت','success','آنلاین، تأیید انجام کار','پیام تو فرستاده شد.'],
+  ['خطر','danger','خطا، اقدام بازگشت‌ناپذیر','شماره درست وارد نشده است.'],
+  ['هشدار','warning','رمپ طلایی — توجه، نه خطا','این گفتگو ۷ روز است بی‌پاسخ مانده.'],
+  ['اطلاع','info','رمپ نیلی/اسطوخودوسی','عکس‌هایت تا زمان تطابق محو می‌مانند.']];
+ var out='';
+ roles.forEach(function(r){
+  out+='<div class="semrow"><div class="lb"><b>'+r[0]+'</b><span>'+r[2]+'</span><span class="mono">--'+r[1]+'-*</span></div>';
+  ['light','dark'].forEach(function(t){
+    out+='<div class="sembox" data-theme="'+t+'" style="background:var(--'+r[1]+'-surface);color:var(--'+r[1]+'-text);border:1px solid var(--'+r[1]+'-fill)">'
+      +'<div class="pillrow"><span class="pill" style="background:var(--'+r[1]+'-fill);color:var(--'+r[1]+'-on-fill)">fill + on-fill</span>'
+      +'<span class="mono" style="color:var(--'+r[1]+'-text)">'+(t==='light'?'روشن':'تیره')+'</span></div>'
+      +'<div class="msg">'+r[3]+'</div></div>';
+  });
+  out+='</div>';
+ });
+ /* --verification is a PEER ROLE but NOT a four-token set: it is a single fill
+    with one consumer, and one value in both themes. Rendered as its own row
+    rather than pushed into the loop above, because forcing a -surface/-text pair
+    for it would invent tokens that do not exist.
+    INK ON THE FILL, NOT WHITE — --verification has no -on-fill companion by
+    design, and ink is the partner the component itself uses. White measures
+    3.00:1 on the --verification fill, which fails AA for text; ink on that same fill measures 5.87:1. That is the same
+    pair of figures that kept the badge's check ink rather than white. */
+ out+='<div class="semrow"><div class="lb"><b>تأیید هویت</b><span>نشان هویت — تنها مصرف‌کننده: VerificationBadge</span><span class="mono">--verification</span></div>';
+ ['light','dark'].forEach(function(t){
+   out+='<div class="sembox" data-theme="'+t+'" style="background:var(--surface-well);color:var(--text-muted);border:1px solid var(--verification)">'
+     +'<div class="pillrow"><span class="pill" style="background:var(--verification);color:var(--ink-fixed)">#1D9BF0</span>'
+     +'<span class="mono" style="color:var(--text-muted)">'+(t==='light'?'روشن':'تیره')+'</span></div>'
+     +'<div class="msg">یک مقدار در هر دو تم — استثنای خارج از رمپ، قرارداد پذیرفته‌شدهٔ تأیید هویت.</div></div>';
+ });
+ out+='</div>';
+ document.getElementById('sems').innerHTML=out;
+})();
+
+/* type scale */
+(function(){
+ var rows=[
+  ['display-lg','54 / 1.3 / 900','چه چیزی هست که می‌توانی ساعت‌ها دربارهٔ آن حرف بزنی؟',900],
+  ['display-md','40 / 1.3 / 700','اول حرف بزن',700],
+  ['h1','32 / 1.45 / 700','گفتگوهای تو',700],
+  ['h2','24 / 1.45 / 700','کسی منتظر جواب توست',700],
+  ['h3','20 / 1.45 / 500','دربارهٔ من',500],
+  ['body-lg','18 / 1.75 / 400','شب‌ها کتاب می‌خوانم و صبح‌ها قهوه دم می‌کنم.',400],
+  ['body','16 / 1.75 / 400','یک چیز واقعی بگو؛ ببین چه کسی چیزی واقعی جواب می‌دهد.',400],
+  ['body-sm','15 / 1.75 / 400','۳ ساعت پیش فعال بوده',400],
+  ['caption','13 / 1.75 / 400','۱۲ کیلومتر دورتر',400],
+  ['micro','11 / 1.75 / 500','پرسش پروفایل',500]];
+ var px={'display-lg':54,'display-md':40,'h1':32,'h2':24,'h3':20,'body-lg':18,'body':16,'body-sm':15,'caption':13,'micro':11};
+ document.getElementById('scale').innerHTML=rows.map(function(r){
+  return '<div class="tspec"><div class="m">--text-'+r[0]+'<br>'+r[1]+'</div>'
+   +'<p class="x" style="font-size:'+px[r[0]]+'px;font-weight:'+r[3]+'">'+r[2]+'</p></div>';}).join('');
+})();
+
+/* components */
+(function(){
+ var D=window.DeltalkDesignSystem_288455||{},h=React.createElement;
+ var Heart=function(p){return h('svg',Object.assign({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round',width:p&&p.s||22,height:p&&p.s||22},{}),
+   h('path',{d:'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'}))};
+ var HeartFill=function(p){return h('svg',{viewBox:'0 0 24 24',fill:'currentColor',width:p&&p.s||22,height:p&&p.s||22},
+   h('path',{d:'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'}))};
+ var Lb=function(p){return h('div',{className:'stlb'},p.children)};
+
+ function LikeAction(props){
+   var st=props.state;
+   var base={width:60,height:60,borderRadius:'var(--radius-pill)',border:'none',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',
+     transition:'transform var(--dur-fast) var(--ease-out-soft)'};
+   var m={
+     rest:{background:'var(--gradient-brand)',color:'var(--text-on-brand)',boxShadow:'var(--shadow-md)'},
+     press:{background:'var(--gradient-brand-strong)',color:'var(--text-on-brand)',transform:'scale(0.97)',boxShadow:'var(--shadow-sm)'},
+     liked:{background:'var(--gradient-brand)',color:'var(--text-on-brand)',boxShadow:'var(--shadow-lg)'},
+     disabled:{background:'var(--surface-well)',color:'var(--text-disabled)',cursor:'not-allowed',boxShadow:'none'}
+   }[st];
+   return h('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',gap:8}},
+     h('button',{type:'button','aria-label':'پسندیدن',disabled:st==='disabled',style:Object.assign({},base,m)},
+       st==='liked'?h(HeartFill,{s:26}):h(Heart,{s:26})),
+     h('span',{style:{fontSize:'var(--text-caption)',color:'var(--text-subtle)'}},props.cap));
+ }
+
+ var specs=[
+  {n:'PromptCard',d:'پرسشی که با کلمه جواب داده می‌شود — پروفایل با همین شروع می‌شود، نه با عکس.',
+   r:function(){return [
+     h(PromptWrap,{key:1,lb:'answered'},h(D.PromptCard,{label:'پرسش پروفایل',question:'چه چیزی هست که می‌توانی ساعت‌ها دربارهٔ آن حرف بزنی؟',answer:'معماری خانه‌های قدیمی تهران. هر در چوبی یک قصه دارد و من هنوز سیر نشده‌ام.'})),
+     h(PromptWrap,{key:2,lb:'empty — tap to answer'},h(D.PromptCard,{label:'پرسش پروفایل',question:'آخرین باری که واقعاً از ته دل خندیدی کِی بود؟'}))];}},
+  {n:'MessageBubble',d:'سطح گفت‌وگو. گرم = تو، سرد = طرف مقابل. حباب دریافتی عمداً خنثی می‌ماند تا «سرد» به‌جای «طرف مقابل» به «نه‌تو» تنزل نکند.',
+   r:function(){return [
+     h(D.MessageBubble,{key:1,from:'them',time:'۹:۴۱'},'من هم همین را فکر می‌کردم! کدام محله را بیشتر دوست داری؟'),
+     h(D.MessageBubble,{key:2,from:'me',time:'۹:۴۳'},'عودلاجان. صبح زود که خلوت است.'),
+     h(D.MessageBubble,{key:3,from:'them',typing:true})];}},
+  {n:'VerificationBadge',d:'یک نشان، سه اندازه — آبیِ --verification #1D9BF0، و هرگز سبز. سبز برای حضور آنلاین و تأیید موفقیت رزرو شده است. در mini، پیل و حلقه حذف می‌شود و نشان مستقیم روی آواتار می‌نشیند.',
+   r:function(){return [
+     h('div',{key:1,style:{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}},
+       h(D.VerificationBadge,{size:'lg'}),h(D.VerificationBadge,{size:'sm'}),h(D.VerificationBadge,{size:'mini'})),
+     h(Lb,{key:2},'lg 28dp · sm 20dp · mini 24dp, no container'),
+     h('div',{key:3},h(D.VerificationBadge,{size:'lg',status:'pending'}))];}},
+  {n:'Chip',d:'چیپ علاقه و فیلتر. حالت انتخاب‌شده با گرادیان برند پر می‌شود — نه با رنگ تخت برند.',
+   r:function(){return [
+     h('div',{key:1,style:{display:'flex',gap:8,flexWrap:'wrap'}},
+       h(D.Chip,{selected:true},'کتاب'),h(D.Chip,null,'پیاده‌روی شبانه'),h(D.Chip,null,'آشپزی'),h(D.Chip,{variant:'cool'},'موسیقی سنتی')),
+     h(Lb,{key:2},'selected · default · cool'),
+     h('div',{key:3,style:{display:'flex',gap:8,flexWrap:'wrap'}},
+       h(D.Chip,{disabled:true},'غیرفعال'),h(D.Chip,{interactive:false},'برچسب نمایشی'))];}},
+  {n:'Button',d:'رتبهٔ دکمه با وزن حمل می‌شود، نه با رنگ‌مایه — تا سلسله‌مراتب از چرخش تم و از کوررنگی جان سالم به در ببرد. گرادیان فقط یک بار در هر صفحه.',
+   r:function(){return [
+     h('div',{key:1,style:{display:'flex',gap:10,flexWrap:'wrap',alignItems:'center'}},
+       h(D.Button,{variant:'primary'},'ادامه'),h(D.Button,{variant:'gradient'},'جواب می‌دهم'),h(D.Button,{variant:'secondary'},'فعلاً نه')),
+     h('div',{key:2,style:{display:'flex',gap:10,flexWrap:'wrap',alignItems:'center'}},
+       h(D.Button,{variant:'ghost'},'رد کردن'),h(D.Button,{variant:'destructive'},'مسدود کردن'),h(D.Button,{variant:'primary',disabled:true},'غیرفعال')),
+     h(Lb,{key:3},'primary · gradient · secondary — ghost · destructive · disabled')];}},
+  {n:'TypingDots',d:'سه نقطهٔ نشانه، به‌عنوان کامپوننت. حالت brand با گرادیان برند پر می‌شود و برای لحظه‌های قهرمان است.',
+   r:function(){return [
+     h('div',{key:1,style:{display:'flex',gap:26,alignItems:'center'}},
+       h(D.TypingDots,{size:'sm'}),h(D.TypingDots,{size:'md'}),h(D.TypingDots,{size:'lg'}),h(D.TypingDots,{size:'lg',brand:true})),
+     h(Lb,{key:2},'sm · md · lg · lg brand')];}},
+  {n:'Like action',d:'پسندیدن یک دکمهٔ معمولی است — نه ژست کشیدن. «کاوش» یک کارت عمودی اسکرول‌شونده است، پس جهت هیچ معنایی ندارد. قلب صاحب صورتی برند است؛ به همین دلیل تب فعال عمداً اسطوخودوسی است.',
+   r:function(){return [
+     h('div',{key:1,style:{display:'flex',gap:26,flexWrap:'wrap'}},
+       h(LikeAction,{state:'rest',cap:'عادی'}),h(LikeAction,{state:'press',cap:'فشرده — ۰٫۹۷'}),
+       h(LikeAction,{state:'liked',cap:'پسندیده'}),h(LikeAction,{state:'disabled',cap:'غیرفعال'}))];}}
+ ];
+
+ function PromptWrap(p){return h('div',null,h(Lb,null,p.lb),h('div',{style:{marginTop:8}},p.children));}
+
+ var root=document.getElementById('comps');
+ specs.forEach(function(s){
+   var el=document.createElement('div');el.className='stage';el.style.marginBottom='18px';
+   el.innerHTML='<div class="hd"><b>'+s.n+'</b><span>'+s.d+'</span></div><div class="bd"><div data-theme="light" style="background:var(--bg);color:var(--text-primary)"></div><div data-theme="dark" style="background:var(--bg);color:var(--text-primary)"></div></div>';
+   root.appendChild(el);
+   var slots=el.querySelectorAll('.bd>div');
+   slots.forEach(function(sl){ReactDOM.createRoot(sl).render(h(React.Fragment,null,s.r()));});
+ });
+})();
+</script>
+</body></html>

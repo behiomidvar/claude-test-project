@@ -1,0 +1,53 @@
+<!-- @dsCard group="8. Selection & Forms" viewport="1120x1560" name="DateOfBirthFieldGroup — typed date of birth" subtitle="Three typed fields (day · month name · year), not a wheel picker or calendar. Empty / partial / valid / error / under-18 / disabled, both themes." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);direction:rtl;color:var(--text-primary);font-family:var(--font-sans)}
+.themes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tbox{border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);background:var(--surface-card);color:var(--text-primary)}
+.tlbl{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--text-subtle);margin-bottom:14px}
+.states{display:flex;flex-direction:column;gap:var(--gap-stack)}
+.frame{border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;background:var(--bg)}
+.fn{direction:ltr;text-align:left;unicode-bidi:isolate;display:block;font-size:9px;font-weight:800;letter-spacing:.07em;color:var(--text-subtle);margin-bottom:10px}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;margin:16px 0 0;font-size:11.5px;line-height:1.75;color:var(--text-secondary);background:var(--surface-well);border:1px solid var(--border);border-radius:var(--radius-md);padding:13px 15px}
+.cap b{color:var(--text-primary)}
+.live{direction:ltr;text-align:left;unicode-bidi:isolate;margin:14px 0 0;font-size:11px;line-height:1.7;color:var(--text-subtle)}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { DateOfBirthFieldGroup } = window.DeltalkDesignSystem_288455;
+const STATES = [
+  { n: 'EMPTY',            props: { day: '', month: null, year: '' } },
+  { n: 'PARTIALLY FILLED', props: { day: '12', month: 2, year: '' } },
+  { n: 'VALID — LIVE AGE', props: { day: '12', month: 2, year: '1363' } },
+  { n: 'ERROR — INVALID',  props: { day: '31', month: 11, year: '1363', showErrors: true } },
+  { n: 'ERROR — UNDER 18', props: { day: '12', month: 2, year: '1395', showErrors: true } },
+  { n: 'DISABLED',         props: { day: '12', month: 2, year: '1363', disabled: true } },
+];
+/* Validation is blur-gated in the component (never while typing). A @dsCard renders
+   OFFSCREEN AND UNFOCUSED, so document.hasFocus() is false and .blur() fires no
+   focusout — a runtime focus/blur trick can never surface the error states here.
+   The two error frames use the component's declarative `showErrors` prop instead. */
+function Frame({ label, props }){
+  return <div className="frame">
+    <span className="fn" dir="ltr">{label}</span>
+    <DateOfBirthFieldGroup {...props} onChange={()=>{}} />
+  </div>;
+}
+function ThemeBox({ theme }){
+  return <div className="tbox" data-theme={theme}>
+    <div className="tlbl" dir="ltr">{theme.toUpperCase()} THEME</div>
+    <div className="states">
+      {STATES.map(s => <Frame key={s.n} label={s.n} props={s.props} />)}
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div>
+    <div className="themes"><ThemeBox theme="light"/><ThemeBox theme="dark"/></div>
+    <p className="cap" dir="ltr"><b>Use for any date of birth entry</b> — onboarding and edit profile. Three typed fields in one row (روز · ماه · سال, right to left), each its own single frame; the group has no frame of its own. <b>Never build this on a wheel picker or a calendar</b>: the core user is 35–50 and knows the date by heart, so typing beats hunting decades back. The month is always a <b>name</b> (فروردین … اسفند), never a number. Jalali is the only calendar the user sees — the Gregorian conversion is internal and feeds the age line only.</p>
+    <p className="live" dir="ltr">Auto-advances day → month → year on completion; backspace on an empty field returns to the previous one, so the caret is never trapped. Errors use the danger tokens and appear only after a field is left, never while typing. Every field and every month row is ≥48dp. Visible labels are always present — the placeholder is never the only label.</p>
+  </div>
+);
+</script><script src="../../theme-toggle.js"></script></body></html>

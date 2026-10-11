@@ -1,11 +1,12 @@
 import React, {createContext, useContext, useLayoutEffect, useState} from 'react';
 import {cancelRender, continueRender, delayRender} from 'remotion';
-import {LOGOS} from '../ds-contract';
+import {LOGOS, RULE_TOKENS} from '../ds-contract';
 
 /**
  * Logos come only from src/ds/assets SVGs; never redraw them.
  *
- * The compact logo uses currentColor, so it is inlined to inherit `color`.
+ * The compact lockup's wordmark is currentColor, so it is inlined (currentColor
+ * does not cross an <img> boundary) and colored with --logo-wordmark.
  * Its SVG gradient ids (e.g. dtwc / dtcc) are document-global: two inlined
  * copies collide and the second one paints with the first one's gradients.
  * So only ONE inlined logo may be mounted per frame, enforced by
@@ -31,14 +32,15 @@ export const LogoBudget: React.FC<{readonly children: React.ReactNode}> = ({chil
 	return <BudgetContext.Provider value={budget}>{children}</BudgetContext.Provider>;
 };
 
-const INLINE_CSS = '.dt-inline-logo > svg { display: block; inline-size: 100%; block-size: 100%; }';
+// Scale by height only; width follows the art box.
+const INLINE_CSS = '.dt-inline-logo > svg { display: block; block-size: 100%; inline-size: auto; }';
 
-/** The compact, currentColor logo, inlined. Size it with `size` (px). */
+/** The compact lockup, inlined. Sized by `height` (px) only. */
 export const InlineLogo: React.FC<{
-	readonly size: number;
+	readonly height: number;
 	readonly label?: string;
 	readonly style?: React.CSSProperties;
-}> = ({size, label = 'Deltalk', style}) => {
+}> = ({height, label = 'دلتاک', style}) => {
 	const budget = useContext(BudgetContext);
 	const [handle] = useState(() => delayRender('Inlining compact logo'));
 	const [markup, setMarkup] = useState<string | null>(null);
@@ -83,13 +85,13 @@ export const InlineLogo: React.FC<{
 		<span
 			role="img"
 			aria-label={label}
-			style={{display: 'block', inlineSize: size, blockSize: size, ...style}}
+			style={{display: 'block', blockSize: height, color: `var(${RULE_TOKENS.logoWordmark})`, ...style}}
 		>
 			<style>{INLINE_CSS}</style>
 			{markup === null ? null : (
 				<span
 					className="dt-inline-logo"
-					style={{display: 'block', inlineSize: '100%', blockSize: '100%'}}
+					style={{display: 'block', blockSize: '100%'}}
 					dangerouslySetInnerHTML={{__html: markup}}
 				/>
 			)}
@@ -102,6 +104,6 @@ export const LockupLogo: React.FC<{
 	readonly theme: 'light' | 'dark';
 	readonly blockSize: number;
 	readonly label?: string;
-}> = ({theme, blockSize, label = 'Deltalk'}) => (
+}> = ({theme, blockSize, label = 'دلتاک'}) => (
 	<img src={assetUrl(LOGOS.lockup[theme])} alt={label} style={{blockSize, inlineSize: 'auto'}} />
 );

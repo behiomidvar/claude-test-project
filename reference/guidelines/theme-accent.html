@@ -1,0 +1,56 @@
+<!-- @dsCard group="2. Color" viewport="800x741" name="Theme accent — one pink, tuned per theme" subtitle="The solid accent no longer flips warm→cool: one pink identity, per-theme tuning. --focus-ring is bound to --accent." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>body{margin:0;padding:22px;background:var(--surface);color:var(--text-primary);font-family:var(--font-sans)}
+.tbl{width:100%;border-collapse:collapse;direction:ltr;text-align:left;font-size:12px}
+.tbl th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-subtle);font-weight:700;padding:7px 10px;border-bottom:2px solid var(--border-strong)}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border-subtle)}
+.role{font-family:var(--font-mono);font-size:11px;color:var(--text-primary);white-space:nowrap}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-inline-end:6px;box-shadow:inset 0 0 0 1px rgba(128,128,128,.35)}
+.hex{font-family:var(--font-mono);font-size:11px;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.g{height:14px;border-radius:4px;width:120px;display:inline-block;vertical-align:-3px}
+.src{display:block;font-family:var(--font-mono);font-size:9px;line-height:1.3;color:var(--text-subtle);font-weight:400;margin-top:2px;direction:ltr;unicode-bidi:isolate}.src.x{color:var(--warning-text)}
+.note{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:11.5px;color:var(--text-muted);line-height:1.6;margin:14px 0 0}
+/* READABLE-TYPE STANDARD — a card is scanned at arm's length, not read.
+   Body prose >=13px, labels >=11px. Derivations live in readme.md, not here. */
+.tbl{font-size:13.5px}.tbl th{font-size:11px}.role{font-size:12px}.hex{font-size:11.5px}.src{font-size:10.5px}.note{font-size:13.5px;line-height:1.6}
+</style></head>
+<body>
+<table class="tbl">
+<thead><tr><th>Role token</th><th>Light — ratio vs the PAGE</th><th>Dark — same pink, tuned; ratio vs the PAGE</th></tr></thead>
+<tbody>
+<tr><td class="role">--accent</td>
+  <td class="hex"><span class="sw" style="background:#F24C9A"></span><bdi>#F24C9A</bdi> 3.20:1<i class="src">brand-pink-500</i></td>
+  <td class="hex"><span class="sw" style="background:#E481AF"></span><bdi>#E481AF</bdi> 6.76:1<i class="src x">tuned from brand-pink-500</i></td></tr>
+<tr><td class="role">--accent-tint</td>
+  <td class="hex"><span class="sw" style="background:#FFF1F5"></span><bdi>#FFF1F5</bdi><i class="src">brand-pink-100</i></td>
+  <td class="hex"><span class="sw" style="background:#502B3C"></span><bdi>#502B3C</bdi> hue 332<i class="src x">non-ramp — dark tint tuned from brand-pink-500</i></td></tr>
+<tr><td class="role">--accent-tint-fg</td>
+  <td class="hex"><span class="sw" style="background:#600035"></span><bdi>#600035</bdi> 12.37:1 <b>on --accent-tint</b><i class="src">brand-pink-800 — not 700, that step is --premium</i></td>
+  <td class="hex"><span class="sw" style="background:#F4B6D2"></span><bdi>#F4B6D2</bdi> 7.12:1 <b>on the dark --accent-tint</b><i class="src x">tuned from brand-pink-500</i></td></tr>
+<tr><td class="role">--gradient-brand</td>
+  <td><span class="g" style="background:linear-gradient(135deg,#F24C9A,#BB48F8)"></span> <bdi style="font-size:10px;color:var(--text-subtle)">identical</bdi><i class="src">brand-pink-500 → brand-purple-500</i></td>
+  <td><span class="g" style="background:linear-gradient(135deg,#F24C9A,#BB48F8)"></span> <bdi style="font-size:10px;color:var(--text-subtle)">identical</bdi><i class="src">brand-pink-500 → brand-purple-500</i></td></tr>
+<tr><td class="role">--action-cta</td>
+  <td class="hex"><span class="sw" style="background:#121926"></span><bdi>#121926</bdi><i class="src">neutral-900</i></td>
+  <td class="hex"><span class="sw" style="background:#F8FAFC"></span><bdi>#F8FAFC</bdi><i class="src">neutral-200</i></td></tr>
+<tr><td class="role">--focus-ring</td>
+  <td class="hex"><span class="sw" style="background:#F24C9A"></span><bdi>= --accent</bdi><i class="src">brand-pink-500</i></td>
+  <td class="hex"><span class="sw" style="background:#E481AF"></span><bdi>= --accent</bdi><i class="src x">tuned from brand-pink-500</i></td></tr>
+<tr><td class="role">--text-on-brand</td>
+  <td class="hex"><span class="sw" style="background:#FFFFFF"></span><bdi>#FFFFFF</bdi><i class="src">neutral-100</i></td>
+  <td class="hex"><span class="sw" style="background:#FFFFFF"></span><bdi>#FFFFFF</bdi><i class="src">neutral-100</i></td></tr>
+</tbody></table>
+<div class="rules" dir="ltr">
+  <section class="rules--do"><h3>Do</h3><ul>
+    <li>Read selected states, sliders, switches and radios from these role tokens — one theme scope re-skins them all.</li>
+    <li>Use <bdi>--gradient-brand</bdi> for any branded/selected state; it is identical in both themes.</li>
+    <li>Keep <bdi>--focus-ring</bdi> bound to <bdi>var(--accent)</bdi>, never a copied hex.</li>
+  </ul></section>
+  <section class="rules--no"><h3>Never</h3><ul>
+    <li>Fill a primary CTA or FAB with the accent — that is <bdi>--action-cta</bdi>.</li>
+    <li>Give the bottom tab bar's active state the accent or a gradient pill — it is flat <bdi>--nav-active</bdi>.</li>
+    <li>Flip the accent warm↔cool per theme; it is one pink, tuned.</li>
+  </ul></section>
+</div>
+<p class="readmore" dir="ltr">Per-theme tuning, the tab-bar exception and the info-ramp ruling → readme.md §Reconciliation rulings and §Visual foundations.</p>
+</body></html>

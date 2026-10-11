@@ -1,0 +1,72 @@
+<!-- @dsCard group="Feedback" viewport="820x2070" name="Feedback — every state & skeleton variant" subtitle="All four EmptyState variants, both ErrorState variants, all Skeleton shapes, and PullToRefresh's three phases — the variant-by-variant reference the combined Feedback card only samples." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+.wrap{max-width:772px;margin:0 auto}
+h3{font-family:var(--font-sans);font-size:var(--text-body);font-weight:var(--fw-bold);color:var(--text-primary);margin:0 0 10px;direction:ltr;text-align:left;unicode-bidi:isolate}
+h3 small{font-weight:var(--fw-medium);color:var(--text-subtle);font-size:var(--text-caption)}
+.sec{margin-bottom:26px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.cap{font-size:var(--text-micro);font-weight:var(--fw-bold);color:var(--text-subtle);margin-bottom:6px;direction:ltr;text-align:left;unicode-bidi:isolate}
+/* 348px = the tallest state (EmptyState with a 48px CTA) at this column width. Do not
+   shrink it without re-measuring: a short frame here fails SILENTLY, not visibly.
+   See readme.md, Measurement hazards 7. */
+.frame{background:var(--surface-card);border-radius:var(--radius-lg);border:1px solid var(--border-subtle);box-shadow:var(--shadow-sm);overflow:hidden;height:348px}
+.frame--sk{height:auto;min-height:120px;padding:14px}
+.ptr{background:var(--surface-card);border-radius:var(--radius-lg);border:1px solid var(--border-subtle);box-shadow:var(--shadow-sm);
+  height:112px;display:flex;align-items:center;justify-content:center}
+/* English prose — direction set on the container, not per fragment (isolating
+   each mono span individually scrambles the sentence order under RTL). */
+.note{direction:ltr;text-align:left;padding:14px 16px;border-radius:var(--radius-md);background:var(--surface-well);
+  color:var(--text-secondary);font-size:var(--text-body-sm);line-height:var(--lh-normal);font-family:var(--font-sans)}
+.note b{color:var(--text-primary)}
+.note span{font-family:var(--font-mono);font-size:11px}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { EmptyState, ErrorState, Skeleton, PullToRefresh } = window.DeltalkDesignSystem_288455;
+const Cell = ({ label, children, cls='frame' }) => <div><div className="cap">{label}</div><div className={cls}>{children}</div></div>;
+function Demo(){
+  return <div className="wrap">
+    <div className="sec">
+      <h3>EmptyState <small>— four variants; only two carry an action by default</small></h3>
+      <div className="grid2">
+        <Cell label="noProfiles (warm)"><EmptyState variant="noProfiles" onAction={()=>{}}/></Cell>
+        <Cell label="noMatches (warm)"><EmptyState variant="noMatches" onAction={()=>{}}/></Cell>
+        <Cell label="noMessages"><EmptyState variant="noMessages"/></Cell>
+        <Cell label="noResults"><EmptyState variant="noResults"/></Cell>
+      </div>
+    </div>
+    <div className="sec">
+      <h3>ErrorState <small>— both variants, each with the retry action</small></h3>
+      <div className="grid2">
+        <Cell label="network"><ErrorState variant="network" onRetry={()=>{}}/></Cell>
+        <Cell label="server"><ErrorState variant="server" onRetry={()=>{}}/></Cell>
+      </div>
+    </div>
+    <div className="sec">
+      <h3>Skeleton <small>— shapes, not content; shimmer reads from surface tokens</small></h3>
+      <div className="grid4">
+        <Cell label="profileCard" cls="frame frame--sk"><Skeleton variant="profileCard"/></Cell>
+        <Cell label="chatList" cls="frame frame--sk"><Skeleton variant="chatList" lines={2}/></Cell>
+        <Cell label="text" cls="frame frame--sk"><Skeleton variant="text" lines={4}/></Cell>
+        <Cell label="avatar" cls="frame frame--sk"><Skeleton variant="avatar"/></Cell>
+      </div>
+    </div>
+    <div className="sec">
+      <h3>PullToRefresh <small>— three phases of one gesture</small></h3>
+      <div className="grid2" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
+        <Cell label="pull (50%)" cls="ptr"><PullToRefresh state="pull" progress={0.5}/></Cell>
+        <Cell label="release (100%)" cls="ptr"><PullToRefresh state="release" progress={1}/></Cell>
+        <Cell label="refreshing" cls="ptr"><PullToRefresh state="refreshing"/></Cell>
+      </div>
+    </div>
+    <div className="note"><b>Which one to reach for.</b> <b>EmptyState</b> = nothing here yet, and that is normal — warm variants (<span>noProfiles</span>, <span>noMatches</span>) get the warm icon tint because they are part of the product's rhythm, not a fault. <b>ErrorState</b> = something failed and the user can retry; it carries the danger icon tint and <span>role="alert"</span>. <b>Skeleton</b> = we know what is coming and it is nearly here — never pair it with an empty state. <b>PullToRefresh</b> is presentational: the parent owns the gesture and passes <span>state</span> + <span>progress</span>. <span>Skeleton variant="swipeCard"</span> still works as the legacy alias of <span>profileCard</span>.</div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

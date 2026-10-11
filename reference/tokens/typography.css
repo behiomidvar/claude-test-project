@@ -1,0 +1,64 @@
+/* Deltalk typography — Persian-first / RTL.
+   IRANSans Mobile is the ONE family that renders — display, text and UI alike.
+   It is first in every Persian stack, so anything after it is a fallback that
+   only appears if the .ttf fails to load.
+   There is exactly ONE Persian family in this system. Morabba was removed: it was
+   self-hosted and unreachable through --font-display, and its opt-in token had zero
+   usages. Do not reintroduce a second family without a usage site.
+   Latin    = Hanken Grotesk — only where genuine Latin appears (the "Deltalk" logotype is an SVG).
+   Mono     = JetBrains Mono — spec numbers / code only.
+
+   Persian-script rules baked into the tokens:
+   • letter-spacing is ZERO everywhere — tracking breaks connected Persian letterforms.
+   • line-heights are generous (1.75 body, up to 1.9 long-form) — Persian needs vertical room.
+   • avoid ultra-thin weights at small sizes (legibility for older users). */
+:root {
+  --font-display: 'IRANSansMobile', system-ui, sans-serif;   /* Persian titles (IranSans Black/Bold) */
+  --font-sans: 'IRANSansMobile', system-ui, -apple-system, sans-serif; /* Persian UI/body */
+  --font-persian: 'IRANSansMobile', system-ui, sans-serif; /* explicit alias */
+  --font-latin: 'Hanken Grotesk', system-ui, sans-serif; /* stray Latin only */
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* weights */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium: 500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold: 700; /* @kind font */
+
+  /* ── Type scale (px). Structure unchanged from the base system. ── */
+  --text-display-xl: 4.5rem;   /* 72 — hero title / cover */
+  --text-display-lg: 3.375rem; /* 54 — section opener question */
+  --text-display-md: 2.5rem;   /* 40 */
+  --text-h1: 2rem;             /* 32 */
+  --text-h2: 1.5rem;           /* 24 */
+  --text-h3: 1.25rem;          /* 20 */
+  --text-body-lg: 1.125rem;    /* 18 */
+  --text-body: 1rem;           /* 16 — base. SIZE ONLY. The text COLOR token is
+                                  --text-primary (see colors.css) — these two names
+                                  collided until they were split. */
+  --text-body-sm: 0.9375rem;   /* 15 */
+  --text-caption: 0.8125rem;   /* 13 */
+  --text-micro: 0.6875rem;     /* 11 — labels, overlines */
+
+  /* line-heights — generous for Persian script */
+  --lh-tight: 1.3;     /* @kind font */ /* display (Persian needs > Latin's 1.08) */
+  --lh-snug: 1.45;     /* @kind font */ /* headings */
+  --lh-normal: 1.75;   /* @kind font */ /* body */
+  --lh-relaxed: 1.9;   /* @kind font */ /* long-form Persian & prose */
+
+  /* letter-spacing — ZERO on Persian (tracking breaks the script). Kept as tokens = 0
+     so any component referencing them stays safe. */
+  --ls-tight: 0;   /* @kind font */
+  --ls-snug: 0; /* @kind font */
+  --ls-normal: 0; /* @kind font */
+  --ls-wide: 0; /* @kind font */
+  --ls-overline: 0; /* @kind font */
+}
+
+/* Convenience utility classes (tokens remain the source of truth) */
+.dt-display { font-family: var(--font-display); font-weight: var(--fw-medium); line-height: var(--lh-tight); }
+.dt-heading { font-family: var(--font-sans); font-weight: var(--fw-semibold); line-height: var(--lh-snug); }
+.dt-body { font-family: var(--font-sans); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.dt-overline { font-family: var(--font-sans); font-weight: var(--fw-semibold); font-size: var(--text-micro); letter-spacing: var(--ls-overline); }
+.dt-fa { font-family: var(--font-persian); direction: rtl; line-height: var(--lh-relaxed); }
+.dt-latin { font-family: var(--font-latin); direction: ltr; unicode-bidi: isolate; }

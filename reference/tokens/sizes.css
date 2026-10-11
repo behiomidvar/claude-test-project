@@ -1,0 +1,78 @@
+/* Deltalk sizes — element DIMENSIONS (a control's own width/height), distinct from
+   spacing.css (the gaps BETWEEN things) and radii.css (corner geometry).
+   Every step is 4px-grid aligned, named by its pixel value so a mapping is
+   self-evident at the call site. This file exists because component dimensions used
+   to be chosen per component: 34, 36, 38, 60, 76 and three content widths were each
+   decided in their own session with nothing to reference.
+   PICK A STEP — never a raw px. If a design genuinely needs a size between steps,
+   that is a signal the step list is wrong; add the step here instead.
+
+   ── THE DECLARED-HEIGHT RULE (adopted; see readme § SIZE SCALE) ─────────────
+   A fixed-shape component — any pill, capsule, dot, count badge, tab item or
+   segment — MUST declare its height from a step here, centre its content with
+   display:inline-flex + align-items:center, and take HORIZONTAL padding only,
+   from a spacing token. Vertical padding must never be what produces a height.
+   Root cause this closes: Badge declared no height at all, so its 23px came out
+   of padding 5px + line-height 1 × --text-caption 13px. Nobody chose 23. A
+   declared height is also immune to a future type-scale change.
+   COMMENT CONVENTION: annotate the height line with the marker
+   "h: --size-24 declared" in a CSS comment, so a reviewer can see the number was
+   chosen, not computed. A fixed shape with no height and no marker is a defect —
+   guidelines/spacing-sizes.html measures it and prints PASS/FAIL.
+   EXEMPT: things that must grow with content — cards, message bubbles, list rows,
+   text areas. Their padding still comes from spacing tokens. */
+:root {
+  /* ── MARK SIZES — dots and indicators below the control floor ──────────
+     Not controls: they carry no label and are never tapped directly (their row
+     or their avatar is the target). On the same 4px grid so a dot can never
+     drift to 7 or 9 again. */
+  --size-8:  8px;    /* status dot: presence, live-conversation             */
+  --size-12: 12px;
+  --size-16: 16px;   /* dot placed ON an avatar / photo                     */
+
+  /* ── CONTROL / ICON-CHIP SIZES ───────────────────────────────────────── */
+  --size-20: 20px;   /* inline glyph · micro-label pill                     */
+  --size-24: 24px;   /* standard icon glyph · caption pill (Badge, chips)   */
+  --size-28: 28px;
+  --size-32: 32px;
+  --size-36: 36px;   /* small icon chip · small icon button · compact pill   */
+  --size-40: 40px;   /* icon chip in a row · circular overlay button        */
+  --size-44: 44px;
+  --size-48: 48px;   /* THE touch-target rung (--touch-min). Default control */
+  --size-52: 52px;   /* large icon button                                   */
+  --size-56: 56px;   /* large button height                                 */
+  --size-60: 60px;   /* dialog halo · app-bar min-height                    */
+  --size-64: 64px;
+  --size-72: 72px;   /* permission-card icon medallion                      */
+  --size-76: 76px;   /* empty/error-state icon medallion                    */
+  --size-112: 112px; /* Avatar xl (profile hero)                            */
+
+  /* ── CONTENT WIDTHS — measures, not controls ─────────────────────────── */
+  --width-voice-min:    220px;  /* VoicePlayer collapsed floor              */
+  --width-voice-max:    300px;  /* VoicePlayer ceiling — keeps a voice note
+                                   narrower than a full-width text bubble   */
+  --width-bubble-media: 240px;  /* image inside a chat bubble               */
+
+  /* ── DOCUMENTED EXCEPTION: inner glyph sizes ─────────────────────────────
+     A few SVG glyphs sit between steps at 19px and 22px (feature-icon glyphs
+     inside a --size-36 chip, in-field icons inside a --size-36 button). They are
+     RULED deliberate, not drift: each already lives inside a tokenised
+     fixed-size container, and snapping them to --size-20 or --size-24 would
+     change the glyph's optical weight against that container without changing
+     the control's footprint. Do NOT flag these in a future audit — a glyph
+     inside a sized container is measured against the container, not the scale. */
+
+  /* ── NESTED-IN-BUBBLE EXCEPTION ──────────────────────────────────────────
+     Elements INSIDE a chat bubble are deliberately tighter than the rest of the
+     system: the bubble already carries the outer 22px corner and its own padding,
+     so a nested corner must read as subordinate to it. These are CORNER RADII
+     (they belong to shape, not dimension) and they intentionally do NOT sit on the
+     radius role set (input 12 / button 16 / card 20 / sheet 28) — a nested image is
+     not a card. They live here, next to the size scale, as the one documented
+     exception to "pick a step", and are re-exported by radii.css for callers.
+     NOTE ON NAMING: requested as --size-bubble-image / --size-bubble-quote; named
+     --radius-* instead because both values are border-radius, and filing a radius
+     under a size name is exactly the kind of drift this audit is closing. */
+  --radius-bubble-image: 18px;  /* image nested in a bubble                 */
+  --radius-bubble-quote: 12px;  /* quoted reply block nested in a bubble    */
+}

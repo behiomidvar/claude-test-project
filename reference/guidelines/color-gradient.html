@@ -1,0 +1,62 @@
+<!-- @dsCard group="2. Color" viewport="920x420" name="Brand gradient — one identity, both themes" subtitle="One --gradient-brand, identical in light and dark; -strong for small text; -celebration for expressive moments." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+body{margin:0;padding:22px;background:var(--surface);color:var(--text-primary);font-family:var(--font-sans)}
+.row{display:flex;gap:16px;direction:ltr}
+.col{flex:1;display:flex;flex-direction:column;gap:8px}
+.hero{position:relative;height:132px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-md);overflow:hidden;gap:10px;flex-direction:column}
+.hero .big{font-family:var(--font-display);font-size:24px;font-weight:800}
+/* Persian sample text inside the now-LTR row needs its own isolation, or the
+   exclamation mark reorders to the left of the phrase. */
+.hero .big,.hero .small{direction:rtl;unicode-bidi:isolate}
+.hero .small{font-size:12px;font-weight:700}
+.name{font-size:13px;font-weight:700;color:var(--text-primary);direction:ltr;unicode-bidi:isolate;text-align:left;font-family:var(--font-mono)}
+.meta{font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate;text-align:left}
+.ratios{display:flex;gap:6px}
+.rc{flex:1;font-family:var(--font-mono);font-size:10px;text-align:center;padding:5px 4px;border-radius:6px;background:var(--surface-well);color:var(--text-secondary);direction:ltr;unicode-bidi:isolate}
+.rc b{display:block;color:var(--text-primary);font-size:11px}
+.rep{color:var(--text-secondary);font-size:12px;line-height:1.6}
+.tag{font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate}
+
+/* READABLE-TYPE STANDARD — a card is scanned at arm's length, not read.
+   Body prose >=13px, labels >=11px. Derivations live in readme.md, not here. */
+.hero .small{font-size:13px}.meta{font-size:12px}.rc{font-size:11.5px}.rc b{font-size:12px}.rep{font-size:13px}.tag{font-size:11px}
+
+/* English prose in an RTL document must be isolated, or its trailing full stop
+   reorders to the left edge and renders as a stray leading period. */
+.rep{direction:ltr;unicode-bidi:isolate;text-align:left}
+</style></head>
+<body>
+<div class="row">
+  <div class="col">
+    <div class="hero" style="background:linear-gradient(135deg,#F24C9A 0%,#BB48F8 100%)"><span class="big" style="color:#fff">مچ</span></div>
+    <div class="name">--gradient-brand</div>
+    <div class="meta"><bdi>#F24C9A → #BB48F8 · 135° — brand-pink-500 → brand-purple-500</bdi></div>
+    <div class="ratios">
+      <div class="rc"><b>3.35</b>white · pink</div>
+      <div class="rc"><b>3.89</b>white · purple</div>
+    </div>
+    <div class="rep"><b>Identical in both themes.</b> Active tab, toggle-on track, progress, avatar match-ring, branded icons. White text on large/bold only.</div>
+  </div>
+  <div class="col">
+    <div class="hero" style="background:linear-gradient(135deg,#C62277 0%,#971ECF 100%)"><span class="small" style="color:#fff">علاقه‌مندی انتخاب‌شده</span></div>
+    <div class="name">--gradient-brand-strong</div>
+    <div class="meta"><bdi>#C62277 → #971ECF · 135° — brand-pink-600 → brand-purple-600</bdi></div>
+    <div class="ratios">
+      <div class="rc"><b>5.39</b>white · pink ✓</div>
+      <div class="rc"><b>6.17</b>white · purple ✓</div>
+    </div>
+    <div class="rep">For <b>small text on gradient</b> — selected chips, notification badges.</div>
+  </div>
+  <div class="col">
+    <div class="hero" style="background:linear-gradient(135deg,#FFB565 0%,#F24C9A 100%)"><span class="big" style="color:#fff">مچ شدید!</span></div>
+    <div class="name">--gradient-celebration</div>
+    <div class="meta"><bdi>#FFB565 → #F24C9A · 135° — brand-gold-500 → brand-pink-500</bdi></div>
+    <div class="ratios">
+      <div class="rc"><b>large / bold only</b></div>
+    </div>
+    <div class="rep">Celebration only — match screen, onboarding hero, confetti.</div>
+  </div>
+</div>
+<p class="rep" style="margin:16px 0 0" dir="ltr"><b>Never</b> a primary-CTA fill, a screen or card background, or a UI state fill for celebration.</p>
+</body></html>

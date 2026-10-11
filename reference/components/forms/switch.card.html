@@ -1,0 +1,68 @@
+<!-- @dsCard group="8. Selection & Forms" viewport="1180x1140" name="Switch — enabling vs restricting" subtitle="Both variants built out: off / on / pressed / disabled, in light and dark. 16 frames, with the usage rule captioned under each variant." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);direction:rtl;color:var(--text-primary);font-family:var(--font-sans)}
+.themes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tbox{border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);background:var(--surface-card);color:var(--text-primary)}
+.tlbl{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--text-subtle);margin-bottom:16px}
+.vtitle{direction:ltr;text-align:left;unicode-bidi:isolate;margin:0;font-size:12.5px;font-weight:800;letter-spacing:.02em}
+.vA{color:var(--brand-purple)}
+.vB{color:var(--text-secondary)}
+.vtok{direction:ltr;text-align:left;unicode-bidi:isolate;font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);margin:3px 0 0}
+.frames{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.frame{border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;background:var(--bg);display:flex;flex-direction:column;gap:9px}
+.fn{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:9px;font-weight:800;letter-spacing:.07em;color:var(--text-subtle)}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;margin:12px 0 0;font-size:11px;line-height:1.7;color:var(--text-secondary);background:var(--surface-well);border-radius:var(--radius-sm);padding:10px 12px}
+.cap b{color:var(--text-primary)}
+.cap .use{display:block;margin-top:6px;color:var(--text-subtle);font-size:10.5px}
+.rule{direction:ltr;text-align:left;unicode-bidi:isolate;margin:18px 0 0;font-size:11.5px;line-height:1.75;color:var(--text-secondary);background:var(--surface-well);border:1px solid var(--border);border-radius:var(--radius-md);padding:13px 15px}
+.rule b{color:var(--text-primary)}
+.hr{height:1px;background:var(--border);margin:20px 0}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Switch } = window.DeltalkDesignSystem_288455;
+const STATES = [
+  { n: 'OFF',      props: { checked: false } },
+  { n: 'ON',       props: { checked: true } },
+  { n: 'PRESSED',  props: { checked: true, pressed: true } },
+  { n: 'DISABLED', props: { checked: true, disabled: true } },
+];
+function Variant({ variant, label, title, cls, token, caption, uses }){
+  return <div>
+    <p className={'vtitle ' + cls} dir="ltr">{title}</p>
+    <p className="vtok" dir="ltr">on-track: {token}</p>
+    <div className="frames">
+      {STATES.map(s => (
+        <div className="frame" key={s.n}>
+          <span className="fn" dir="ltr">{s.n}</span>
+          <Switch label={label} variant={variant} onChange={()=>{}} {...s.props} />
+        </div>
+      ))}
+    </div>
+    <p className="cap" dir="ltr">{caption}<span className="use">{uses}</span></p>
+  </div>;
+}
+function ThemeBox({ theme }){
+  return <div className="tbox" data-theme={theme}>
+    <div className="tlbl" dir="ltr">{theme.toUpperCase()} THEME</div>
+    <Variant variant="enabling" cls="vA" title="VARIANT A — ENABLING" token="--gradient-brand"
+      label="پیام‌های صوتی"
+      caption={<>Use when turning it ON <b>adds</b> something to the user's experience — an optional, positive, expressive choice.</>}
+      uses="voice messages · notifications + sub-settings · show distance · show online status · only verified users can contact me · keep my photos blurred until we match" />
+    <div className="hr"></div>
+    <Variant variant="restricting" cls="vB" title="VARIANT B — RESTRICTING" token="--action-cta (neutral)"
+      label="حالت ناشناس"
+      caption={<>Use when turning it ON <b>limits, hides, or cuts off</b> — a protective or safety action, where brand color would read as celebratory and is therefore wrong.</>}
+      uses="also block this user · hide from contacts · incognito mode · temporarily deactivate account" />
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div>
+    <div className="themes"><ThemeBox theme="light"/><ThemeBox theme="dark"/></div>
+    <p className="rule" dir="ltr">The variant is chosen by <b>MEANING</b>, never by visual density and never to make a busy screen calmer. If a switch's meaning is ambiguous, default to <b>Variant A</b>. <b>Off-state, knob, sizing and motion are identical</b> across both variants — only the on-state track fill differs; pressed is scale 0.97 / 120ms in both. Variant B inverts per <b>--action-cta</b> exactly like the primary button, so it stays legible in dark. <b>“Keep my photos blurred until we match” is Variant A</b> everywhere it appears (onboarding photos step, edit profile, privacy &amp; safety) — a signature feature framed as a positive choice, not a defensive retreat.</p>
+  </div>
+);
+</script><script src="../../theme-toggle.js"></script></body></html>

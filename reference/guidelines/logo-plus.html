@@ -1,0 +1,114 @@
+<!-- @dsCard group="1. Brand" viewport="900x1560" name="Logo — Plus lockup" subtitle="دلتاک پلاس. Wordmark ink 192 × 32; superscript plus 28 × 28; icon 44.18 height-matched. Hero-only — no compact build, no tagline." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+.grid{display:grid;grid-template-columns:1fr 1fr;direction:ltr;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;margin:0 0 18px}
+.panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 20px;min-height:170px}
+.panel.tall{min-height:290px}
+.light{background:#FFFFFF}.dark{background:#121926}
+.clear{position:relative;padding:22px 28px;border:1.5px dashed rgba(137,110,244,.55);border-radius:12px}
+.tag{font-size:11.5px;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:center;line-height:1.5}
+.lighttag{color:#746D80}.darktag{color:#9AA4B2}
+.meas{position:relative;display:inline-block}
+.meas img{display:block}
+.meas i{position:absolute;left:0;right:0;display:block}
+.meas .base{bottom:0;border-top:1px dashed var(--accent)}
+.meas .cph{bottom:35.65px;border-top:1px dashed var(--conversation-active)}
+.meas .top{bottom:40px;border-top:1px dashed var(--text-subtle)}
+.meas .pbase{bottom:20.23px;border-top:1px dashed var(--premium)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary);direction:ltr;margin:-4px 0 16px;font-family:var(--font-latin)}
+.legend i{display:inline-block;width:18px;border-top:1px dashed;vertical-align:middle;margin-inline-end:6px}
+h3.sub{direction:ltr;text-align:left;margin:26px 0 10px;font-family:var(--font-latin);font-size:14px;font-weight:700;color:var(--text-primary)}
+.sheet{max-width:420px;margin:0 auto;border-radius:var(--radius-card);border:1px solid var(--border);overflow:hidden}
+.sheet__top{display:flex;justify-content:flex-end;padding:10px}
+.sheet__hero{display:flex;flex-direction:column;align-items:center;gap:18px;padding:8px 24px 34px}
+.sheet__sub{font-size:var(--text-body);color:var(--text-secondary);text-align:center;max-width:280px}
+</style></head><body>
+<div class="card-h"><h1>Logo — Plus lockup</h1></div>
+<p class="lead"><b>One consumer: the paywall hero.</b> This is a hero-only asset at <b>≥120px artwork height</b>. The Plus card on the Profile tab keeps its built treatment (text title, badge pill, gradient crown); manage-subscription keeps a plain text page title. A Plus surface needing a small mark uses the <span dir="rtl">دلتاک پلاس</span> badge pill — never a shrunken lockup.</p>
+
+<h2 class="sec">Colour</h2>
+<table class="k"><thead><tr><th></th><th>wordmark type</th><th>plus-mark</th></tr></thead><tbody>
+  <tr><td><b>Light</b></td><td><span class="mono">--logo-wordmark → --brand-navy-500 #261D82</span> · 13.20:1 page</td><td><span class="mono">--accent → --brand-pink-500 #F24C9A</span> · 3.35:1 on white</td></tr>
+  <tr><td><b>Dark</b></td><td><span class="mono">--logo-wordmark → --brand-lavender-400 #B99FFF</span> · 7.94:1 page</td><td><span class="mono">--accent (dark) #E481AF</span> · 6.76:1 page</td></tr>
+</tbody></table>
+<p class="lead">The type follows the existing wordmark rule unchanged; the dark value is <b>bound to</b> <code>--nav-active</code>. The plus is a solid accent element, so it takes <code>--accent</code> and flips with it — the theme-exemption is the <b>mark's gradient arms only</b>. The light plus at <b>3.35:1 on white</b> clears the 3:1 non-text threshold and does not clear 4.5:1; it is <code>--accent</code> unmodified and is recorded, not tuned.</p>
+
+<h2 class="sec">Horizontal — the default</h2>
+<div class="grid">
+  <div class="panel light" data-theme="light"><div class="clear"><span class="meas"><img src="../assets/plus-lockup-horizontal-light.svg" height="55.23" alt="لوگوی افقی دلتاک پلاس روی روشن"><i class="base"></i><i class="pbase"></i><i class="cph"></i><i class="top"></i></span></div><span class="tag lighttag">light · 55.23px artwork</span></div>
+  <div class="panel dark" data-theme="dark"><div class="clear"><img src="../assets/plus-lockup-horizontal-dark.svg" height="55.23" alt="لوگوی افقی دلتاک پلاس روی تیره"></div><span class="tag darktag">dark · 55.23px artwork</span></div>
+</div>
+<div class="legend">
+  <span><i style="border-color:var(--accent)"></i>type baseline y 44.18 — the icon ink's bottom sits on it</span>
+  <span><i style="border-color:var(--premium)"></i>plus baseline y 28 — <b>16.18u above</b> the type's</span>
+  <span><i style="border-color:var(--conversation-active)"></i>cap-height 28.52u</span>
+  <span><i style="border-color:var(--text-subtle)"></i>type ink top y 12.18 — the plus rises 12.18u above it</span>
+</div>
+
+<h2 class="sec">Vertical</h2>
+<div class="grid">
+  <div class="panel tall light" data-theme="light"><div class="clear"><img src="../assets/plus-lockup-vertical-light.svg" height="121.51" alt="لوگوی عمودی دلتاک پلاس روی روشن"></div><span class="tag lighttag">light · 121.51px artwork</span></div>
+  <div class="panel tall dark" data-theme="dark"><div class="clear"><img src="../assets/plus-lockup-vertical-dark.svg" height="121.51" alt="لوگوی عمودی دلتاک پلاس روی تیره"></div><span class="tag darktag">dark · 121.51px artwork</span></div>
+</div>
+
+<h2 class="sec">Wordmark alone</h2>
+<div class="grid">
+  <div class="panel light" data-theme="light"><div class="clear"><img src="../assets/plus-wordmark-light.svg" height="44.18" alt="دلتاک پلاس روی روشن"></div><span class="tag lighttag">light · no mark</span></div>
+  <div class="panel dark" data-theme="dark"><div class="clear"><img src="../assets/plus-wordmark-dark.svg" height="44.18" alt="دلتاک پلاس روی تیره"></div><span class="tag darktag">dark · no mark</span></div>
+</div>
+
+<h2 class="sec">Geometry — measured, per orientation</h2>
+<table class="k"><thead><tr><th></th><th>artwork</th><th>type ink</th><th>plus ink</th><th>icon ink</th><th>gap</th><th>minimum</th></tr></thead><tbody>
+  <tr><td><b>Horizontal</b></td><td class="mono">247.23 × 44.18</td><td class="mono">192 × 32</td><td class="mono">28 × 28</td><td class="mono">44.18 × 44.18</td><td class="mono">11.05u (0.25 × mark)</td><td class="mono">120px tall</td></tr>
+  <tr><td><b>Vertical</b></td><td class="mono">192 × 97.21</td><td class="mono">192 × 32</td><td class="mono">28 × 28</td><td class="mono">44.18 × 44.18</td><td class="mono">8.84u (0.20 × mark)</td><td class="mono">120px tall</td></tr>
+  <tr><td><b>Wordmark alone</b></td><td class="mono">192 × 44.18</td><td class="mono">192 × 32</td><td class="mono">28 × 28</td><td class="mono">—</td><td class="mono">—</td><td class="mono">88px tall</td></tr>
+</tbody></table>
+<table class="k"><thead><tr><th>ratio</th><th>value</th></tr></thead><tbody>
+  <tr><td>cap-height ÷ ink box</td><td class="mono">28.52 ÷ 32 = <b>0.891</b> — the base wordmark's is 0.892</td></tr>
+  <tr><td>wordmark aspect</td><td class="mono">192 ÷ 32 = <b>6:1</b> — base <b>4.67:1</b></td></tr>
+  <tr><td>plus ÷ cap-height</td><td class="mono">28 ÷ 28.52 = <b>0.98</b></td></tr>
+  <tr><td>plus overhang above type ink</td><td class="mono">12.18u = <b>27.6%</b> of artwork height</td></tr>
+  <tr><td>clear space</td><td class="mono">44.18u (the icon height) on all four sides</td></tr>
+</tbody></table>
+<p class="lead">Minimum artwork height is the figure on the scope line at the top of this card — stated once, there. Below it there is no lockup: use the <span dir="rtl">دلتاک پلاس</span> badge pill. <i>Why 120 and not the measured legibility floor is in readme.md, PLUS LOCKUP SPEC.</i></p>
+
+<div class="rules">
+  <section class="rules--do"><h3>Do</h3><ul>
+    <li>Wordmark leads, <b>icon at its right</b> — the RTL reading start.</li>
+    <li>The plus stays <b>superscript, at its drawn size and position</b>: 28 × 28 at x 0–28, its baseline 16.18u above the type's. That relationship is the artwork.</li>
+    <li>The icon is <b>height-matched to the 44.18u type block and centred</b> against it — the block is the plus top to the type baseline, not the type ink alone.</li>
+    <li>Vertical: mark, gap, wordmark — all centred on the wordmark's bbox axis, <b>x 96</b>.</li>
+    <li>Scale by <b>height only</b>; move the lockup as one unit.</li>
+  </ul></section>
+  <section class="rules--no"><h3>Never</h3><ul>
+    <li><b>Never build a compact Plus lockup.</b> No Plus surface carries a lockup in a top bar, so it would have no consumer. The absence is a decision.</li>
+    <li><b>Never set the tagline under it.</b> <span dir="rtl">دل به دل راه داره</span> is about the product, not a subscription tier, and it is restricted to splash, onboarding and About.</li>
+    <li>Never reseat the plus on the type baseline, resize it against cap-height, or set it apart — those were options B and C and they were not chosen.</li>
+    <li>Never carry <span class="mono">#F24C9A</span> into dark. Never resize icon and type independently.</li>
+    <li>Never use it in place of the standard lockup outside the paywall hero.</li>
+  </ul></section>
+</div>
+
+<h3 class="sub">The one consumer — paywall hero</h3>
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="sheet" data-theme="light" style="background:var(--bg)">
+    <div class="sheet__top"><span style="width:40px;height:40px;border-radius:var(--radius-pill);background:var(--surface-well);display:inline-flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div>
+    <div class="sheet__hero"><img src="../assets/plus-lockup-vertical-light.svg" height="140" alt="دلتاک پلاس"><p class="sheet__sub">هر روز بی‌نهایت گفت‌وگو، و ببین چه کسی دلش با تو است.</p></div>
+  </div>
+  <div class="sheet" data-theme="dark" style="background:var(--bg)">
+    <div class="sheet__top"><span style="width:40px;height:40px;border-radius:var(--radius-pill);background:var(--surface-well);display:inline-flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div>
+    <div class="sheet__hero"><img src="../assets/plus-lockup-vertical-dark.svg" height="140" alt="دلتاک پلاس"><p class="sheet__sub">هر روز بی‌نهایت گفت‌وگو، و ببین چه کسی دلش با تو است.</p></div>
+  </div>
+</div>
+<p class="lead" style="margin-top:12px">Vertical at <b>140px</b> — a full-screen sheet with a close button and no app chrome, which is why no compact build exists.</p>
+
+<h3 class="sub">Assets</h3>
+<table class="k"><thead><tr><th>file</th><th>fills</th><th>how to use</th></tr></thead><tbody>
+  <tr><td class="mono">plus-lockup-horizontal-{light,dark}.svg</td><td>baked per theme</td><td><b><code>&lt;img&gt;</code>-safe</b></td></tr>
+  <tr><td class="mono">plus-lockup-vertical-{light,dark}.svg</td><td>baked per theme</td><td><b><code>&lt;img&gt;</code>-safe</b></td></tr>
+  <tr><td class="mono">plus-wordmark-{light,dark}.svg</td><td>baked per theme</td><td><b><code>&lt;img&gt;</code>-safe</b></td></tr>
+  <tr><td class="mono">plus-wordmark.svg · plus-mark.svg</td><td><code>currentColor</code></td><td><b>build sources — inline only</b></td></tr>
+</tbody></table>
+<p class="lead">Every Plus lockup bakes its fills. The two <code>currentColor</code> files are the type and the plus glyph as separate sources, kept for composing — <b>they are not lockups</b>. <i>Why no compact build exists is in readme.md, PLUS LOCKUP SPEC.</i></p>
+<p class="readmore">Derivations → readme.md § PLUS LOCKUP SPEC</p>
+<script src="../theme-toggle.js"></script></body></html>

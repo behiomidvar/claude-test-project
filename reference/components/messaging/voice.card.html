@@ -1,0 +1,35 @@
+<!-- @dsCard group="7. Components" viewport="900x1180" name="Voice — VoiceNote + VoicePlayer, both themes, both mount orders" subtitle="VoiceNote rendering with its OWN rules for the first time, beside VoicePlayer. Regression card for the .dt-voice prefix collision: the columns must be identical whichever mounts first." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script><script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script><script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script><script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl;font-family:var(--font-sans)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:852px;margin:0 auto}
+.panel{border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);background:var(--bg);color:var(--text-primary);display:flex;flex-direction:column;gap:14px}
+.plbl{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text-subtle)}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-family:var(--font-mono);font-size:10px;color:var(--text-subtle)}
+.note{direction:ltr;text-align:left;unicode-bidi:isolate;max-width:852px;margin:16px auto 0;font-size:11.5px;line-height:1.7;color:var(--text-secondary);background:var(--surface-well);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px}
+.note b{color:var(--text-primary)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+const { VoicePlayer, VoiceNote } = window.DeltalkDesignSystem_288455;
+// Order A mounts VoicePlayer first, order B mounts VoiceNote first. Under the old
+// shared useOnceStyle key the two panels rendered DIFFERENTLY; they must now match.
+function OrderA({theme}){return <div className="panel" data-theme={theme}><div className="plbl">{theme} · Order A — VoicePlayer mounts first</div>
+  <span className="cap">VoicePlayer · received / sent</span>
+  <VoicePlayer from="received" duration="۰:۱۴" progress={0.4}/>
+  <VoicePlayer from="sent" duration="۰:۲۲" progress={0.7} playing/>
+  <span className="cap">VoiceNote · them / me</span>
+  <VoiceNote from="them" duration="۰:۲۴"/>
+  <VoiceNote from="me" duration="۰:۱۱" playing/>
+</div>;}
+function OrderB({theme}){return <div className="panel" data-theme={theme}><div className="plbl">{theme} · Order B — VoiceNote mounts first</div>
+  <span className="cap">VoiceNote · them / me</span>
+  <VoiceNote from="them" duration="۰:۲۴"/>
+  <VoiceNote from="me" duration="۰:۱۱" playing/>
+  <span className="cap">VoicePlayer · received / sent</span>
+  <VoicePlayer from="received" duration="۰:۱۴" progress={0.4}/>
+  <VoicePlayer from="sent" duration="۰:۲۲" progress={0.7} playing/>
+</div>;}
+ReactDOM.createRoot(document.getElementById('root')).render(<React.Fragment>
+  <div className="pair"><OrderA theme="light"/><OrderB theme="light"/></div>
+  <div className="pair" style={{marginTop:16}}><OrderA theme="dark"/><OrderB theme="dark"/></div>
+  <p className="note" dir="ltr"><b>Every component's style id and class prefix must be unique to that component.</b> These two both used <span style={{fontFamily:'var(--font-mono)'}}>.dt-voice*</span> and the same <span style={{fontFamily:'var(--font-mono)'}}>useOnceStyle('dt-voice-css')</span> key. <span style={{fontFamily:'var(--font-mono)'}}>useOnceStyle</span> bails when the id already exists, so the second component to mount had its stylesheet <b>silently dropped</b> and rendered with the other's rules. Now <span style={{fontFamily:'var(--font-mono)'}}>dt-vplayer-*</span> and <span style={{fontFamily:'var(--font-mono)'}}>dt-vnote-*</span>, each with its own id — so the two columns above are identical whichever order they mount in.</p>
+</React.Fragment>);
+</script><script src="../../theme-toggle.js"></script></body></html>

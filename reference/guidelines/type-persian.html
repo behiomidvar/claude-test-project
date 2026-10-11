@@ -1,0 +1,16 @@
+<!-- @dsCard group="3. Typography" viewport="700x330" name="Persian script rules" subtitle="ZWNJ, zero letter-spacing, generous line-height, no thin weights" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>body{margin:0;padding:22px 24px;background:var(--paper);color:var(--ink);font-family:var(--font-sans);direction:rtl}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 16px}
+.k{font-weight:600;font-size:13px;color:var(--cool-violet);margin:0 0 6px}
+.v{font-size:16px;line-height:1.7;color:var(--ink);margin:0}
+.x{color:var(--danger)}.ok{color:var(--success)}
+small{font-size:12px;color:var(--ink-50)}</style></head>
+<body><div class="grid">
+<div class="card"><p class="k">ZWNJ (نیم‌فاصله)</p><p class="v">می‌شود، گفت‌وگو، هم‌صحبت</p><small>avoid: میشود / گفتگو</small></div>
+<div class="card"><p class="k">Letter-spacing = 0</p><p class="v">letter-spacing هرگز روی فارسی</p><small>tracking breaks the script</small></div>
+<div class="card"><p class="k">Generous line-height</p><p class="v">1.75 body, up to 1.9 for long-form</p></div>
+<div class="card"><p class="k">Weight & legibility</p><p class="v" style="font-weight:400">۴۰۰ به بالا در سایز کوچک</p><small>no thin weights for older users</small></div>
+</div><p class="readmore" dir="ltr">ZWNJ, bidi isolation and numeral rules → readme.md §RTL & Persian rules.</p>
+</body></html>

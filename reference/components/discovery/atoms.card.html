@@ -1,0 +1,125 @@
+<!-- @dsCard group="Discovery" viewport="900x1560" name="Discovery atoms — verification, presence, distance, age" subtitle="badge-check rosette on --verification #1D9BF0. Three sizes on light, on dark and over a photo, beside the chat row that is the real co-occurrence test. Persian numerals throughout." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl;font-family:var(--font-sans)}
+.wrap{display:flex;flex-direction:column;gap:20px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.note{font-size:11px;color:var(--text-secondary);line-height:1.65;max-width:760px;margin:2px 0 6px;direction:ltr;text-align:left;unicode-bidi:isolate}
+.note b{color:var(--text-primary)}
+.mono{font-family:var(--font-mono);font-size:10.5px}
+.lbl{font-size:var(--text-micro);font-weight:var(--fw-bold);color:var(--text-subtle);width:100%}
+.spec{display:inline-flex;flex-direction:column;align-items:center;gap:6px}
+.sl{font-family:var(--font-mono);font-size:9.5px;color:var(--text-subtle);direction:ltr}
+.metrics{border-collapse:collapse;font-size:11px;direction:ltr;text-align:left;color:var(--text-secondary)}
+.metrics th{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-subtle);font-weight:700;padding:0 12px 6px 0;border-bottom:1px solid var(--border)}
+.metrics td{padding:5px 12px 5px 0;border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:10.5px}
+.metrics td:last-child{font-family:var(--font-sans);font-size:11px}
+.metrics tr.fail td{color:var(--danger-text)}
+.avstack{position:relative;display:inline-block;width:56px;height:56px}
+.av{display:block;width:56px;height:56px;border-radius:var(--radius-chip)}
+.avbadge{position:absolute;bottom:-2px;inset-inline-end:-2px}
+.media{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface-cool);padding:14px 16px;border-radius:var(--radius-lg)}
+.duo{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden}
+.pan{padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:var(--bg)}
+.pan+.pan{border-inline-start:1px solid var(--border)}
+.pt{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-subtle);direction:ltr}
+.photo{position:relative;border-radius:var(--radius-lg);overflow:hidden;padding:16px;background:linear-gradient(150deg,#6E5A47,#2A2620 55%,#0E1418)}
+.photo--bright{background:linear-gradient(150deg,#F4F8FC,#FFFFFF 48%,#E6EDF3)}
+.photo--bright .lbl{color:#121926}
+.gl{font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;direction:ltr;color:var(--text-subtle);display:block;margin-top:10px}
+.photo--bright .gl{color:#121926}
+.gnote{display:block;margin-top:10px;direction:ltr;text-align:left;unicode-bidi:isolate;font-size:11px;line-height:1.7;text-transform:none;letter-spacing:0;font-family:inherit;max-width:62ch}
+.photo--bright .gnote{color:#121926}
+.photo--bright .gnote b{color:#000}
+.gl.fail{color:var(--danger)}
+.photo--bright .gl.fail{color:#9F1023}
+.chatrow{background:var(--surface-card);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { VerificationBadge, PresenceIndicator, DistanceChip, AgeChip, ChatListItem, TypingIndicator, Avatar } = window.DeltalkDesignSystem_288455;
+/* THE FOUR TONES ARE THE MEASURED ONES, in the table's order — the specimen and
+   the numbers below it must not drift apart. */
+const AV=['#E8D5C4','#F4EDE3','#2E3542','#14181F'];
+function Sizes(){return <React.Fragment>
+  <div className="row" style={{alignItems:'flex-end'}}>
+    <span className="spec"><VerificationBadge/><span className="sl">lg · 28dp</span></span>
+    <span className="spec"><VerificationBadge size="sm"/><span className="sl">sm · 20dp</span></span>
+    <span className="spec"><VerificationBadge size="mini"/><span className="sl">mini · 24dp</span></span></div>
+  <div className="row" style={{alignItems:'flex-end'}}>
+    <span className="spec"><VerificationBadge status="pending"/><span className="sl">lg pending</span></span>
+    <span className="spec"><VerificationBadge size="sm" status="pending"/><span className="sl">sm</span></span>
+    <span className="spec"><VerificationBadge size="mini" status="pending"/><span className="sl">mini</span></span></div>
+</React.Fragment>;}
+function Demo(){
+  return <div className="wrap">
+    <div className="note"><b>ONE BADGE, TWO CONSTRUCTIONS.</b> Lucide <span className="mono">badge-check</span> filled with <span className="mono">--verification</span> #1D9BF0. The check is white (<span className="mono">--on-verification</span>, 3.00:1 on the --verification fill — the non-text bar exactly, with no slack). At <span className="mono">lg</span>/<span className="mono">sm</span> <b>on a theme surface</b> it sits on a <b>theme-following pill</b> (<span className="mono">--surface-well</span> + 1dp <span className="mono">--border</span>, the same fill AgeChip and DistanceChip use in their default variants — though not in their <span className="mono">--onmedia</span> ones, which are opaque ink like <span className="mono">onPhoto</span>); <b>with <span className="mono">onPhoto</span> the plate is opaque <span className="mono">--ink-fixed</span> instead, in both themes</b>; at <span className="mono">mini</span> there is <b>no container at all, in both states</b> — the mark sits on the avatar bare in a 24dp footprint (24.0dp verified, 22.3dp pending, whose outline stroke needs the extra room). <b>Green stays reserved for presence and success</b>, so “verified” can never read as “online”. <i>Derivations, the colour window and the rejected candidates are in readme.md — this card carries values.</i></div>
+    <div className="duo">
+      <div className="pan" data-theme="light"><span className="pt">light</span><Sizes/></div>
+      <div className="pan" data-theme="dark"><span className="pt">dark</span><Sizes/></div>
+    </div>
+    <div className="note">The <b>mark</b> is theme-independent (<span className="mono">--verification</span> + white check); the <b>pill</b> follows the theme, so the labelled sizes differ between the two panels and verified <span className="mono">mini</span> does not. <b>Both mini states are bare</b>, so verified and pending differ only by their mark — mini is no longer the place where the two states look like different objects.</div>
+
+    <div className="photo"><span className="lbl" style={{color:'#fff'}}>OVER A PHOTO — onPhoto swaps the whole plate: opaque --ink-fixed fill + 1dp --ink-fixed-edge ring + --shadow-on-photo</span>
+      <div className="row" style={{marginTop:10}}>
+        <VerificationBadge onPhoto/><VerificationBadge size="sm" onPhoto/><VerificationBadge size="mini" onPhoto/><VerificationBadge status="pending" onPhoto/>
+        <DistanceChip km={3} onMedia/><AgeChip years={27} onMedia/><PresenceIndicator status="online" onMedia bare/></div>
+      <span className="gl" style={{color:'#fff'}}>dark ground — 17.61:1 · ring 4.12:1</span></div>
+
+    <div className="photo photo--bright"><span className="lbl">OVER A BRIGHT GROUND — sky, snow, a white wall (~96% grey, pinned; it does not flip with the theme)</span>
+      <div className="row" style={{marginTop:10}}>
+        <VerificationBadge onPhoto/><VerificationBadge size="sm" onPhoto/><VerificationBadge size="mini" onPhoto/><VerificationBadge status="pending" onPhoto/>
+        <DistanceChip km={3} onMedia/><AgeChip years={27} onMedia/><PresenceIndicator status="online" onMedia bare/></div>
+      <span className="gnote"><b>AgeChip --onmedia</b> and <b>DistanceChip --onmedia</b> now measure <b>17.61:1 on this ground</b>, the same as on the dark one, because their plate is <b>opaque</b>: --ink-fixed + 1dp --ink-fixed-edge ring + --shadow-on-photo. They previously bound --veil-on-media-weak (.16) with white text — thinner than IconButton onMedia's .20 and failing the same way at <b>1.00:1</b> over any ground brighter than ~48% grey. backdrop-filter:blur(6px) changed no luminance and is gone with the veil. DistanceChip's pin moved to --on-ink-fixed; --info would be 2.1:1 on this plate.<br/><br/><b>The badge beside them was fixed in the same pass.</b> Its <b>mark</b> was always theme-independent. Its lg/sm <b>pill</b> was not: on onPhoto it followed the theme, so on this pinned bright ground in light theme it measured <b>1.12:1</b> fill and <b>1.63:1</b> ring — its only boundary — and survived on --shadow-on-photo alone, while measuring 16.89:1 in dark. A container that flips over content that does not flip cannot hold a ratio. <b>onPhoto now takes the same opaque plate: 17.61:1 on both grounds, ring 4.12:1 dark / 4.50:1 bright.</b> This is NOT a revert of the 2026-08-02 decision that made the pill theme-following — that ruling was about the badge on a light PAGE and still stands for every on-surface placement; onPhoto is the one placement with no theme surface. <b>mini is untouched</b> and still bare. The pending label on the plate is --on-ink-fixed-muted at 6.98:1.</span></div>
+
+    <span className="lbl">THE CO-OCCURRENCE TEST — a chat row carrying the badge, a presence dot and a typing indicator at once</span>
+    <div className="duo">
+      <div className="pan" data-theme="light"><span className="pt">light</span>
+        <div className="chatrow">
+          <ChatListItem name="آوا" preview="پیام صوتی" time="۹:۴۳" state="unread" unread={2} online/>
+          <ChatListItem name="رضا" preview="فردا می‌بینمت" time="دیروز" state="read"/>
+        </div>
+        <div className="row" style={{gap:8}}>
+          <span style={{display:'flex',alignItems:'center',gap:5}}><b style={{fontSize:'var(--text-body-sm)'}}>آوا</b><VerificationBadge size="mini"/></span>
+          <PresenceIndicator status="online"/><TypingIndicator/></div></div>
+      <div className="pan" data-theme="dark"><span className="pt">dark</span>
+        <div className="chatrow">
+          <ChatListItem name="آوا" preview="پیام صوتی" time="۹:۴۳" state="unread" unread={2} online/>
+          <ChatListItem name="رضا" preview="فردا می‌بینمت" time="دیروز" state="read"/>
+        </div>
+        <div className="row" style={{gap:8}}>
+          <span style={{display:'flex',alignItems:'center',gap:5}}><b style={{fontSize:'var(--text-body-sm)'}}>آوا</b><VerificationBadge size="mini"/></span>
+          <PresenceIndicator status="online"/><TypingIndicator/></div></div>
+    </div>
+    <div className="note"><b>This row is the test, not the swatches.</b> Verification, presence and “conversation active” land within millimetres of each other here.</div>
+
+
+    <table className="metrics"><thead><tr><th>size</th><th>height</th><th>h-pad</th><th>ratio</th><th>icon</th><th>gap</th><th>label</th><th>use for</th></tr></thead><tbody>
+      <tr><td>lg</td><td>28dp</td><td>12dp</td><td>43%</td><td>18dp</td><td>4dp</td><td>~13sp</td><td>Discover card · expanded profile · chat header</td></tr>
+      <tr><td>sm</td><td>20dp</td><td>8dp</td><td>40%</td><td>14dp</td><td>3dp</td><td>~11sp</td><td>chat-list avatars · Likes cards · dense contexts</td></tr>
+      <tr><td>mini</td><td>24dp</td><td>—</td><td>no container</td><td>24dp verified · 22.3dp pending</td><td>—</td><td>none</td><td>no room for a label at all</td></tr>
+    </tbody></table>
+    <div className="note">Horizontal padding is <b>40–45% of pill height</b> — a ratio, not a fixed value, so any future size keeps it.</div>
+
+    <div className="row"><span className="lbl">PRESENCE</span>
+      <PresenceIndicator status="online"/><PresenceIndicator status="recent" minutesAgo={5}/><PresenceIndicator status="offline"/></div>
+    <div className="row"><span className="lbl">DISTANCE &amp; AGE</span>
+      <DistanceChip km={3}/><DistanceChip km={0.5}/><AgeChip years={27}/><AgeChip years={34} variant="inline"/></div>
+
+    <div className="row"><span className="lbl">MINI ON AVATARS — the real placement</span>
+      {AV.map((c,i)=>(
+        <span key={i} className="avstack">
+          <span className="av" style={{background:c}}></span>
+          <span className="avbadge"><VerificationBadge size="mini"/></span>
+        </span>))}
+      <span className="avstack"><span className="av" style={{background:AV[2]}}></span>
+        <span className="avbadge"><VerificationBadge size="mini" status="pending"/></span></span></div>
+    <div className="note"><b>Mini values:</b> footprint <span className="mono">--size-24</span> · rosette <b>24.0dp</b> · no rim · check stroke <b>2.52px</b> · scallop lobe depth <b>1.43px</b>. viewBox is a uniform <b>1.1994×</b> crop of the same geometry. <b><span className="mono">pending</span> mini is bare too</b> — 22.3dp mark, 1.67px stroke, with a <b>fixed <span className="mono">--ink-fixed</span> body and <span className="mono">--on-ink-fixed-muted</span> glyph</b> (6.9:1 between them), theme-independent in both themes. Neutral, never blue: verified and pending now share one silhouette and one construction, and the only difference is the body colour. The outline doubles as pending's dark-tone boundary — <span className="mono">--ink-fixed</span> equals <span className="mono">--bg</span> in dark theme (1.00:1), so the body alone would vanish on the dark page. ⚠ <b>On the labelled pill in LIGHT theme the rosette measures 2.67:1 against <span className="mono">--surface-well</span> — under the 3:1 bar.</b> Dark is fine at 5.63:1 against the dark <span className="mono">--surface-well</span>. The white check on the rosette is <b>3.00:1</b>, at bar. <b>Unresolved — see readme.md; the light pill has no fill that fixes it.</b></div>
+    <div className="note"><b>On-photo vs on-background — TWO DIFFERENT PLATES.</b> On a theme surface the pill follows the theme (<span className="mono">--surface-well</span> + 1dp <span className="mono">--border</span>). <span className="mono">onPhoto</span> does <b>not</b>: it swaps the whole plate for the opaque, theme-independent one — <span className="mono">--ink-fixed</span> fill, 1dp <span className="mono">--ink-fixed-edge</span> ring, <span className="mono">--shadow-on-photo</span> — identical in both themes, <b>17.61:1</b> on any ground with the ring at 4.12:1 dark / 4.50:1 bright. <b>The shadow is not the boundary; the ring is.</b> The theme-following pill on a photo was measured out precisely on that reasoning: 1.12:1 fill and 1.63:1 ring on a pinned bright ground in light theme, surviving on the shadow alone, against 16.89:1 in dark. A container that flips over content that does not flip cannot hold a ratio. This did not revert the 2026-08-02 theme-following decision — that ruling was about a dark chip on a light <i>page</i> and still governs every on-surface placement. Use it on the Discover card and the expanded profile; leave it off on plain backgrounds (profile tab, settings), where the opaque ink plate would be the dark chip on a light page that the 2026-08-02 ruling rejected, and its shadow would imply elevation the badge does not have.</div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

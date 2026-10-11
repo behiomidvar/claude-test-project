@@ -1,0 +1,97 @@
+<!-- @dsCard group="Feedback" viewport="820x1300" name="Feedback — states, snackbar, permission, skeleton" subtitle="Empty & error states, snackbars, permission card, pull-to-refresh, and loading skeletons. Snackbar treatment is tweakable." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:820px;margin:0 auto;align-items:start}
+.stack{display:flex;flex-direction:column;gap:14px}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:var(--text-micro);font-weight:var(--fw-bold);color:var(--text-subtle);margin-bottom:8px}
+.frame{background:var(--surface-card);border-radius:var(--radius-lg);border:1px solid var(--border-subtle);box-shadow:var(--shadow-sm);overflow:hidden;min-height:200px}
+/* BARE — for self-contained card components (PermissionCard) that bring their own
+   border/radius/shadow: drop the wrapper chrome and just center, so only ONE border renders. */
+.frame--bare{background:none;border:none;box-shadow:none;display:flex;align-items:center;justify-content:center;padding:20px}
+
+/* ── Snackbar treatment overrides (driven by data-* on .snack-preview) ──
+   Per-variant semantic colors are exposed as --sc-* so one rule serves all three. */
+.snack-preview .dt-snack--success{--sc-surface:var(--success-surface);--sc-fill:var(--success-fill);--sc-text:var(--success-text)}
+.snack-preview .dt-snack--error{--sc-surface:var(--danger-surface);--sc-fill:var(--danger-fill);--sc-text:var(--danger-text)}
+.snack-preview .dt-snack--info{--sc-surface:var(--info-surface);--sc-fill:var(--info-fill);--sc-text:var(--info-text)}
+/* corner radius */
+.snack-preview .dt-snack{border-radius:var(--snack-radius,var(--radius-md))}
+/* TINTED — quiet color wash; meaning carried by color, border dropped */
+.snack-preview[data-snackstyle="tinted"] .dt-snack{background:var(--sc-surface);border-color:transparent}
+.snack-preview[data-snackstyle="tinted"] .dt-snack__msg{color:var(--sc-text)}
+/* RAIL — clean card + a leading accent bar on the reading edge */
+.snack-preview[data-snackstyle="rail"] .dt-snack{position:relative;overflow:hidden;padding-inline-start:20px}
+.snack-preview[data-snackstyle="rail"] .dt-snack::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:var(--sc-fill)}
+/* SOFT — borderless, lifted, pill; feels light and ephemeral */
+.snack-preview[data-snackstyle="soft"] .dt-snack{background:var(--surface-card);border-color:transparent;box-shadow:var(--shadow-lg);border-radius:var(--snack-radius,var(--radius-pill))}
+/* ICON CHIP — icon nested in a soft tinted circle */
+.snack-preview[data-icon="chip"] .dt-snack__ico{width:34px;height:34px;border-radius:var(--radius-pill);background:var(--sc-surface);align-items:center;justify-content:center}
+.snack-preview[data-icon="chip"] .dt-snack__ico svg{width:19px;height:19px}
+/* AUTO-DISMISS timer bar — thin progress line on the bottom edge */
+.snack-preview[data-timer="on"] .dt-snack{position:relative;overflow:hidden}
+.snack-preview[data-timer="on"] .dt-snack::after{content:"";position:absolute;inset-block-end:0;inset-inline:0;height:3px;
+  background:var(--sc-fill);transform-origin:inline-start;animation:sc-timer 5s linear forwards}
+@keyframes sc-timer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="./tweaks-panel.js"></script>
+<script type="text/babel">
+const { Snackbar, EmptyState, ErrorState, PermissionCard, Skeleton, PullToRefresh } = window.DeltalkDesignSystem_288455;
+const { useTweaks, TweaksPanel, TweakSection, TweakSelect, TweakRadio, TweakToggle } = window;
+
+const RADIUS = { standard:'var(--radius-md)', round:'var(--radius-lg)', pill:'var(--radius-pill)' };
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "snackStyle": "rail",
+  "snackIcon": "plain",
+  "snackCorners": "standard",
+  "snackTimer": false,
+  "showAction": true,
+  "showDismiss": true
+}/*EDITMODE-END*/;
+
+function Demo(){
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const act = t.showAction ? { actionLabel:'لغو', onAction:()=>{} } : {};
+  const dis = t.showDismiss ? { onDismissClick:()=>{} } : {};
+  return <div className="grid">
+    <div><div className="cap">SNACKBAR</div>
+      <div className="snack-preview stack" data-snackstyle={t.snackStyle} data-icon={t.snackIcon}
+           data-timer={t.snackTimer?'on':'off'} style={{['--snack-radius']:RADIUS[t.snackCorners]}}>
+        <Snackbar variant="success" {...act} {...dis}>پیام ارسال شد</Snackbar>
+        <Snackbar variant="error" actionLabel={t.showAction?'تلاش دوباره':undefined} onAction={t.showAction?()=>{}:undefined} {...dis}>ارسال ناموفق بود</Snackbar>
+        <Snackbar variant="info" {...dis}>پروفایلت به‌روزرسانی شد</Snackbar>
+      </div>
+    </div>
+    <div><div className="cap">PERMISSION</div><div className="frame frame--bare"><PermissionCard kind="location" onAllow={()=>{}} onLater={()=>{}}/></div></div>
+    <div><div className="cap">EMPTY STATE</div><div className="frame"><EmptyState variant="noMatches" actionLabel="شروع گشت‌وگذار" onAction={()=>{}}/></div></div>
+    <div><div className="cap">ERROR STATE</div><div className="frame"><ErrorState variant="network" onRetry={()=>{}}/></div></div>
+    <div><div className="cap">SKELETON</div><div className="frame" style={{padding:14}}><Skeleton variant="chatList"/></div></div>
+    <div><div className="cap">PULL TO REFRESH</div><div className="frame" style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}>
+      <PullToRefresh state="pull" progress={0.5}/><PullToRefresh state="release" progress={1}/><PullToRefresh state="refreshing"/>
+    </div></div>
+
+    <TweaksPanel>
+      <TweakSection label="Snackbar" />
+      <TweakSelect label="Treatment" value={t.snackStyle}
+        options={['flat','tinted','rail','soft']}
+        onChange={(v)=>setTweak('snackStyle',v)} />
+      <TweakRadio label="Icon" value={t.snackIcon} options={['plain','chip']}
+        onChange={(v)=>setTweak('snackIcon',v)} />
+      <TweakRadio label="Corners" value={t.snackCorners} options={['standard','round','pill']}
+        onChange={(v)=>setTweak('snackCorners',v)} />
+      <TweakToggle label="Auto-dismiss bar" value={t.snackTimer}
+        onChange={(v)=>setTweak('snackTimer',v)} />
+      <TweakToggle label="Action button" value={t.showAction}
+        onChange={(v)=>setTweak('showAction',v)} />
+      <TweakToggle label="Dismiss (×)" value={t.showDismiss}
+        onChange={(v)=>setTweak('showDismiss',v)} />
+    </TweaksPanel>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

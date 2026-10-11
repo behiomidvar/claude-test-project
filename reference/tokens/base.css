@@ -1,0 +1,38 @@
+/* Deltalk base — Persian-first / RTL defaults built on the tokens. */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* RTL is the default direction. LTR is the mirrored/adapted case. */
+html { direction: rtl; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--lh-normal);
+  letter-spacing: 0; /* never track Persian */
+  color: var(--text-primary);
+  background: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: var(--fw-semibold); line-height: var(--lh-snug); letter-spacing: 0; margin: 0; }
+
+/* Latin runs inside Persian text (the "Deltalk" logotype, URLs) stay LTR & isolated. */
+.dt-latin, [lang="en"] { font-family: var(--font-latin); direction: ltr; unicode-bidi: isolate; letter-spacing: normal; }
+
+/* Links — warm reach by default, deepening on hover. */
+a { color: var(--action-primary); text-decoration: none; transition: color var(--dur-fast) var(--ease-standard); }
+a:hover { color: var(--action-primary-press); }
+
+::selection { background: var(--warm-100); color: var(--ink); }
+
+/* GLOBAL FALLBACK FOCUS — for focusable elements with no component focus rule of their own.
+   FOCUS ADDS, NEVER REPLACES (2026-08-08): an element carrying its own box-shadow that must
+   survive focus publishes it as --focus-keep; otherwise the default is a transparent no-op.
+   Components (.dt-btn, .dt-iconbtn) outrank this rule and use their own --_shadow instead. */
+:focus-visible { outline: none; box-shadow: var(--focus-keep, 0 0 #0000), var(--ring); border-radius: var(--radius-xs); }
+
+/* Directional icons mirror in RTL; non-directional ones must NOT.
+   Add data-dir-icon to back/forward/send/chevron/progress glyphs. */
+[dir="rtl"] [data-dir-icon] { transform: scaleX(-1); }

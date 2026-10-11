@@ -1,0 +1,36 @@
+/* Deltalk guideline cards — shared chrome.
+   A card answers WHAT to use. The readme answers WHY it is what it is.
+   Derivations, audit history and measurement math belong there, never here. */
+body{margin:0;padding:28px;background:var(--bg);color:var(--text-primary);font-family:var(--font-sans);font-size:14px;line-height:1.6;direction:rtl}
+.card-h{direction:ltr;text-align:left;margin:0 0 22px}
+.card-h h1{margin:0 0 4px;font-family:var(--font-latin);font-size:22px;font-weight:700;letter-spacing:-.01em}
+.card-h p{margin:0;font-family:var(--font-latin);font-size:14px;line-height:1.55;color:var(--text-secondary);max-width:70ch}
+h2.sec{direction:ltr;text-align:left;margin:30px 0 14px;font-family:var(--font-latin);font-size:16px;font-weight:700;display:flex;align-items:center;gap:12px}
+h2.sec::after{content:"";flex:1;height:1px;background:var(--border)}
+p.lead{direction:ltr;text-align:left;margin:0 auto 14px 0;font-family:var(--font-latin);font-size:14px;line-height:1.55;color:var(--text-secondary);max-width:74ch}
+/* key-value spec strip — the numbers a designer needs, nothing more */
+.spec{display:flex;flex-wrap:wrap;gap:0 34px;direction:ltr;margin:0 0 18px;padding:12px 0;border-block:1px solid var(--border)}
+.spec div{display:flex;flex-direction:column;gap:2px}
+.spec dt{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-subtle)}
+.spec dd{margin:0;font-family:var(--font-latin);font-size:15px;font-weight:600}
+/* do / never */
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;direction:ltr;text-align:left;margin:16px 0 0}
+.rules section{border:1px solid var(--border);border-radius:var(--radius-card);padding:14px 16px;background:var(--surface-card)}
+.rules h3{margin:0 0 8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.rules--do h3{color:var(--success-text)}.rules--no h3{color:var(--danger-text)}
+.rules ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.rules li{font-family:var(--font-latin);font-size:13.5px;line-height:1.5;color:var(--text-secondary);padding-inline-start:15px;position:relative}
+.rules li::before{content:"";position:absolute;inset-inline-start:0;top:8px;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.5}
+.rules--do li::before{background:var(--success-text)}.rules--no li::before{background:var(--danger-text)}
+.rules li b{color:var(--text-primary);font-weight:600}
+/* tables */
+table.k{border-collapse:collapse;width:100%;direction:ltr;text-align:left;font-size:13.5px;font-family:var(--font-latin)}
+table.k th{font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-subtle);font-weight:700;padding:0 16px 7px 0;border-bottom:1px solid var(--border);text-align:left}
+table.k td{padding:9px 16px 9px 0;border-bottom:1px solid var(--border);color:var(--text-secondary);line-height:1.5;vertical-align:top}
+table.k td b{color:var(--text-primary);font-weight:600}
+.mono{font-family:var(--font-mono);font-size:12px;direction:ltr;unicode-bidi:isolate}
+/* English prose inside an RTL document must be isolated, or its trailing full stop
+   reorders to the left edge and renders as a stray leading period. */
+.ltr{direction:ltr;unicode-bidi:isolate;text-align:left}
+.readmore{direction:ltr;text-align:left;margin:22px 0 0;font-family:var(--font-mono);font-size:11px;color:var(--text-subtle)}
+a{color:var(--accent)}a:hover{color:var(--accent-press)}

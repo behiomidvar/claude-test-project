@@ -1,0 +1,79 @@
+<!-- @dsCard group="1. Brand" viewport="820x1420" name="Logo — horizontal" subtitle="Wordmark ink 112 × 24; icon frame 36 × 36 (ink 27 × 27); bottom-aligned" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+.grid{display:grid;grid-template-columns:1fr 1fr;direction:ltr;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;margin:0 0 18px}
+.panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px 18px;min-height:170px}
+.panel.tall{min-height:250px}
+.light{background:#FFFFFF}.dark{background:#121926}
+.clear{position:relative;padding:20px 26px;border:1.5px dashed rgba(137,110,244,.55);border-radius:12px}
+.tag{font-size:11.5px;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate;text-align:center;line-height:1.5}
+.lighttag{color:#746D80}.darktag{color:#9AA4B2}
+.lock,.lockv{color:var(--logo-wordmark)}
+.lock svg{display:block;height:48px;width:auto}
+.bar .lock svg{height:36px}
+.lockv svg{display:block;height:128px;width:auto}
+.meas{position:relative;display:inline-block}
+.meas i{position:absolute;left:0;right:0;display:block}
+.meas .base{bottom:6.67px;border-top:1px dashed var(--accent)}
+.meas .cph{bottom:35.2px;border-top:1px dashed var(--conversation-active)}
+.meas .top{bottom:38.67px;border-top:1px dashed var(--text-subtle)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary);direction:ltr;margin:-6px 0 16px;font-family:var(--font-latin)}
+.legend i{display:inline-block;width:18px;border-top:1px dashed;vertical-align:middle;margin-inline-end:6px}
+.bar{display:flex;align-items:center;gap:var(--gap-inline);min-height:60px;padding:8px var(--space-3);background:var(--surface-card);border-bottom:1px solid var(--border)}
+.bar__slot{flex:1;min-width:0;display:flex;align-items:center}
+.bar__btn{width:48px;height:48px;flex-shrink:0;border:none;background:none;color:var(--text-primary);border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center}
+.bar__btn svg{width:24px;height:24px}
+h3.sub{direction:ltr;text-align:left;margin:26px 0 10px;font-family:var(--font-latin);font-size:14px;font-weight:700;color:var(--text-primary)}
+</style></head><body>
+<div class="card-h"><h1>Logo — horizontal</h1></div>
+<h2 class="sec" style="margin-top:0">Colour — both orientations</h2>
+<table class="k"><thead><tr><th></th><th>wordmark</th><th>tagline (Full only)</th></tr></thead><tbody>
+  <tr><td><b>Light</b></td><td><span class="mono">--brand-navy-500 #261D82</span></td><td><span class="mono">--brand-navy-400 #4D54A9</span></td></tr>
+  <tr><td><b>Dark</b></td><td><span class="mono">--brand-lavender-400 #B99FFF</span></td><td><span class="mono">--brand-lavender-500 #A780FE</span></td></tr>
+</tbody></table>
+
+<h2 class="sec">Horizontal</h2>
+<div class="grid">
+  <div class="panel light" data-theme="light"><div class="clear"><img src="../assets/wordmark-horizontal-light.svg" height="73.33" alt="لوگوی افقی دلتاک روی روشن"></div><span class="tag lighttag">Full · light</span></div>
+  <div class="panel dark" data-theme="dark"><div class="clear"><img src="../assets/wordmark-horizontal-dark.svg" height="73.33" alt="لوگوی افقی دلتاک روی تیره"></div><span class="tag darktag">Full · dark</span></div>
+  <div class="panel light" data-theme="light"><div class="clear"><span class="lock meas" id="h1"><i class="base"></i><i class="cph"></i><i class="top"></i></span></div><span class="tag lighttag">Compact · light · 48px artwork</span></div>
+  <div class="panel dark" data-theme="dark"><div class="clear"><span class="lock" id="h2"></span></div><span class="tag darktag">Compact · dark · 48px artwork</span></div>
+</div>
+<div class="legend">
+  <span><i style="border-color:var(--accent)"></i>wordmark baseline — the icon ink's bottom edge sits on it</span>
+  <span><i style="border-color:var(--conversation-active)"></i>cap-height 21.4u</span>
+  <span><i style="border-color:var(--text-subtle)"></i>wordmark ink top (24u box) — the icon rises above it</span>
+</div>
+<table class="k"><thead><tr><th></th><th>artwork</th><th>wordmark ink</th><th>icon frame</th><th>icon ink</th><th>gap</th><th>minimum</th></tr></thead><tbody>
+  <tr><td><b>Compact</b></td><td class="mono">152 × 36</td><td class="mono">112 × 24</td><td class="mono">36 × 36</td><td class="mono">27 × 27</td><td class="mono">8.5u</td><td class="mono">24px tall</td></tr>
+  <tr><td><b>Full</b></td><td class="mono">278.33 × 73.33</td><td class="mono">186.67 × 40</td><td class="mono">73.33 × 73.33</td><td class="mono">55 × 55</td><td class="mono">18.33px</td><td class="mono">36px tall</td></tr>
+</tbody></table>
+<p class="lead">The icon artwork carries <b>4.5u of built-in padding per side</b> (a 48-unit frame around 36 units of ink, scaled here to a 36u frame around 27u of ink). All alignment math keys to the <b>ink</b> box, never the frame — measuring from the frame is what inflated the lockup.</p>
+<div class="rules">
+  <section class="rules--do"><h3>Do</h3><ul>
+    <li>Wordmark leads, <b>icon at its right</b> — the RTL reading start.</li>
+    <li><b>Compact:</b> <b>bottom alignment only</b> — the icon ink's bottom edge on the wordmark's ink baseline. The icon's 27u of ink stands taller than the 24u wordmark and overhangs it at the top; that is correct.</li>
+    <li><b>Full:</b> icon height-matched and <b>centred</b> against the wordmark + tagline block.</li>
+  </ul></section>
+  <section class="rules--no"><h3>Never</h3><ul>
+    <li>Baseline-align the <b>Full</b> lockup.</li>
+    <li>Centre or top-align the <b>Compact</b> lockup.</li>
+    <li>Scale the icon down to the wordmark's 24u height — the withdrawn 142 × 24 build did this and the type then overpowered the mark.</li>
+  </ul></section>
+</div>
+<h3 class="sub">Compact in the persistent top bar</h3>
+<div style="display:flex;flex-direction:column;gap:12px;max-width:430px;margin-right:auto">
+  <div class="bar" data-theme="light"><span class="bar__slot lock" id="h3"></span><button type="button" class="bar__btn" aria-label="جست‌وجو"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></div>
+  <div class="bar" data-theme="dark"><span class="bar__slot lock" id="h4"></span><button type="button" class="bar__btn" aria-label="جست‌وجو"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button></div>
+</div>
+<p class="lead" style="margin-top:12px">Artwork fixed at <b>36px tall</b> (1u = 1px → 152 × 36), centred; the container carries no height requirement.</p>
+<p class="readmore">Derivations → readme.md § LOGO LOCKUP SPEC</p>
+
+<script>
+function put(id,file,mode){var el=document.getElementById(id);if(!el)return;
+  fetch('../'+file).then(function(r){return r.text()}).then(function(t){
+    if(mode==='fit')t=t.replace('<svg ','<svg style="display:block;width:100%;height:auto" ');
+    el.insertAdjacentHTML('afterbegin',t);});}
+['h1','h2','h3','h4'].forEach(function(id){put(id,'assets/logo-compact.svg')});
+</script>
+<script src="../theme-toggle.js"></script></body></html>

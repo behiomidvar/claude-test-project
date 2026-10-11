@@ -1,0 +1,86 @@
+<!-- @dsCard group="5. Shape" viewport="900x1397" name="Corner radius & roles" subtitle="Raw ramp is geometry; five role tokens carry meaning" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--text-primary);font-family:var(--font-sans);direction:rtl}
+h2{margin:0 0 4px;font-size:15px}
+.sub{margin:0 0 16px;font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+.ramp{display:flex;gap:var(--space-4);align-items:flex-end;flex-wrap:wrap;direction:ltr}
+.c{display:flex;flex-direction:column;align-items:center;gap:var(--space-2)}
+.b{width:74px;height:74px;background:var(--accent-tint);border:2px solid var(--accent)}
+.l{font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);text-align:center;line-height:1.45}
+.l b{display:block;color:var(--text-primary)}
+hr{border:none;border-top:1px solid var(--border);margin:26px 0 22px}
+.roles{display:flex;flex-direction:column;gap:var(--space-5)}
+.role{display:grid;grid-template-columns:1fr 170px;gap:var(--space-4);align-items:center}
+.rname{direction:ltr;unicode-bidi:isolate;text-align:left}
+.rname b{display:block;font-family:var(--font-mono);color:var(--text-primary);font-size:11px;line-height:1.5}
+.rval{display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);margin-top:2px}
+.rdesc{display:block;font-size:11px;color:var(--text-secondary);line-height:1.55;margin-top:6px;direction:rtl;text-align:right}
+.stage{border:1px dashed var(--border);border-radius:var(--radius-sm);padding:18px;background:var(--surface-well);display:flex;align-items:center;justify-content:center;min-height:96px}
+.btn{min-height:48px;padding:0 22px;border:none;border-radius:var(--radius-button);background:var(--action-cta);color:var(--text-on-cta);font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.fld{min-height:48px;width:100%;max-width:280px;display:flex;align-items:center;padding:0 14px;background:var(--surface-input);border:1px solid var(--border-control);border-radius:var(--radius-input);font-size:13px;color:var(--text-subtle)}
+.card{width:100%;max-width:300px;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);box-shadow:var(--shadow-md)}
+.card b{font-size:13px}.card p{margin:6px 0 0;font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+.chips{display:flex;gap:var(--gap-inline);flex-wrap:wrap}
+.chip{min-height:44px;padding:0 18px;display:inline-flex;align-items:center;border-radius:var(--radius-chip);background:var(--surface-card);border:1px solid var(--border);font-size:12.5px}
+.sheet{width:100%;max-width:300px;background:var(--surface-card);border:1px solid var(--border);border-top-left-radius:var(--radius-sheet);border-top-right-radius:var(--radius-sheet);border-bottom:none;padding:12px 18px 26px;box-shadow:var(--shadow-lg);text-align:center}
+.grab{width:44px;height:5px;border-radius:var(--radius-chip);background:var(--border-control);margin:0 auto 14px}
+.sheet b{font-size:13px}
+.bub{display:flex;flex-direction:column;gap:var(--gap-inline);width:100%;max-width:300px}
+.bt,.bm{max-width:78%;padding:11px 15px;font-size:13px;line-height:1.7}
+.bm{align-self:flex-start;background:var(--action-cta);color:var(--text-on-cta);border-radius:var(--radius-bubble-me)}
+.bt{align-self:flex-end;background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-bubble-them)}
+/* READABLE-TYPE STANDARD — a card is scanned at arm's length, not read.
+   Body prose >=13px, labels >=11px. Derivations live in readme.md, not here. */
+.sub{font-size:13.5px;line-height:1.6}.l{font-size:11px}.rname b{font-size:12.5px}.rval{font-size:11.5px}.rdesc{font-size:13px}.card p{font-size:13.5px;line-height:1.6}
+
+/* English prose in an RTL document must be isolated, or its trailing full stop
+   reorders to the left edge and renders as a stray leading period. */
+.rdesc{direction:ltr;unicode-bidi:isolate;text-align:left}
+</style></head>
+<body>
+<h2>The raw ramp — geometry only</h2>
+<p class="sub" dir="ltr">These steps carry <b>no role</b>. Reach for a role token below; a raw step is for a genuine one-off (a nested inner corner, a decorative shape) where no role applies.</p>
+<div class="ramp" id="ramp"></div>
+<hr>
+<h2>Which radius does what</h2>
+<p class="sub" dir="ltr">Five role tokens, each with exactly one value. Reach for the role, never the raw step.</p>
+<div class="roles">
+  <div class="role">
+    <div class="stage"><button class="btn">ادامه</button></div>
+    <div class="rname"><b>--radius-button</b><span class="rval" id="v-button"></span><span class="rdesc">Button and IconButton. Softer than a field so an action reads as pressable, not typeable.</span></div>
+  </div>
+  <div class="role">
+    <div class="stage"><div class="fld">چی صدات کنیم؟</div></div>
+    <div class="rname"><b>--radius-input</b><span class="rval" id="v-input"></span><span class="rdesc">Text field, textarea, select trigger, OTP box. The tightest role — a field is a container for content, not a shape.</span></div>
+  </div>
+  <div class="role">
+    <div class="stage"><div class="card"><b>یک کارت</b><p>هر سطح کارت‌مانند همین گردی را دارد.</p></div></div>
+    <div class="rname"><b>--radius-card</b><span class="rval" id="v-card"></span><span class="rdesc">Card and every card-like surface — plan cards, prompt cards, permission cards, list panels.</span></div>
+  </div>
+  <div class="role">
+    <div class="stage"><div class="chips"><span class="chip">کتاب</span><span class="chip">قهوهٔ دستی</span></div></div>
+    <div class="rname"><b>--radius-chip</b><span class="rval" id="v-chip"></span><span class="rdesc">Chips, badges, pills — fully round. Also the sheet grab-handle and other capsule shapes.</span></div>
+  </div>
+  <div class="role">
+    <div class="stage" style="align-items:flex-end;padding-bottom:0"><div class="sheet"><div class="grab"></div><b>یک شیت</b></div></div>
+    <div class="rname"><b>--radius-sheet</b><span class="rval" id="v-sheet"></span><span class="rdesc">Bottom sheets, dialogs, large overlay surfaces. The most generous role — a sheet is a new plane, not a card.</span></div>
+  </div>
+  <div class="role">
+    <div class="stage"><div class="bub"><span class="bm">این یکی از طرف توست</span><span class="bt">و این از طرف اوست</span></div></div>
+    <div class="rname"><b>--radius-bubble-me</b><span class="rval" id="v-bub"></span><span class="rdesc">Speech bubbles: rounded on three corners, tight on the tail corner. <code>-me</code> and <code>-them</code> mirror each other, and the pair is already RTL-correct.</span></div>
+  </div>
+</div>
+<script>
+var cs=getComputedStyle(document.documentElement);
+function val(n){return cs.getPropertyValue(n).trim();}
+var STEPS=['xs','sm','md','lg','xl','2xl','pill'];
+document.getElementById('ramp').innerHTML=STEPS.map(function(k){
+  var t='--radius-'+k;
+  return '<div class="c"><span class="b" style="border-radius:var('+t+')"></span>'+
+         '<span class="l"><b>'+k+'</b>'+val(t)+'</span></div>';
+}).join('');
+[['button','--radius-button'],['input','--radius-input'],['card','--radius-card'],['chip','--radius-chip'],['sheet','--radius-sheet'],['bub','--radius-bubble-me']]
+ .forEach(function(p){document.getElementById('v-'+p[0]).textContent=val(p[1]);});
+</script>
+<script src="../theme-toggle.js"></script><p class="readmore" dir="ltr">Why the raw ramp carries no role notes → readme.md §Radius.</p>
+</body></html>

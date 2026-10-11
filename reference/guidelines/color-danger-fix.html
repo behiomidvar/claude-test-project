@@ -1,0 +1,76 @@
+<!-- @dsCard group="2. Color" viewport="900x650" name="State-colour separation — accent · danger · premium" subtitle="Focus, error and premium must never be confusable" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>body{margin:0;padding:22px;background:var(--surface);color:var(--text-primary);font-family:var(--font-sans)}
+.rule{border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;background:var(--surface-card);margin-bottom:18px}
+.rule h3{margin:0 0 6px;font-size:14px}
+.rule p{margin:0;font-size:11.5px;color:var(--text-secondary);line-height:1.65}
+.themes{direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+/* A [data-theme] wrapper MUST re-declare inherited colour: `color` resolved at body
+   computes the light literal and that value inherits past the re-scope. Same class of
+   bug as :root-only alias tokens. */
+.tbox{border-radius:var(--radius-lg);padding:16px;background:var(--bg);border:1px solid var(--border);color:var(--text-primary)}
+.tlbl{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--text-subtle);margin-bottom:12px;direction:ltr}
+.trio{display:flex;gap:8px;margin-bottom:14px}
+.chip{flex:1;border-radius:var(--radius-md);padding:9px 8px;font-size:10.5px;font-weight:700;direction:ltr;text-align:left;line-height:1.35}
+.chip .h{display:block;font-family:var(--font-mono);font-size:9.5px;opacity:.9;margin-top:3px;direction:ltr;unicode-bidi:isolate}
+.mock{display:flex;flex-direction:column;gap:7px}
+.fld{display:flex;align-items:center;min-height:44px;padding:0 13px;border-radius:var(--radius-input);background:var(--surface-input);font-size:12px;color:var(--text-primary)}
+.err{display:flex;align-items:center;gap:7px;border-radius:var(--radius-md);padding:8px 11px;font-size:11.5px;font-weight:600}
+.matrix{margin-top:14px;width:100%;border-collapse:collapse;font-size:10.5px;direction:ltr}
+.matrix th,.matrix td{text-align:left;padding:5px 7px;border-bottom:1px solid var(--border);font-family:var(--font-mono)}
+.matrix th{color:var(--text-subtle);font-weight:700}
+.ok{color:var(--success-text);font-weight:700}
+.desc{font-size:11px;color:var(--text-secondary);line-height:1.6;margin:10px 0 0}
+/* READABLE-TYPE STANDARD — a card is scanned at arm's length, not read.
+   Body prose >=13px, labels >=11px. Derivations live in readme.md, not here. */
+.rule p{font-size:13.5px;line-height:1.6}.tlbl{font-size:11px}.chip{font-size:11.5px}.chip .h{font-size:10.5px}.fld{font-size:13px}.err{font-size:12.5px}.matrix{font-size:12px}.desc{font-size:13px}
+</style></head>
+<body>
+<div class="rule">
+  <h3 dir="ltr">The rule — each pair needs 1.5:1 luminance <b>OR</b> 30° of hue</h3>
+  <p dir="ltr">All three can appear on one screen — a focused field, an invalid field, a paid affordance — so every pair must be separable on at least one axis.</p>
+</div>
+<div class="themes">
+  <div class="tbox" data-theme="light">
+    <div class="tlbl">LIGHT — luminance does the work</div>
+    <div class="trio">
+      <div class="chip" style="background:#F24C9A;color:#121926">accent<span class="h"><bdi>#F24C9A</bdi> brand-pink-500</span></div>
+      <div class="chip" style="background:#C81E3A;color:#fff">danger<span class="h"><bdi>#C81E3A</bdi> non-ramp — universal red</span></div>
+      <div class="chip" style="background:#940155;color:#fff">premium<span class="h"><bdi>#940155</bdi> brand-pink-700</span></div>
+    </div>
+    <div class="mock">
+      <div class="fld" style="border:2px solid #F24C9A">فوکوس — قابل ویرایش</div>
+      <div class="fld" style="border:2px solid #C81E3A">خطا — شماره کامل نیست</div>
+      <div class="err" style="background:#FBEAEC;color:#B02034"><span>⚠</span>این پیام ارسال نشد</div>
+    </div>
+    <table class="matrix">
+      <tr><th>pair</th><th>lum</th><th>hue</th><th></th></tr>
+      <tr><td>accent ↔ danger</td><td>1.69:1</td><td>24°</td><td class="ok">PASS</td></tr>
+      <tr><td>accent ↔ premium</td><td>2.62:1</td><td>0°</td><td class="ok">PASS</td></tr>
+      <tr><td>danger ↔ premium</td><td>1.55:1</td><td>24°</td><td class="ok">PASS</td></tr>
+    </table>
+    
+  </div>
+  <div class="tbox" data-theme="dark">
+    <div class="tlbl">DARK — hue does the work</div>
+    <div class="trio">
+      <div class="chip" style="background:#E481AF;color:#121926">accent<span class="h"><bdi>#E481AF</bdi> tuned from brand-pink-500</span></div>
+      <div class="chip" style="background:#FF6B5B;color:#3A0C14">danger<span class="h"><bdi>#FF6B5B</bdi> non-ramp — universal red</span></div>
+      <div class="chip" style="background:#FFCCDE;color:#310018">premium<span class="h"><bdi>#FFCCDE</bdi> brand-pink-200</span></div>
+    </div>
+    <div class="mock">
+      <div class="fld" style="border:2px solid #E481AF">فوکوس — قابل ویرایش</div>
+      <div class="fld" style="border:2px solid #FF6B5B">خطا — شماره کامل نیست</div>
+      <div class="err" style="background:#33161A;color:#FFA9A0"><span>⚠</span>این پیام ارسال نشد</div>
+    </div>
+    <table class="matrix">
+      <tr><th>pair</th><th>lum</th><th>hue</th><th></th></tr>
+      <tr><td>accent ↔ danger</td><td>1.07:1</td><td>37°</td><td class="ok">PASS</td></tr>
+      <tr><td>accent ↔ premium</td><td>1.85:1</td><td>4°</td><td class="ok">PASS</td></tr>
+      <tr><td>danger ↔ premium</td><td>1.99:1</td><td>33°</td><td class="ok">PASS</td></tr>
+    </table>
+    
+  </div>
+</div>
+<p class="readmore" dir="ltr">Why two axes, how each value was derived and what it replaced → readme.md §STATE-COLOUR SEPARATION and §Reconciliation rulings.</p>
+</body></html>

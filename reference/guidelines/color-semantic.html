@@ -1,0 +1,110 @@
+<!-- @dsCard group="2. Color" viewport="960x1317" name="Semantic colors — light / dark" subtitle="Success · Danger · Warning · Info. Four tokens each (fill, on-fill, surface, text), explicit per theme, with contrast ratios." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>
+body{margin:0;padding:22px;background:var(--surface);color:var(--text-primary);font-family:var(--font-sans)}
+.tbl{width:100%;border-collapse:collapse;direction:ltr;text-align:left;font-size:12px}
+.tbl caption{text-align:left;font-weight:700;font-size:13px;color:var(--text-secondary);padding:0 0 10px}
+.tbl th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-subtle);font-weight:700;padding:7px 9px;border-bottom:2px solid var(--border-strong);white-space:nowrap}
+.tbl td{padding:8px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
+.grp td{background:var(--surface-well);font-weight:800;font-size:11px;letter-spacing:.03em;color:var(--text-primary);padding-top:10px;padding-bottom:10px}
+.tok{font-family:var(--font-mono);font-size:11px;color:var(--text-primary);white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.desc{direction:ltr;text-align:left;unicode-bidi:isolate;color:var(--text-secondary);font-size:11px}
+.cell{display:flex;align-items:flex-start;gap:7px}
+.sw,.chip{margin-top:1px}
+.sw{width:15px;height:15px;border-radius:4px;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(128,128,128,.35)}
+.hex{font-family:var(--font-mono);font-size:11px;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.aa{font-size:10.5px;font-weight:700;color:var(--success-text);direction:ltr;unicode-bidi:isolate}
+.src{display:block;font-family:var(--font-mono);font-size:9px;line-height:1.3;color:var(--text-subtle);font-weight:400;margin-top:2px;direction:ltr;unicode-bidi:isolate;white-space:normal;max-width:22ch}.src.x{color:var(--warning-text)}
+.chip{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}
+
+/* READABLE-TYPE STANDARD — a card is scanned at arm's length, not read.
+   Body prose >=13px, labels >=11px. Derivations live in readme.md, not here. */
+.tbl{font-size:13.5px}.tbl th{font-size:11px}.grp td{font-size:13px}.tok,.hex{font-size:11.5px}.desc{font-size:13px}.aa{font-size:11px}.src{font-size:10.5px}.chip{font-size:11px}
+</style></head>
+<body>
+<table class="tbl">
+<caption>Every value is labelled with its exact source: a brand ramp step (<bdi>brand-&lt;family&gt;-&lt;step&gt;</bdi>), a neutral ladder step (<bdi>neutral-&lt;step&gt;</bdi>), or an explicit <bdi>non-ramp</bdi> exception with its reason — see readme §Reconciliation rulings. Every role carries four tokens. Ratios: fill vs bg · on-fill vs fill · text vs surface. Fills flagged “icon/fill only” fail small-text AA — use the -text token for words.</caption>
+<thead><tr><th>Token</th><th>Light</th><th>AA (L)</th><th>Dark</th><th>AA (D)</th><th>Role</th></tr></thead>
+<tbody>
+
+<tr class="grp"><td colspan="6">SUCCESS</td></tr>
+<tr><td class="tok">--success-fill</td>
+  <td><span class="cell"><span class="sw" style="background:#3E9D6E"></span><span class="hex">#3E9D6E<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">3.21 · icon/fill</td>
+  <td><span class="cell"><span class="sw" style="background:#4FB985"></span><span class="hex">#4FB985<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">7.22 ✓</td>
+  <td class="desc">Solid fill, borders, large icons</td></tr>
+<tr><td class="tok">--success-on-fill</td>
+  <td><span class="cell"><span class="chip" style="background:#3E9D6E;color:#06301E">Aa</span><span class="hex">#06301E<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">4.31 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#4FB985;color:#06251A">Aa</span><span class="hex">#06251A<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">6.69 ✓</td>
+  <td class="desc">Text/icon ON the fill</td></tr>
+<tr><td class="tok">--success-surface</td>
+  <td><span class="cell"><span class="sw" style="background:#E4F3EB"></span><span class="hex">#E4F3EB<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">tint</td>
+  <td><span class="cell"><span class="sw" style="background:#17281F"></span><span class="hex">#17281F<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">tint</td>
+  <td class="desc">Banner / alert background</td></tr>
+<tr><td class="tok">--success-text</td>
+  <td><span class="cell"><span class="chip" style="background:#E4F3EB;color:#1F7A50">Aa</span><span class="hex">#1F7A50<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">4.63 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#17281F;color:#7FE3B0">Aa</span><span class="hex">#7FE3B0<i class="src x">non-ramp — reserved green</i></span></span></td><td class="aa">9.94 ✓</td>
+  <td class="desc">Words on surface / page</td></tr>
+
+<tr class="grp"><td colspan="6">VERIFICATION — reserved, single-purpose</td></tr>
+<tr><td class="tok">--verification</td>
+  <td><span class="cell"><span class="sw" style="background:#1D9BF0"></span><span class="hex">#1D9BF0<i class="src x">non-ramp — adopted verification convention</i></span></span></td><td class="aa">5.87 ✓ on ink</td>
+  <td><span class="cell"><span class="sw" style="background:#1D9BF0"></span><span class="hex">#1D9BF0<i class="src x">non-ramp — adopted verification convention</i></span></span></td><td class="aa">same value</td>
+  <td class="desc">The identity badge mark. One value, both themes. <b>Exactly one consumer: <bdi>VerificationBadge</bdi></b></td></tr>
+
+<tr class="grp"><td colspan="6">DANGER / ERROR</td></tr>
+<tr><td class="tok">--danger-fill</td>
+  <td><span class="cell"><span class="sw" style="background:#C81E3A"></span><span class="hex">#C81E3A<i class="src x">non-ramp — needs universal red</i></span></span></td><td class="aa">5.42 ✓</td>
+  <td><span class="cell"><span class="sw" style="background:#FF6B5B"></span><span class="hex">#FF6B5B<i class="src x">non-ramp — needs universal red</i></span></span></td><td class="aa">6.29 ✓</td>
+  <td class="desc">Solid fill. Light = crimson, off the brand pink</td></tr>
+<tr><td class="tok">--danger-on-fill</td>
+  <td><span class="cell"><span class="chip" style="background:#C81E3A;color:#FFFFFF">Aa</span><span class="hex">#FFFFFF<i class="src">neutral-100</i></span></span></td><td class="aa">5.67 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#FF6B5B;color:#3A0C14">Aa</span><span class="hex">#3A0C14<i class="src x">non-ramp — ink tuned for the danger fill</i></span></span></td><td class="aa">6.04 ✓</td>
+  <td class="desc">Text/icon ON the fill (white L / ink D)</td></tr>
+<tr><td class="tok">--danger-surface</td>
+  <td><span class="cell"><span class="sw" style="background:#FBEAEC"></span><span class="hex">#FBEAEC<i class="src x">non-ramp — danger tint</i></span></span></td><td class="aa">tint</td>
+  <td><span class="cell"><span class="sw" style="background:#33161A"></span><span class="hex">#33161A<i class="src x">non-ramp — danger tint</i></span></span></td><td class="aa">tint</td>
+  <td class="desc">Banner / alert background</td></tr>
+<tr><td class="tok">--danger-text</td>
+  <td><span class="cell"><span class="chip" style="background:#FBEAEC;color:#B02034">Aa</span><span class="hex">#B02034<i class="src x">non-ramp — danger family</i></span></span></td><td class="aa">5.83 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#33161A;color:#FFA9A0">Aa</span><span class="hex">#FFA9A0<i class="src x">non-ramp — danger family</i></span></span></td><td class="aa">9.00 ✓</td>
+  <td class="desc">Words on surface / page</td></tr>
+
+<tr class="grp"><td colspan="6">WARNING</td></tr>
+<tr><td class="tok">--warning-fill</td>
+  <td><span class="cell"><span class="sw" style="background:#FFB565"></span><span class="hex">#FFB565<i class="src">brand-gold-500</i></span></span></td><td class="aa">1.67 · icon/fill</td>
+  <td><span class="cell"><span class="sw" style="background:#FFB565"></span><span class="hex">#FFB565<i class="src">brand-gold-500</i></span></span></td><td class="aa">10.10 ✓</td>
+  <td class="desc">Solid fill, borders, large icons</td></tr>
+<tr><td class="tok">--warning-on-fill</td>
+  <td><span class="cell"><span class="chip" style="background:#FFB565;color:#251000">Aa</span><span class="hex">#251000<i class="src">brand-gold-900</i></span></span></td><td class="aa">10.45 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#FFB565;color:#251000">Aa</span><span class="hex">#251000<i class="src">brand-gold-900</i></span></span></td><td class="aa">10.45 ✓</td>
+  <td class="desc">Dark ink ON the amber — never white</td></tr>
+<tr><td class="tok">--warning-surface</td>
+  <td><span class="cell"><span class="sw" style="background:#FFF3E7"></span><span class="hex">#FFF3E7<i class="src">brand-gold-100</i></span></span></td><td class="aa">tint</td>
+  <td><span class="cell"><span class="sw" style="background:#2A2318"></span><span class="hex">#2A2318<i class="src x">non-ramp — dark tint, semantic</i></span></span></td><td class="aa">tint</td>
+  <td class="desc">Banner / alert background</td></tr>
+<tr><td class="tok">--warning-text</td>
+  <td><span class="cell"><span class="chip" style="background:#FFF3E7;color:#925802">Aa</span><span class="hex">#925802<i class="src">brand-gold-700</i></span></span></td><td class="aa">5.31 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#2A2318;color:#FFD5AC">Aa</span><span class="hex">#FFD5AC<i class="src">brand-gold-300</i></span></span></td><td class="aa">11.36 ✓</td>
+  <td class="desc">Words on surface / page</td></tr>
+
+<tr class="grp"><td colspan="6">INFO</td></tr>
+<tr><td class="tok">--info-fill</td>
+  <td><span class="cell"><span class="sw" style="background:#4437C4"></span><span class="hex">#4437C4<i class="src">brand-indigo-600</i></span></span></td><td class="aa">7.75 ✓</td>
+  <td><span class="cell"><span class="sw" style="background:#B99FFF"></span><span class="hex">#B99FFF<i class="src">brand-lavender-400</i></span></span></td><td class="aa">7.94 ✓</td>
+  <td class="desc">Solid fill, borders, large icons</td></tr>
+<tr><td class="tok">--info-on-fill</td>
+  <td><span class="cell"><span class="chip" style="background:#4437C4;color:#FFFFFF">Aa</span><span class="hex">#FFFFFF<i class="src">neutral-100</i></span></span></td><td class="aa">8.11 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#B99FFF;color:#070032">Aa</span><span class="hex">#070032<i class="src">brand-navy-900</i></span></span></td><td class="aa">8.97 ✓</td>
+  <td class="desc">Text/icon ON the fill (white L / ink D)</td></tr>
+<tr><td class="tok">--info-surface</td>
+  <td><span class="cell"><span class="sw" style="background:#F3F4FF"></span><span class="hex">#F3F4FF<i class="src">brand-indigo-100</i></span></span></td><td class="aa">tint</td>
+  <td><span class="cell"><span class="sw" style="background:#1B2242"></span><span class="hex">#1B2242<i class="src x">non-ramp — dark tint, semantic</i></span></span></td><td class="aa">tint</td>
+  <td class="desc">Banner / alert background</td></tr>
+<tr><td class="tok">--info-text</td>
+  <td><span class="cell"><span class="chip" style="background:#F3F4FF;color:#4437C4">Aa</span><span class="hex">#4437C4<i class="src">brand-indigo-600</i></span></span></td><td class="aa">7.41 ✓</td>
+  <td><span class="cell"><span class="chip" style="background:#1B2242;color:#CCBCFE">Aa</span><span class="hex">#CCBCFE<i class="src">brand-lavender-300</i></span></span></td><td class="aa">9.00 ✓</td>
+  <td class="desc">Words on surface / page</td></tr>
+
+</tbody></table>
+<p class="readmore" dir="ltr">Contrast derivations, the four-token-per-role rationale and reconciliation history → readme.md §Semantic colors and §Reconciliation rulings.</p>
+</body></html>

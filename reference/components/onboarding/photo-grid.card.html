@@ -1,0 +1,29 @@
+<!-- @dsCard group="Onboarding" viewport="440x510" name="PhotoGrid — upload slots" subtitle="6 slots: add, uploading (progress ring), uploaded, error; first filled = primary photo." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+.wrap{max-width:360px;margin:0 auto}
+.hint{margin-top:14px;font-size:var(--text-caption);color:var(--text-muted);line-height:var(--lh-normal);text-align:center}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { PhotoGrid } = window.DeltalkDesignSystem_288455;
+const A="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&q=80&fit=crop&crop=faces";
+const B="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&q=80&fit=crop&crop=faces";
+function Demo(){
+  return <div className="wrap">
+    <PhotoGrid slots={[
+      {state:'uploaded',src:A},
+      {state:'uploaded',src:B},
+      {state:'uploading',progress:64},
+      {state:'error'},
+      {state:'empty'},
+      {state:'empty'},
+    ]} onAdd={()=>{}} onRemove={()=>{}} onRetry={()=>{}}/>
+    <p className="hint">اولین عکس، عکس اصلی توست. برای جابه‌جایی، عکس‌ها را بکش و رها کن.</p>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

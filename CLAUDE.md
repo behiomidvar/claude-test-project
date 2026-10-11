@@ -8,7 +8,9 @@ rules further down wherever they conflict (single `index.html`, Tailwind CDN,
 font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 
 ### Source of truth
-- `./reference/` is the extracted design system. Before acting, read `readme.md`,
+- `./reference/` is the design system, extracted from `Motions/Deltalk Design System.zip`
+  (the ignored parts below are not committed; re-extract the zip if you need them).
+  Before acting, read `readme.md`,
   `SKILL.md`, `CLAUDE.md` and `tokens/*.css`, and list `assets/`. The files win
   over any summary, including this one.
 - Ignore `reference/uploads`, `reference/scraps`, `reference/.thumbnail` and
@@ -51,15 +53,27 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
   face changes Persian digit widths and line breaks, so a missing weight fails
   the render.
 - Drive our own motion with `useCurrentFrame()` + `interpolate`/`spring`, not CSS
-  transitions. Derive timing from `fps` (`durationFrames('base', fps)`).
+  transitions. Durations come from the motion tokens via `useDurationFrames('base')`
+  (`--dur-fast/base/slow/unfold`); easings are `--ease-*` in `tokens/motion.css`.
+- Use the DS type scale (`--text-*`, `.dt-display`) and spacing tokens (`--space-*`),
+  multiplied by `useLayout().u`. The DS is drawn for a phone; scale small UI up as a
+  unit.
+- React is pinned to 18.3.1 because the DS targets it (its `.d.ts` files use the global
+  `JSX` namespace). Pass a numeric `scale` style as a string, because React 18 appends
+  `px` to numbers.
+- `tokens/fonts.css` imports Hanken Grotesk / JetBrains Mono from Google Fonts (for
+  Latin runs only). Renders without network fall back for Latin, so self-host them
+  before showing Latin text.
 
 ### Hard rules
 - No hardcoded hex. Every color goes through `var(--token)`.
-- Logos come only from the `assets/` SVGs, never redrawn. The compact logo uses
-  `currentColor`: inline it (`<InlineLogo>`), but only ONE inlined logo per frame,
-  because SVG gradient ids like `dtwc`/`dtcc` collide when duplicated (`<LogoBudget>`
-  enforces this). So don't `premountFor` a sequence that holds an `<InlineLogo>`.
-  Full lockups come per theme and work as `<img>` (`<LockupLogo>`).
+- Logos come only from the `assets/` SVGs, never redrawn. The compact logo
+  (`logo-compact.svg`, 152x36) uses `currentColor` for its wordmark: inline it
+  (`<InlineLogo>`, colored `--logo-wordmark`, scaled by height only), but only ONE
+  inlined logo per frame, because SVG gradient ids like `dtwc`/`dtcc` collide when
+  duplicated (`<LogoBudget>` enforces this). So don't `premountFor` a sequence that
+  holds an `<InlineLogo>`. Full lockups come per theme
+  (`wordmark-{horizontal,vertical}-{light,dark}.svg`) and work as `<img>` (`<LockupLogo>`).
 - `--gradient-brand` is only for selected/active/branded states, never a CTA
   fill or a background. `--gradient-celebration` is only for the match moment.
   ONE hero gradient per frame.
@@ -67,6 +81,8 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
   not a gradient.
 - Discover is one vertically scrolling card. No swipe, no drag, no rewind.
   Like and pass are plain buttons.
+- The blur-to-clear photo reveal is removed from the product. The DS still ships it
+  (`dt-unblur`, `Avatar blur`, readme "signature reveal"): never use or imply it.
 - Motion is the "unfold", never the swipe. Durations are 140/240/420/560 ms. Three
   dots are the transition motif.
 - Copy: colloquial Persian, ask-don't-announce, no emoji, no zap/fire/heat
@@ -80,7 +96,8 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 - Persian digits ۰-۹ (`faDigits()`) and Persian punctuation «،» «؟» «؛».
   Persian ی/ک, never Arabic ي/ك.
 - ZWNJ (نیم‌فاصله) in copy, e.g. «می‌شود», «می‌خوای». The one exception is the
-  locked word «گفتگو», written WITHOUT a half-space.
+  locked word «گفتگو», written WITHOUT a half-space. That holds even though the DS
+  readme's ZWNJ example writes «گفت‌وگو».
 - Vocabulary: «لایک» and «مچ». Never «پسند» or «همدل» («همدل» is a competitor's
   name).
 - On-screen copy lives in `src/copy/fa.ts`.

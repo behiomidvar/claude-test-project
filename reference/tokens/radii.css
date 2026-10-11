@@ -1,0 +1,52 @@
+/* Deltalk radii — soft, rounded, human. Nothing sharp or clinical.
+   Bubbles and cards are generously rounded; the speech-bubble language runs through the UI. */
+:root {
+  /* ── RAW RAMP — geometry only. These carry NO role.
+     Reach for a role token below; a raw step is for genuine one-offs (a nested
+     inner corner, a decorative shape) where no role applies. The old
+     "inputs, chips" / "cards" / "sheets" notes were removed from the ramp: they
+     duplicated the roles and disagreed with them (--radius-md said "inputs, chips"
+     while inputs are 12px and chips are a pill). */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-pill: 999px;
+
+  /* ── ROLE RADII — always prefer these ─────────────────────────────────
+     One value per role, so a role can be re-tuned system-wide. Inputs were
+     split between 12px and 14px across components; 12px wins (the spec value),
+     and every field in the family now uses it. */
+  --radius-input:  12px;   /* text field, textarea, select trigger, OTP box, search */
+  --radius-button: 16px;   /* Button, IconButton */
+  --radius-card:   20px;   /* Card and every card-like surface */
+  --radius-sheet:  28px;   /* bottom sheets, dialogs, large overlay surfaces */
+  --radius-chip:   999px;  /* chips, badges, pills = fully round */
+  /* Nested-in-bubble radii are DEFINED in tokens/sizes.css (next to the size
+     scale, as the documented "nested is tighter" exception) and re-exported here
+     so shape callers find them with the other radius roles. */
+  --radius-hairline: 2px;  /* 2–4dp bars: sheet grip, waveform bars, recording bars.
+                              Was re-typed as a literal 2px in Dialog, VoicePlayer,
+                              VoiceNote and MessageInput — one role now. */
+  /* ── SPEECH BUBBLES — ONE definition, composed ───────────────────────
+     The 22px/6px pair used to be re-typed in six places (ChatBubble,
+     VoicePlayer, MessageBubble, each plus an RTL mirror). Two scalars now
+     define it and the four-corner shorthands are composed from them, with the
+     RTL mirror handled HERE rather than in every component. */
+  --radius-bubble:      22px;  /* the rounded corners */
+  --radius-bubble-tail:  6px;  /* the tail corner     */
+  --radius-bubble-sent:     var(--radius-bubble) var(--radius-bubble) var(--radius-bubble-tail) var(--radius-bubble);     /* @kind radius */
+  --radius-bubble-received: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) var(--radius-bubble-tail);     /* @kind radius */
+  /* legacy aliases */
+  --radius-bubble-me: var(--radius-bubble-sent); /* @kind radius */
+  --radius-bubble-them: var(--radius-bubble-received); /* @kind radius */
+}
+/* RTL mirrors the tail once, for every bubble component. */
+[dir="rtl"] {
+  --radius-bubble-sent:     var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) var(--radius-bubble-tail);
+  --radius-bubble-received: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble-tail) var(--radius-bubble);
+  --radius-bubble-me: var(--radius-bubble-sent);
+  --radius-bubble-them: var(--radius-bubble-received);
+}

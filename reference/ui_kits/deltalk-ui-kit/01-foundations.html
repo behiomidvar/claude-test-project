@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" data-theme="light"><head><meta charset="utf-8"><title>Deltalk UI Kit — 01 Foundations</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="kit.css">
+<style>
+.logobox{border:1px solid var(--border);border-radius:var(--radius-card);padding:34px;display:flex;flex-direction:column;align-items:center;gap:20px;min-height:150px;justify-content:center}
+.logobox img{display:block}
+/* currentColor does not cross an <img> boundary — the compact lockup is inlined. */
+.lock svg{display:block;height:48px;width:auto}
+.logobox .cap{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;direction:ltr;unicode-bidi:isolate}
+.ladder{display:grid;grid-template-columns:112px repeat(9,1fr);gap:4px;direction:ltr}
+.roles{display:grid;grid-template-columns:132px repeat(4,1fr);gap:6px;align-items:center;margin-bottom:6px;direction:ltr}
+.roles .rl{font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate}
+.roles .sw{height:56px}
+.rolehead{display:grid;grid-template-columns:132px repeat(4,1fr);gap:6px;margin-bottom:8px;direction:ltr}
+.rolehead span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate}
+.singles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;direction:ltr}
+.gradbar{height:92px;border-radius:var(--radius-md);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;gap:2px;box-sizing:border-box}
+.gradbar b{font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:600;direction:ltr;unicode-bidi:isolate}
+.gradbar i{font-family:var(--font-latin);font-size:11px;font-style:normal;color:rgba(255,255,255,.86);direction:ltr;unicode-bidi:isolate}
+.tyrow{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--border);direction:ltr}
+.tyrow .tm{font-family:var(--font-mono);font-size:10.5px;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate;line-height:1.7}
+.tyrow .ts{margin:0;overflow:hidden;direction:rtl}
+.wrow{display:flex;align-items:baseline;gap:20px;padding:10px 0;border-bottom:1px solid var(--border)}
+.wrow .wn{font-family:var(--font-mono);font-size:10.5px;color:var(--text-subtle);width:150px;flex-shrink:0;direction:ltr;unicode-bidi:isolate}
+.wrow .ws{font-size:26px}
+.sprow{display:grid;grid-template-columns:112px 64px 1fr;gap:16px;align-items:center;padding:7px 0;direction:ltr}
+.sprow .bar{height:14px;background:var(--gradient-brand);border-radius:var(--radius-hairline)}
+.radgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;direction:ltr}
+.radbox{height:104px;border:1.5px solid var(--border-control);background:var(--surface-well);display:flex;align-items:flex-end;padding:9px;box-sizing:border-box}
+.radbox span{font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate}
+.shbox{height:104px;background:var(--surface-card);border-radius:var(--radius-md);display:flex;align-items:flex-end;padding:10px;box-sizing:border-box}
+.shbox span{font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate}
+.icogrid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;direction:ltr}
+.ico{border:1px solid var(--border);border-radius:var(--radius-md);padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--surface-card)}
+.ico .nm{font-family:var(--font-mono);font-size:9.5px;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate}
+.mogrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;direction:ltr}
+.mo{border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;background:var(--surface-card);display:flex;flex-direction:column;gap:5px;direction:ltr;unicode-bidi:isolate;text-align:left}
+.mo b{font-family:var(--font-mono);font-size:11px}
+.mo span{font-family:var(--font-latin);font-size:11.5px;color:var(--text-secondary);line-height:1.55}
+.media{position:relative;height:130px;border-radius:var(--radius-md);overflow:hidden;display:flex;align-items:flex-end;gap:8px;padding:12px;direction:ltr}
+.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media .veil{position:relative;padding:7px 12px;border-radius:var(--radius-pill);font-family:var(--font-mono);font-size:10px;color:#fff;direction:ltr;unicode-bidi:isolate}
+</style></head><body>
+
+<!-- ══ LOGO + COLOUR ══ -->
+<section class="sheet">
+  <div class="rh"><a class="rh-l" href="index.html" style="color:var(--text-subtle)">← Deltalk UI Kit · v1.0</a><span class="rh-r">01 Foundations — Logo</span></div>
+  <div class="sh"><span class="num">01.1</span><h2>Logo</h2>
+    <p>Three lockups with fixed jobs. The icon is the hard ceiling and the type can never out-measure it: Compact is bottom-aligned only — the icon ink’s bottom edge sits on the wordmark’s ink baseline, and the icon (27u of ink in a 36u frame) rises above the 24u wordmark, Full is height-matched and centred against the wordmark + tagline block. Icon-to-type gap is a ratio of the mark — 0.25 horizontal, 0.20 vertical — never a hardcoded pixel value. Scale by height only, move the lockup as one unit; clear space on all four sides is the icon's height.</p>
+  </div>
+  <div class="sec">
+    <div class="grid2">
+      <div class="logobox" data-theme="light" style="background:var(--bg)"><img src="../../assets/wordmark-horizontal-light.svg" height="73.33" alt=""><span class="cap" style="color:var(--text-subtle)">Full · horizontal · light</span></div>
+      <div class="logobox" data-theme="dark" style="background:var(--bg)"><img src="../../assets/wordmark-horizontal-dark.svg" height="73.33" alt=""><span class="cap" style="color:var(--text-subtle)">Full · horizontal · dark</span></div>
+      <div class="logobox" data-theme="light" style="background:var(--bg)"><img src="../../assets/wordmark-vertical-light.svg" height="132" alt=""><span class="cap" style="color:var(--text-subtle)">Full · vertical · light</span></div>
+      <div class="logobox" data-theme="dark" style="background:var(--bg)"><img src="../../assets/wordmark-vertical-dark.svg" height="132" alt=""><span class="cap" style="color:var(--text-subtle)">Full · vertical · dark</span></div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="logobox" data-theme="light" style="background:var(--bg);color:var(--logo-wordmark)"><span class="lock" id="cl"></span><span class="cap" style="color:var(--text-subtle)">Compact · 40px glyph · currentColor</span></div>
+      <div class="logobox" data-theme="dark" style="background:var(--bg);color:var(--logo-wordmark)"><span class="lock" id="cd"></span><span class="cap" style="color:var(--text-subtle)">Compact · dark · currentColor</span></div>
+    </div>
+    <div class="grid2" style="margin-top:18px">
+      <div class="logobox" style="background:var(--bg)"><img src="../../assets/logo-mark.svg" height="36" alt=""><span class="cap" style="color:var(--text-subtle)">Mark only · 36 × 36 min</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;justify-content:center">
+        <p class="note" style="margin:0"><b>Compact</b> is the only treatment in the persistent top bar, on every tab. Lockup height is fixed at <span class="mono">36px</span> (1u = 1px: wordmark ink 24px, icon frame 36px, icon ink 27px); the container has no height requirement — size it to the bar and centre the glyph.</p>
+        <p class="note" style="margin:0"><b>Full</b> (wordmark + tagline + mark) is splash, onboarding and About only — never in repeating UI. It ships as one baked-fill asset per theme, so the tagline can never be substituted by a font.</p>
+        <p class="note" style="margin:0"><b>Mark only</b> is favicon scale, app icon and loading states, at <b>36px minimum</b> — below that the 2026 icon’s typing dots drop under 2px. Lockup minimums: Compact horizontal 32px, Full horizontal 36px, Compact vertical 60px, Full vertical 78px.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="rh"><a class="rh-l" href="index.html" style="color:var(--text-subtle)">← Deltalk UI Kit · v1.0</a><span class="rh-r">01 Foundations — Colour</span></div>
+  <div class="sh"><span class="num">01.2</span><h2>Colour</h2>
+    <p>Six brand accent stops sampled from the logo, each with a nine-step ramp interpolated in OKLCH lightness and gamut-mapped to sRGB. Step 500 is the stop itself. Ramps are theme-independent; everything a screen touches is a semantic role that flips per theme.</p>
+  </div>
+
+  <div class="sec"><h3 class="sub">Accent stops</h3>
+    <p class="note">The one authoritative palette. Identical in both themes. Every named colour elsewhere in the brand documentation is an alias onto one of these six.</p>
+    <div class="singles" id="stops"></div>
+  </div>
+
+  <div class="sec"><h3 class="sub">Tonal ramps</h3>
+    <p class="note"><b>500</b> is the base value · <b>400–600</b> default flat usage · <b>700–900</b> tinted fills, hover and borders on light surfaces · <b>100–300</b> text and icons on top of those fills. Reach for a ramp step before <span class="mono">color-mix()</span> or a hand-lightened hex.</p>
+    <div id="ramps"></div>
+  </div>
+
+  <div class="sec"><h3 class="sub">Neutral ladder</h3>
+    <p class="note">Deliberately <b>not</b> evenly interpolated: every neutral exists because it clears a measured bar — 3:1 for control outlines, 4.5:1 for text.</p>
+    <div class="ladder" id="neutrals"></div>
+  </div>
+
+  <div class="sec"><h3 class="sub">Gradients</h3>
+    <p class="note">One hero-gradient moment per screen. <span class="mono">--gradient-brand</span> is the branded-state fill — switch on-track, selected chips, progress, badges, match rings — and is theme-independent. Small text on gradient uses <span class="mono">--gradient-brand-strong</span>. Celebration is for match and onboarding hero moments only; never a UI state or a background.</p>
+    <div class="grid3">
+      <div class="gradbar" style="background:var(--gradient-brand)"><b>--gradient-brand</b><i>pink 500 → purple 500 · 135°</i></div>
+      <div class="gradbar" style="background:var(--gradient-brand-strong)"><b>--gradient-brand-strong</b><i>pink 600 → purple 600 · AA with white</i></div>
+      <div class="gradbar" style="background:var(--gradient-celebration)"><b>--gradient-celebration</b><i>gold 500 → pink 500 · celebration only</i></div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="rh"><a class="rh-l" href="index.html" style="color:var(--text-subtle)">← Deltalk UI Kit · v1.0</a><span class="rh-r">01 Foundations — Semantic tokens</span></div>
+  <div class="sh"><span class="num">01.3</span><h2>Semantic tokens</h2>
+    <p>Left column is light, right is dark — the same token names, resolved in each theme scope. Status roles carry four tokens each: <span class="mono">-fill</span> (icons and shapes), <span class="mono">-on-fill</span> (text sitting on the fill), <span class="mono">-surface</span> (tinted background) and <span class="mono">-text</span> (words on that surface).</p>
+  </div>
+  <div class="sec">
+    <div class="grid2">
+      <div class="tp" data-theme="light"><div class="tl">Light</div><div class="tokens" data-scope></div></div>
+      <div class="tp" data-theme="dark"><div class="tl">Dark</div><div class="tokens" data-scope></div></div>
+    </div>
+  </div>
+  <div class="sec"><h3 class="sub">On-media veils</h3>
+    <p class="note">Theme-independent, like <span class="mono">--ink-fixed</span>: a chip over a photo has no theme surface to answer to. Three alphas only — do not invent a fourth.</p>
+    <div class="media">
+      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&amp;q=80&amp;fit=crop&amp;crop=faces" alt="">
+      <span class="veil" style="background:var(--veil-on-media-weak)">--veil-on-media-weak · .16</span>
+      <span class="veil" style="background:var(--veil-on-media-medium)">--veil-on-media-medium · .20</span>
+      <span class="veil" style="background:var(--veil-on-media-strong)">--veil-on-media-strong · .40</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TYPE ══ -->
+<section class="sheet">
+  <div class="rh"><a class="rh-l" href="index.html" style="color:var(--text-subtle)">← Deltalk UI Kit · v1.0</a><span class="rh-r">01 Foundations — Typography</span></div>
+  <div class="sh"><span class="num">01.4</span><h2>Typography</h2>
+    <p>IRANSansMobile (NoEn) is the only Persian family — UI, body and headings alike. Letter-spacing is zero everywhere (tracking breaks the Persian script) and line-heights are generous: 1.75 for body, up to 1.9 for long-form. Weights below 400 are avoided at small sizes for legibility.</p>
+  </div>
+  <div class="sec"><h3 class="sub">Weights</h3>
+    <div class="wrow"><span class="wn">--fw-regular · 400</span><span class="ws" style="font-weight:400">گفتگویی که از دل برمی‌آید</span></div>
+    <div class="wrow"><span class="wn">--fw-medium · 500</span><span class="ws" style="font-weight:500">گفتگویی که از دل برمی‌آید</span></div>
+    <div class="wrow"><span class="wn">--fw-bold · 700</span><span class="ws" style="font-weight:700">گفتگویی که از دل برمی‌آید</span></div>
+    <div class="wrow"><span class="wn">Black · 900 (display)</span><span class="ws" style="font-weight:900">گفتگویی که از دل برمی‌آید</span></div>
+  </div>
+  <div class="sec"><h3 class="sub">Scale</h3><div id="typescale"></div></div>
+  <div class="sec"><h3 class="sub">Line-height &amp; numerals</h3>
+    <div class="grid2">
+      <div>
+        <h4 class="subsub">--lh-normal · 1.75 · body</h4>
+        <p style="margin:0;font-size:var(--text-body);line-height:var(--lh-normal);max-width:46ch">اول حرف بزن. اینجا قرار نیست از روی یک عکس انتخاب بشی — یک سؤال می‌پرسیم، جواب می‌دی، و بعد می‌بینی کی چیزی برای گفتن داره.</p>
+        <h4 class="subsub">--lh-relaxed · 1.9 · long-form</h4>
+        <p style="margin:0;font-size:var(--text-body-sm);line-height:var(--lh-relaxed);max-width:52ch;color:var(--text-secondary)">دل به دل راه داره. عکس‌ها تا وقتی گفتگو شکل نگیره نرم و مه‌آلود می‌مونن — چهره را با حرف زدن به دست می‌آری، نه با انگشت کشیدن.</p>
+      </div>
+      <div>
+        <h4 class="subsub">Persian numerals — everywhere</h4>
+        <p style="margin:0 0 14px;font-size:32px;font-weight:700;font-variant-numeric:tabular-nums">۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹</p>
+        <p class="note" style="margin:0 0 14px">Ages, distances, timestamps, counters and prices all render in Persian digits: <span style="font-size:15px">۴۱ ساله · ۳ کیلومتر · ۹:۴۱ · ۱۲۹٬۰۰۰ تومان</span></p>
+        <h4 class="subsub">Two scoped exceptions — Latin digits</h4>
+        <p class="note" style="margin:0">The <b>phone field</b> and the <b>OTP boxes</b> only. Both are code entry transcribed from an SMS, so they must match the numerals the message itself shows: <span class="mono" style="font-size:14px;color:var(--text-primary)">+98 912 345 6789</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SPACE / SHAPE / ELEVATION / MOTION / ICONS ══ -->
+<section class="sheet">
+  <div class="rh"><a class="rh-l" href="index.html" style="color:var(--text-subtle)">← Deltalk UI Kit · v1.0</a><span class="rh-r">01 Foundations — Space, shape, elevation</span></div>
+  <div class="sh"><span class="num">01.5</span><h2>Space, shape &amp; elevation</h2>
+    <p>A 4px base grid with a semantic layer on top. Reach for the role, not the number — a role can be re-tuned system-wide, a raw step cannot. Small pills and bubbles keep a documented 2px optical sub-grid.</p>
+  </div>
+  <div class="sec"><h3 class="sub">Spacing roles</h3><div id="sproles"></div>
+    <h4 class="subsub">Raw ramp</h4><div id="spramp"></div>
+  </div>
+  <div class="sec"><h3 class="sub">Dimensions &amp; targets</h3><div id="sizes" class="grid4"></div></div>
+  <div class="sec"><h3 class="sub">Radius roles</h3>
+    <p class="note">Five roles. The raw ramp carries no role notes on purpose — that is how components used to drift onto it. Bubbles compose from <span class="mono">--radius-bubble</span> 22 + <span class="mono">--radius-bubble-tail</span> 6 and mirror once, in <span class="mono">tokens/radii.css</span>, under <span class="mono">[dir="rtl"]</span>.</p>
+    <div class="radgrid" id="radii"></div>
+  </div>
+  <div class="sec"><h3 class="sub">Elevation</h3>
+    <p class="note">Soft shadows tinted toward the ink, never hard grey drops. Two coloured glows are reserved for a single hero action per screen.</p>
+    <div class="grid3" id="shadows"></div>
+  </div>
+  <div class="sec"><h3 class="sub">Motion — the unfold, never the swipe</h3>
+    <p class="note">Nothing swipes away; things ease open and reveal. Press is a gentle shrink to <span class="mono">--press-scale 0.97</span>, hover a <span class="mono">--hover-lift -2px</span> card lift.</p>
+    <div class="mogrid" id="motion"></div>
+  </div>
+  <div class="sec"><h3 class="sub">Iconography</h3>
+    <p class="note">Lucide (MIT) — rounded caps and joins, 2px stroke, humanist and open. No emoji, and no unicode glyphs used as icons. Directional icons (back, send) carry <span class="mono">data-dir-icon</span> and mirror in RTL; heart, camera, settings, profile and compass must not be tagged. The one non-Lucide device is the three dots, which comes straight from the logo and ships as <span class="mono">TypingDots</span>.</p>
+    <div class="icogrid" id="icons"></div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script>
+fetch('../../assets/logo-compact.svg').then(r=>r.text()).then(t=>{['cl','cd'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=t});});
+const FAM=['gold','pink','lavender','purple','indigo','navy'];
+const STEPS=[100,200,300,400,500,600,700,800,900];
+const sw=(tok,label,h)=>`<div class="sw" data-tok="${tok}" style="background:var(${tok})${h?';height:'+h+'px':''}"><b>${label}</b><i class="hx"></i></div>`;
+
+document.getElementById('stops').innerHTML=FAM.map(f=>sw('--brand-'+f,'--brand-'+f,86)).join('');
+document.getElementById('ramps').innerHTML=FAM.map(f=>
+  `<div class="ramp"><span class="rname">brand-${f}</span>${STEPS.map(s=>sw(`--brand-${f}-${s}`,String(s))).join('')}</div>`).join('');
+document.getElementById('neutrals').innerHTML=`<span class="rname" style="font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);align-self:center">neutral</span>`+
+  STEPS.map(s=>sw('--neutral-'+s,String(s))).join('');
+
+const ROLES=[['success','Success'],['danger','Danger'],['warning','Warning'],['info','Info']];
+const SINGLE=[
+  ['--accent','accent'],['--accent-press','accent-press'],['--accent-tint','accent-tint'],['--accent-tint-fg','accent-tint-fg'],
+  ['--focus-ring','focus-ring'],['--premium','premium'],['--premium-on-fill','premium-on-fill'],['--nav-active','nav-active'],
+  ['--conversation-active','conversation-active'],['--conversation-active-on-fill','·-on-fill'],['--conversation-active-surface','·-surface'],['--conversation-active-fg','·-fg'],
+  ['--action-cta','action-cta'],['--action-cta-press','action-cta-press'],['--text-on-cta','text-on-cta'],['--switch-track-off','switch-track-off'],
+  ['--bg','bg'],['--surface-card','surface-card'],['--surface-well','surface-well'],['--surface-input','surface-input'],
+  ['--text-primary','text-primary'],['--text-secondary','text-secondary'],['--text-subtle','text-subtle'],['--text-disabled','text-disabled'],
+  ['--border','border'],['--border-control','border-control'],['--border-strong','border-strong'],['--logo-wordmark','logo-wordmark'],
+  ['--ink-fixed','ink-fixed (fixed)'],['--on-ink-fixed','on-ink-fixed (fixed)'],['--scrim','scrim'],['--scrim-media','scrim-media']
+];
+const tokenHTML=`<div class="rolehead"><span></span><span>fill</span><span>on-fill</span><span>surface</span><span>text</span></div>`+
+  ROLES.map(([k,n])=>`<div class="roles"><span class="rl">--${k}-*</span>${sw('--'+k+'-fill',n)}${sw('--'+k+'-on-fill','on-fill')}${sw('--'+k+'-surface','surface')}${sw('--'+k+'-text','text')}</div>`).join('')+
+  `<h4 class="subsub">Single roles</h4><div class="singles">`+SINGLE.map(([t,n])=>sw(t,n,58)).join('')+`</div>`;
+document.querySelectorAll('.tokens[data-scope]').forEach(el=>{el.innerHTML=tokenHTML});
+
+const TY=[['--text-display-xl','72 · cover'],['--text-display-lg','54 · section opener'],['--text-display-md','40'],['--text-h1','32'],['--text-h2','24'],['--text-h3','20'],['--text-body-lg','18'],['--text-body','16 · base'],['--text-body-sm','15'],['--text-caption','13'],['--text-micro','11 · overline']];
+const SAMPLE='اول حرف بزن';
+document.getElementById('typescale').innerHTML=TY.map(([t,d])=>{
+  const big=parseFloat(getComputedStyle(document.documentElement).getPropertyValue(t))>1.4;
+  return `<div class="tyrow"><span class="tm">${t}<br>${d}</span><p class="ts" style="font-size:var(${t});font-weight:${big?700:500};line-height:${big?'var(--lh-tight)':'var(--lh-snug)'}">${SAMPLE}</p></div>`;
+}).join('');
+
+const SPR=[['--gutter-screen','20','screen horizontal padding'],['--gap-section','24','between major sections'],['--pad-card','16','card interior'],['--gap-card','12','card-to-card, list rows'],['--gap-stack','16','stacked form fields'],['--gap-inline','8','elements within a row']];
+document.getElementById('sproles').innerHTML=SPR.map(([t,px,d])=>
+  `<div class="sprow"><span class="mono">${t.replace('--','')}</span><span class="mono">${px}px</span><div style="display:flex;align-items:center;gap:12px"><div class="bar" style="width:var(${t})"></div><span class="mono" style="color:var(--text-secondary)">${d}</span></div></div>`).join('');
+document.getElementById('spramp').innerHTML=[0,1,2,3,4,5,6,8,10,12,16,20,24].map(n=>
+  `<div class="sprow"><span class="mono">space-${n}</span><span class="mono">${n*4}px</span><div class="bar" style="width:${Math.max(n*4,1)}px"></div></div>`).join('');
+
+const SZ=[['--touch-min','48px','minimum touch target · Android Material'],['--control-h-button','52px','full-width primary CTA height'],['--control-h-input','48px','input / field height'],['--border-focus-w','2px','focus & error ring']];
+document.getElementById('sizes').innerHTML=SZ.map(([t,v,d])=>
+  `<div class="mo"><b>${t}</b><span style="font-family:var(--font-mono);color:var(--text-primary)">${v}</span><span>${d}</span></div>`).join('')+
+  `<div class="mo" style="grid-column:span 4"><b>--size-20 … --size-112</b><span>A 4px-grid element-size scale named by pixel value: 20 24 28 32 36 40 44 48 52 56 60 64 72 76 112. Pick a step; a value between steps means the step list is wrong. Content measures: --width-voice-min 220 · --width-voice-max 300 · --width-bubble-media 240.</span></div>`;
+
+const RAD=[['--radius-input','12 · text field, textarea, select, OTP'],['--radius-button','16 · every button-shaped control'],['--radius-card','20 · cards'],['--radius-sheet','28 · bottom sheets, dialogs'],['--radius-chip','pill · chips, avatars'],['--radius-hairline','2 · 2–4dp bars, grips, waveform'],['--radius-bubble','22 · speech bubble'],['--radius-bubble-tail','6 · the tail corner'],['--radius-bubble-image','18 · nested in bubble'],['--radius-bubble-quote','12 · nested reply quote']];
+document.getElementById('radii').innerHTML=RAD.map(([t,d])=>`<div class="radbox" style="border-radius:var(${t})"><span>${t.replace('--radius-','')}<br>${d.split(' · ')[1]||''}</span></div>`).join('');
+
+const SH=[['--shadow-xs','xs'],['--shadow-sm','sm'],['--shadow-md','md · cards'],['--shadow-lg','lg'],['--shadow-xl','xl'],['--glow-warm','glow-warm · hero'],['--glow-cool','glow-cool · hero'],['--shadow-on-photo','on-photo'],['--ring','ring · focus']];
+document.getElementById('shadows').innerHTML=SH.map(([t,d])=>`<div class="shbox" style="box-shadow:var(${t})"><span>${d}</span></div>`).join('');
+
+const MO=[['--dur-fast','140ms','state change, colour, press'],['--dur-base','240ms','enter / exit, sheet'],['--dur-slow','420ms','screen transition'],['--dur-unfold','560ms','the reveal: dt-unfold, dt-unblur'],['--ease-standard','cubic-bezier(.2,0,0,1)','default'],['--ease-out-soft','cubic-bezier(.16,1,.3,1)','the unfold'],['--ease-in-out','cubic-bezier(.45,0,.15,1)','symmetric'],['--ease-gentle-over','cubic-bezier(.34,1.4,.64,1)','gentle overshoot']];
+document.getElementById('motion').innerHTML=MO.map(([t,v,d])=>`<div class="mo"><b>${t}</b><span style="font-family:var(--font-mono);color:var(--text-primary);font-size:10.5px">${v}</span><span>${d}</span></div>`).join('');
+
+/* resolve every swatch's computed colour in its own theme scope */
+function hex(rgb){const m=rgb.match(/\d+/g);if(!m)return rgb;return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join('').toUpperCase()}
+function lum(rgb){const m=(rgb.match(/\d+/g)||[0,0,0]).slice(0,3).map(n=>{const c=n/255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)});return .2126*m[0]+.7152*m[1]+.0722*m[2]}
+requestAnimationFrame(()=>{
+  document.querySelectorAll('.sw[data-tok]').forEach(el=>{
+    const bg=getComputedStyle(el).backgroundColor;
+    el.querySelector('.hx').textContent=hex(bg);
+    el.style.color=lum(bg)>.42?'#121926':'#FFFFFF';
+  });
+});
+</script>
+<script type="text/babel">
+const I=window.DeltalkIcons||{};
+const NAMES=Object.keys(I);
+ReactDOM.createRoot(document.getElementById('icons')).render(
+  <React.Fragment>{NAMES.map(n=>{const C=I[n];return <div className="ico" key={n}><C size={26}/><span className="nm">{n}</span></div>;})}
+  <div className="ico"><span style={{display:'flex',gap:4}}>{[0,1,2].map(i=><span key={i} style={{width:6,height:6,borderRadius:'50%',background:'var(--gradient-brand)'}}/>)}</span><span className="nm">TypingDots</span></div>
+  </React.Fragment>
+);
+</script>
+</body></html>

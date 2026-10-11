@@ -1,0 +1,87 @@
+<!-- @dsCard group="4. Spacing" viewport="900x1460" name="Spacing scale & roles" subtitle="4px base grid, plus six semantic role tokens" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--text-primary);font-family:var(--font-sans);direction:rtl}
+h2{margin:0 0 4px;font-size:15px}
+.sub{margin:0 0 16px;font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+/* LTR so the ramp reads small→large left to right, like a scale, even in an RTL page. */
+.ramp{display:flex;align-items:flex-end;gap:var(--space-4);flex-wrap:wrap;padding-bottom:4px;direction:ltr}
+.c{display:flex;flex-direction:column;align-items:center;gap:var(--space-2)}
+.b{background:var(--accent);border-radius:3px}
+.l{font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate;text-align:center;line-height:1.45}
+.l b{display:block;color:var(--text-primary);font-weight:700}
+hr{border:none;border-top:1px solid var(--border);margin:26px 0 22px}
+.roles{display:flex;flex-direction:column;gap:var(--space-5)}
+.role{display:grid;grid-template-columns:150px 1fr;gap:var(--space-4);align-items:start}
+.rname{direction:ltr;unicode-bidi:isolate;text-align:left}
+.rname b{display:block;font-family:var(--font-mono);color:var(--text-primary);font-size:11px;line-height:1.5}
+.rval{display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);margin-top:2px}
+.rdesc{display:block;font-size:11px;color:var(--text-secondary);line-height:1.55;margin-top:6px;direction:rtl;text-align:right;unicode-bidi:normal}
+.demo{border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-card);overflow:hidden}
+.ph{background:var(--surface-well);border-radius:4px;height:11px}
+.mark{background:color-mix(in srgb,var(--accent) 18%,transparent);outline:1px dashed var(--accent);border-radius:2px}
+.scr{padding-inline:var(--gutter-screen);padding-block:var(--space-3)}
+.scr .ph{height:26px}
+.sect{padding:var(--space-3);display:flex;flex-direction:column;gap:var(--gap-section)}
+.sect .blk{background:var(--surface-well);border-radius:5px;height:24px}
+.cardpad{margin:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--pad-card);background:var(--surface-well)}
+.cardpad .ph{background:var(--surface-card)}
+.cardgap{padding:var(--space-3);display:flex;flex-direction:column;gap:var(--gap-card)}
+.cardgap .mini{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-well);height:30px}
+.stack{padding:var(--space-3);display:flex;flex-direction:column;gap:var(--gap-stack)}
+.stack .fld{height:40px;border:1px solid var(--border-control);border-radius:var(--radius-input);background:var(--surface-input)}
+.inl{padding:var(--space-3);display:flex;align-items:center;gap:var(--gap-inline)}
+.inl .pill{height:30px;padding-inline:14px;border-radius:var(--radius-pill);background:var(--surface-well);border:1px solid var(--border);display:inline-flex;align-items:center;font-size:11px;color:var(--text-secondary)}
+/* READABLE-TYPE STANDARD — a card is scanned at arm's length, not read.
+   Body prose >=13px, labels >=11px. Derivations live in readme.md, not here. */
+.sub{font-size:13.5px;line-height:1.6}.l{font-size:11px}.rname b{font-size:12.5px}.rval{font-size:11.5px}.rdesc{font-size:13px}.inl .pill{font-size:12px}
+
+/* English prose in an RTL document must be isolated, or its trailing full stop
+   reorders to the left edge and renders as a stray leading period. */
+.rdesc{direction:ltr;unicode-bidi:isolate;text-align:left}
+</style></head>
+<body>
+<h2>The ramp — 4px base grid</h2>
+<div class="ramp" id="ramp"></div>
+<hr>
+<h2>Which spacing does what</h2>
+<p class="sub" dir="ltr">Six semantic role tokens sit on top of the raw ramp. Reach for the role, not the number — the role can be re-tuned system-wide, a raw <code>--space-N</code> cannot. Raw steps stay legal for genuine one-offs (an optical nudge, a decorative offset) where no role applies.</p>
+<div class="roles">
+  <div class="role">
+    <div class="rname"><b>--gutter-screen</b><span class="rval" id="v-gutter"></span><span class="rdesc">Screen horizontal padding. The left/right margin every screen's content sits inside. Never applied to the top/bottom.</span></div>
+    <div class="demo"><div class="scr"><div class="ph"></div></div></div>
+  </div>
+  <div class="role">
+    <div class="rname"><b>--gap-section</b><span class="rval" id="v-section"></span><span class="rdesc">Between major sections of a screen — the largest routine gap, marking a change of subject.</span></div>
+    <div class="demo"><div class="sect"><div class="blk"></div><div class="blk"></div></div></div>
+  </div>
+  <div class="role">
+    <div class="rname"><b>--pad-card</b><span class="rval" id="v-pad"></span><span class="rdesc">A card's interior padding, on all four sides. Content never touches the card edge.</span></div>
+    <div class="demo"><div class="cardpad"><div class="ph"></div></div></div>
+  </div>
+  <div class="role">
+    <div class="rname"><b>--gap-card</b><span class="rval" id="v-card"></span><span class="rdesc">Between sibling cards or list rows. Tighter than a section gap — related items, not separate subjects.</span></div>
+    <div class="demo"><div class="cardgap"><div class="mini"></div><div class="mini"></div></div></div>
+  </div>
+  <div class="role">
+    <div class="rname"><b>--gap-stack</b><span class="rval" id="v-stack"></span><span class="rdesc">Vertical rhythm between stacked form fields, each with its own label. Roomy enough that labels bind to the field below them.</span></div>
+    <div class="demo"><div class="stack"><div class="fld"></div><div class="fld"></div></div></div>
+  </div>
+  <div class="role">
+    <div class="rname"><b>--gap-inline</b><span class="rval" id="v-inline"></span><span class="rdesc">Between elements inside one row — chips, icon and label, buttons in a toolbar. The tightest routine gap.</span></div>
+    <div class="demo"><div class="inl"><span class="pill">کتاب</span><span class="pill">قهوهٔ دستی</span><span class="pill">سفر</span></div></div>
+  </div>
+</div>
+<script>
+var cs=getComputedStyle(document.documentElement);
+function px(name){var v=cs.getPropertyValue(name).trim();if(v.endsWith('rem'))return Math.round(parseFloat(v)*16)+'px';return v;}
+var STEPS=[1,2,3,4,5,6,8,10,12,16,20,24];
+document.getElementById('ramp').innerHTML=STEPS.map(function(n){
+  var t='--space-'+n;
+  return '<div class="c"><span class="b" style="width:var('+t+');height:var('+t+')"></span>'+
+         '<span class="l"><b>'+n+'</b>'+px(t)+'</span></div>';
+}).join('');
+[['gutter','--gutter-screen'],['section','--gap-section'],['pad','--pad-card'],['card','--gap-card'],['stack','--gap-stack'],['inline','--gap-inline']]
+ .forEach(function(p){document.getElementById('v-'+p[0]).textContent=px(p[1])+'  ·  '+cs.getPropertyValue(p[1]).trim();});
+</script>
+<script src="../theme-toggle.js"></script><p class="readmore" dir="ltr">Why roles sit on top of the raw ramp → readme.md §Spacing.</p>
+</body></html>

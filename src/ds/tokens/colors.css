@@ -1,0 +1,833 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   DELTALK COLOR SYSTEM — two explicitly separated themes.
+   ---------------------------------------------------------------------------
+   :root            = LIGHT theme (the default).
+   [data-theme=dark]= DARK theme. Every role below is redeclared here with its
+                      own value — never a single shared value that only works
+                      in one theme.
+   Structure:
+     1. NEUTRALS      background / surface / border / text / primary CTA
+     2. BRAND STOPS   five raw accent colors, identical in both themes
+     3. GRADIENT      one semantic token --gradient-brand; theme picks family
+                      (LIGHT = warm, DARK = cool). Visibility-fixed stops.
+     STATE-COLOUR SEPARATION RULE (applies to BOTH themes)
+     --accent (focus/brand), --danger-fill (error) and --premium (paid affordances)
+     must be mutually distinguishable, because a focused field, an invalid field
+     and a premium affordance can all appear on one screen. Each PAIR must differ
+     by at least ONE of:
+        • 1.5:1 luminance contrast, OR
+        • 30° of hue.
+     Two axes are required because in DARK all three must stay light enough to
+     clear AA on #121926, which compresses luminance and leaves hue as the only
+     usable axis; in LIGHT the accent is deliberately light while danger/premium
+     are dark, so luminance does the work there. A single-axis rule would be
+     unsatisfiable in one theme or the other.
+     WHERE THE THREE COLOURS COME FROM (settled, do not re-invent):
+       --accent  = the brand pink stop itself (--brand-pink, theme-tuned).
+       --premium = a STEP OF THE BRAND PINK RAMP (light 700 / dark 200) — the user's
+                   own outbound affection is warm and brand-family, so premium must be
+                   a tonal variant of the brand pink, never a new hue.
+       --danger-fill = a DEDICATED NON-BRAND HUE, on purpose, exactly like the
+                   presence/success green. Error must read as universally red; the
+                   nearest brand stop is the pink, measured inside the hue bar in
+                   light, so NO pink ramp step can serve as danger without an error
+                   looking like the brand — and no other stop (gold, purple,
+                   lavender, indigo, navy) is red at all. Verified against
+                   --accent and --premium; margins in readme.md's separation
+                   table. Danger is tracked as its own four-token family per theme
+                   (-fill/-on-fill/-surface/-text), not a one-off hex, and is exempt
+                   from the ramp-first rule by decision.
+     MEASURED MARGINS DO NOT LIVE IN THIS FILE. They are regenerated and
+     re-measured in readme.md's state-colour separation table. A margin quoted in
+     a comment is a claim nobody re-runs; a swept audit found five such figures
+     had silently drifted while every self-describing contrast figure held.
+     See "Comment hygiene" in readme.md for the rule these comments follow.
+     --warning and any decorative warm alias must clear the same bar; --warm-coral
+     was removed because it could not.
+
+     4. SEMANTICS     success / danger / warning / info — four tokens each:
+                      -fill, -on-fill, -surface, -text — explicit per theme.
+     5. ALIASES       legacy token names kept mapped so components keep working.
+   All contrast ratios are documented in guidelines/color-*.html.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 1. NEUTRALS — LIGHT ───────────────────────────────────────────── */
+  --bg:              #F8FAFC;   /* page background                    */
+  --surface-card:    #FFFFFF;   /* card / raised surface              */
+  --surface-well:    #EEF2F7;   /* sunken wells, inputs               */
+  --border:          #C3CBD6;   /* default border / divider — 1.56:1 on the page,
+                                   1.64:1 on the white card, non-text */
+  --border-strong:   #A9B2C0;   /* emphasized border / grab handle    */
+  --text-primary:       #121926;   /* primary text / heading. Ratios per surface live in the
+                                     separation tables, not here. NB: named
+                                     --text-primary, not --text-body — that name is
+                                     the 1rem font-size in typography.css. */
+  --text-secondary:  #5D6675;   /* supporting text  (5.54:1 on the page) */
+  --text-subtle:     #636E82;   /* metadata / muted — 4.92:1 on the page. THE SPECIMEN
+                                   CARD HARDCODED #697488 HERE AND WAS WRONG (fixed
+                                   2026-08-06); this declaration is the source of truth */
+  --text-disabled:   #A2AAB7;   /* placeholder / disabled (2.24:1 on the page, exempt) */
+
+  /* Primary CTA — the single highest-contrast solid. LIGHT = near-black. */
+  --action-cta:       #121926;
+  --action-cta-press: #2E3542;
+  --text-on-cta:      #FFFFFF;  /* white text on the light CTA fill */
+
+  /* ── 2. BRAND ACCENT STOPS — raw palette, identical in both themes ─── */
+  --brand-navy:   #261D82;   /* Deep Navy    */
+  --brand-indigo: #5852E4;   /* Mid Indigo   */
+  --brand-purple: #BB48F8;   /* Light Purple */
+  --brand-pink:   #F24C9A;   /* Hot Pink     */
+  --brand-gold:   #FFB565;   /* Golden       */
+  --brand-lavender: #A780FE; /* Logo bubble lavender — registered as the 6th accent stop */
+
+  /* GUARD (item 22): every --brand-*-N below is declared exactly ONCE, here in
+     :root, and must never be re-declared under [data-theme="light"] or
+     [data-theme="dark"]. Same for --neutral-*. To check: grep for
+     'brand-.*-[1-9]00:' and confirm every hit is in this :root block — a second
+     hit inside a theme scope is the regression. Per-theme variation belongs to
+     the SEMANTIC token that references a step, never to the step itself. */
+  /* ── 2b. BRAND TONAL RAMPS — 9 steps per stop, OKLCH-interpolated ─────
+     THEME-INDEPENDENT raw palette (like the six stops above): a ramp step is
+     the same hex in light and dark. Per-theme SURFACE tints stay semantic
+     (--accent-tint, --*-surface) and are not ramp steps.
+     Built by interpolating LIGHTNESS in OKLCH (not hex-blending toward
+     white/black, which bends hue and produces uneven steps across hues),
+     with chroma tapered toward the light end and gamut-mapped into sRGB.
+     Step 500 IS the authoritative stop, unchanged. Steps are evenly spaced
+     in OKLCH lightness within each half (100→500, 500→900) and every ramp
+     shares the same top/bottom anchors, so the same step number reads as a
+     comparable tone across all six ramps.
+     USAGE: 500 = base/reference · 400–600 = default flat usage (active tab,
+     badge icon) · 700–900 = tinted fills, hover states, subtle borders on
+     light surfaces · 100–300 = text/icons placed ON those 700–900 fills.
+     Reach for a ramp step before reaching for color-mix() or a manually
+     lightened/darkened hex — ramps are the single source of tonal variation
+     for brand colors, keeping every screen's tints and shades consistent
+     with each other. */
+  --brand-gold-100: #FFF3E7;
+  --brand-gold-200: #FFE4CA;
+  --brand-gold-300: #FFD5AC;
+  --brand-gold-400: #FFC58B;
+  --brand-gold-500: #FFB565;
+  --brand-gold-600: #C98434;
+  --brand-gold-700: #925802;
+  --brand-gold-800: #583200;
+  --brand-gold-900: #251000;
+
+  --brand-pink-100: #FFF1F5;
+  --brand-pink-200: #FFCCDE;
+  --brand-pink-300: #FFA5C7;
+  --brand-pink-400: #FF77B0;
+  --brand-pink-500: #F24C9A;
+  --brand-pink-600: #C62277;
+  --brand-pink-700: #940155;
+  --brand-pink-800: #600035;
+  --brand-pink-900: #310018;
+
+  --brand-lavender-100: #F6F3FF;
+  --brand-lavender-200: #E0D8FF;
+  --brand-lavender-300: #CCBCFE;
+  --brand-lavender-400: #B99FFF;
+  --brand-lavender-500: #A780FE;
+  --brand-lavender-600: #825BD1;
+  --brand-lavender-700: #5F37A5;
+  --brand-lavender-800: #3E1079;
+  --brand-lavender-900: #1D0043;
+
+  --brand-purple-100: #F9F2FF;
+  --brand-purple-200: #EACCFF;
+  --brand-purple-300: #DBA5FF;
+  --brand-purple-400: #CC79FF;
+  --brand-purple-500: #BB48F8;
+  --brand-purple-600: #971ECF;
+  --brand-purple-700: #70019D;
+  --brand-purple-800: #490068;
+  --brand-purple-900: #250038;
+
+  --brand-indigo-100: #F3F4FF;
+  --brand-indigo-200: #C6CEFE;
+  --brand-indigo-300: #9CA6FF;
+  --brand-indigo-400: #777CF7;
+  --brand-indigo-500: #5852E4;
+  --brand-indigo-600: #4437C4;
+  --brand-indigo-700: #321AA3;
+  --brand-indigo-800: #22007C;
+  --brand-indigo-900: #11004D;
+
+  --brand-navy-100: #F2F4FF;
+  --brand-navy-200: #B3BDF2;
+  --brand-navy-300: #7E88CE;
+  --brand-navy-400: #4D54A9;
+  --brand-navy-500: #261D82;
+  --brand-navy-600: #1E0E72;
+  --brand-navy-700: #160061;
+  --brand-navy-800: #0E0049;
+  --brand-navy-900: #070032;
+
+  /* ── 3. GRADIENT — ONE brand gradient, IDENTICAL in both themes ──────
+     Merge decision: the light-warm / dark-cool theme-split is cancelled.
+     A user only ever experiences one theme, so a theme-dependent brand
+     color halves brand recognition. The two stops sit mid-lightness, so
+     both stay visible on #F8FAFC AND #121926 — no per-theme tuning needed
+     (neither stop was adjusted between themes).
+     White text on this gradient is ~3.3–3.9:1: acceptable for LARGE/bold
+     text and UI shapes, NOT for small text. For small labels (chips,
+     notification badges) use --gradient-brand-strong (darkened to ≥4.5:1
+     against white). Never a primary-CTA fill or a screen/card background. */
+  --gradient-brand:        linear-gradient(135deg, #F24C9A 0%, #BB48F8 100%); /* @kind color */
+  /* Stops are RAMP STEPS, not hand-darkened hexes: the old #C23D7B/#963AC6 were
+     near-duplicates of --brand-pink-600 / --brand-purple-600, reached independently.
+     The ramp steps are canonical and measure BETTER with white: 5.39:1 / 6.17:1
+     (was 4.94 / 5.65). */
+  --gradient-brand-strong: linear-gradient(135deg, #C62277 0%, #971ECF 100%); /* @kind color */
+  /* Secondary EXPRESSIVE gradient — the demoted warm sweep. CELEBRATION ONLY:
+     match screen, onboarding hero moments, confetti. Not a UI state, accent,
+     CTA, or background fill. */
+  --gradient-celebration:  linear-gradient(135deg, #FFB565 0%, #F24C9A 100%); /* @kind color */
+  --text-on-brand:   #FFFFFF;  /* white on the brand gradient (large/bold; small→use -strong) */
+  /* Chip's selected fill — the ONE exception to "branded fills use the gradient
+     identically in both themes" (readme, 2026-08-13). Everything else this rule
+     names — switch on-track, progress, badges, avatar match-rings — stays on
+     --gradient-brand[-strong] directly; do not repoint them to these two. Redeclared
+     WHOLE inside the dark block below rather than layered through this var() alone —
+     a var() inside a custom property resolves where the property is DECLARED, not
+     where it's used (hazard 9), so this alias must be restated per theme to actually
+     change there. Light is unchanged (--gradient-brand-strong + white, 5.39/6.17:1). */
+  --chip-selected-fill: var(--gradient-brand-strong);
+  --chip-selected-text: var(--text-on-brand);
+
+  /* ── 4. SEMANTIC COLORS — LIGHT (four tokens per role) ─────────────── */
+  /* SUCCESS */
+  --success-fill:    #3E9D6E;  /* fill/border/large-icon only (3.21:1 page) */
+  --success-on-fill: #06301E;  /* text/icon ON the green fill (4.31:1)  */
+  --success-surface: #E4F3EB;  /* banner / alert tint background         */
+  --success-text:    #1F7A50;  /* text on surface (4.63) or page (5.07) */
+  /* DANGER — crimson, shifted off the brand pink so an error never
+     reads as the brand color (danger↔pink separation 1.69:1) */
+  --danger-fill:     #C81E3A;  /* fill (5.42:1 on the page)              */
+  --danger-on-fill:  #FFFFFF;  /* white text on the crimson fill (5.67)  */
+  --danger-surface:  #FBEAEC;  /* banner tint                            */
+  --danger-text:     #B02034;  /* text on surface (5.83) or page (6.47)  */
+  /* WARNING — RE-DERIVED FROM THE GOLD RAMP. The old Apricot #FEAC6A was a
+     pre-ramp value sitting 1.05:1 from --brand-gold #FFB565 — two near-identical
+     ambers alive at once. The gold ramp is authoritative, so warning is now a
+     tonal set of it. Separation verified against --accent, --danger-fill and
+     --premium; margins in readme.md's separation table. */
+  --warning-fill:    var(--brand-gold-500);  /* 1.67:1 page — fill/icon only    */
+  --warning-on-fill: var(--brand-gold-900);  /* dark ink ON amber — 10.45:1     */
+  --warning-surface: var(--brand-gold-100);  /* banner tint                     */
+  --warning-text:    var(--brand-gold-700);  /* 5.31 on surface · 5.80 card · 5.16 well */
+  /* INFO — RE-DERIVED FROM THE INDIGO RAMP. The old #3B4CC0 sat next to
+     --brand-indigo-600 as a near-duplicate indigo. A ramp step DOES clear
+     the separation rule, so info is NOT a non-brand exception (unlike danger):
+     indigo-600 was verified against --accent, --danger-fill and --premium, and
+     against the cool BLUE --conversation-active, which remains its own family.
+     Margins in readme.md's separation table. */
+  --info-fill:       var(--brand-indigo-600);  /* 7.75:1 page · 8.11:1 card     */
+  --info-on-fill:    #FFFFFF;                  /* white ON the fill — 8.11:1    */
+  --info-surface:    var(--brand-indigo-100);  /* banner tint                   */
+  --info-text:       var(--brand-indigo-600);  /* 7.41 on surface · 7.75 page   */
+
+  /* VERIFICATION — the identity badge mark. A RESERVED SINGLE-PURPOSE ROLE with
+     exactly one consumer, VerificationBadge, and the system's SECOND non-brand
+     hue after --danger-fill; both exemptions are listed in readme.md.
+     ONE VALUE, NOT A PER-THEME PAIR, and not for the usual constant-backdrop
+     reason: the verified mini badge has no container and sits straight on user
+     photography, so there is no theme surface for a pair to answer to. A pair
+     was measured and buys nothing. Adopted 2026-08-02 as a deliberate trade;
+     separation against --conversation-active, --info-fill and --nav-active was
+     verified and is the TIGHTEST PAIR IN THE SYSTEM — margins in readme.md's
+     separation table, never here. Do not tune this hex; the window is one
+     candidate wide. Declared once, outside the light/dark blocks, so it cannot
+     be given a theme override by accident. */
+  --verification:    #1D9BF0;  /* 5.87:1 on --ink-fixed                         */
+  /* THE CHECK ON THE MARK — WHITE, and theme-independent like the fill it sits
+     on. This is the borrowed convention's own treatment: the recognisable badge
+     is a white check on blue. ⚠ It measures 3.00:1 on --verification, which
+     meets the 3:1 NON-TEXT bar EXACTLY and has ZERO slack. That is legal for
+     this glyph — a 2.31px stroke at mini, 2.1 units of a 24 box at every size —
+     and it is NOT legal for text, a thinner stroke, or any smaller rendering.
+     Anything that would shrink the check must move it back to --ink-fixed
+     (5.87:1) rather than keep white at a smaller size.
+     ONE VALUE, NO THEME FLIP, for the same reason as the fill: verified mini
+     sits on user photography and has no theme surface, so a per-theme check
+     would change the same badge on the same photo with the app theme. */
+  --on-verification: #FFFFFF;  /* 3.00:1 on the fill — non-text bar, zero slack  */
+
+  /* ── 5. LEGACY ALIASES (keep components working) ───────────────────── */
+  /* neutrals */
+  --paper: var(--bg); --paper-raised: var(--surface-card); --paper-sunken: var(--surface-well);
+  --surface: var(--bg); --surface-cool: #1D2432; --surface-cool-raised: #2A3346;
+  --ink: var(--text-primary); --ink-70: var(--text-secondary); --ink-50: var(--text-subtle); --ink-30: var(--text-disabled);
+  --line: var(--border); --line-strong: var(--border-strong);
+  --border-subtle: var(--border);
+  --text-muted: var(--text-secondary);
+  --text-on-warm: var(--text-on-cta); --text-on-cool: #F4F1FF; --accent-on-fill: #121926;
+  /* Chat bubbles — explicit fill/on-fill pairs (flip per theme via the vars
+     above). Sent = the neutral primary surface; received = the card surface. */
+  --bubble-sent-fill: var(--action-primary);   --bubble-sent-on-fill: var(--text-on-cta);
+  --bubble-received-fill: var(--surface-card);  --bubble-received-on-fill: var(--text-primary);
+  --bubble-timestamp: var(--text-subtle);       /* meta row on page bg */
+  --bubble-status-read: var(--conversation-active); --bubble-status-failed: var(--danger);
+  --text-on-gradient: #FFFFFF; --text-on-gradient-warm: var(--text-on-brand);
+
+  /* brand accent (theme identity for tints / selected / focus — NOT for CTAs) */
+  --accent:          var(--brand-pink);
+  --accent-press:    var(--brand-pink-600);  /* was #C43D6E — the ramp's own press step */
+  --accent-fg:       var(--text-on-cta);  /* text on a solid primary fill */
+  --accent-tint:     var(--brand-pink-100);  /* was #FCE4F0, a near-duplicate of pink-100 */
+  /* ── NAV-ACTIVE — the one deliberate NON-accent "selected" state ───────
+     The bottom tab bar's active state is the ONE UI element that deliberately
+     does NOT use --gradient-brand or --accent, despite being a
+     "this is active/selected" state: persistent navigation must stay visually
+     distinct from the like/heart action, which owns brand pink. Flat lavender,
+     no gradient, no pill. A ramp step, not an invented hue.
+     LIGHT = brand-lavender-600 (4.81:1 on --surface-card, 4.60:1 on the page).
+     Hue separation from --accent is verified, so the two never read as the same
+     state; the margin lives in readme.md's separation table, not here.
+     No single step clears AA in BOTH themes (600 is 3.23:1 on the dark card,
+     400 is 2.22:1 on the light card), so this is a per-theme pair — the same
+     shape as --accent's own per-theme tuning. */
+  --nav-active:      var(--brand-lavender-600);             /* flat lavender, active nav state */
+  /* Tint foreground = pink-800, NOT pink-700: 700 is now --premium, and a badge
+     label sharing the premium colour would make an ordinary tint read as a paid
+     affordance. 800 steps one further down and clears AA on the tint by a wide
+     margin; the measured ratio lives in the separation tables. (Two different
+     figures for this one pair used to sit twenty lines apart here — both gone.) */
+  --accent-tint-fg:  var(--brand-pink-800);             /* text on --accent-tint */
+  /* Deliberate avatar reveal ring (soft→clear pattern) — width + color. */
+  --avatar-ring-width: 3px;
+  --avatar-ring-color: var(--gradient-brand);
+  /* Field focus ring — NEUTRAL, never the brand pink/gradient. A pink field border
+     read as an error/brand fill. FOCUS, however, is the BRAND PINK in both themes:
+     focus is a state signal, so its meaning must stay constant across themes —
+     never purple in dark, never the gradient. Two values, one identity:
+       light #F24C9A (the brand pink as-is, sits well on #F8FAFC)
+       dark  #E481AF (same hue 332deg, desaturated 87%->65% and lightened 62%->70%
+                      so it reads calm on #1D2432 instead of neon — "warm, not hot") */
+  --focus-ring:      var(--accent);        /* focus IS the accent — bound, never a second value */
+  --surface-input:   var(--surface-card);  /* the one field surface */
+  /* Switch OFF track. A dedicated token, NOT a border token: --border-strong is sized
+     for a 1dp hairline and only reaches ~2.1:1 as a filled track carrying a knob.
+     OFF is the state where knob POSITION is the only signal, so both knob-vs-track
+     and track-vs-surface must clear the 3:1 non-text minimum (WCAG 1.4.11).
+     light #828B9C = 3.43:1 vs the #FFFFFF knob and the #FFFFFF card. */
+  --switch-track-off: #828B9C;
+  /* ── FIXED-INK SURFACE — deliberately NOT theme-scoped ──────────────────
+     A few chips must keep the SAME dark appearance in both themes because they
+     also sit over user photos, where neither theme's surface applies (the
+     verified badge is the canonical case). These three are the only tokens in
+     the system that do not flip, and that is intentional — do not "fix" them by
+     adding a dark-theme override. */
+  /* LOGO WORDMARK — the only logo colour that flips. The mark's two gradient arms
+     are theme-independent (the documented place warm and cool meet), but the
+     wordmark is type and must stay legible on either surface. */
+  --logo-wordmark:    var(--brand-navy);    /* #261D82 ink/indigo on light      */
+  --logo-tagline:     var(--brand-navy-400);/* #4D54A9 — subtitle. 2.00:1 against
+                                               --logo-wordmark, NOT a surface figure */
+  --ink-fixed:        #121926;              /* the ink neutral, constant       */
+  --on-ink-fixed:     #FFFFFF;              /* label on --ink-fixed            */
+  --on-ink-fixed-muted: #9AA4B2;            /* 6.98:1 on --ink-fixed           */
+  /* The pill EDGE. --ink-fixed equals the dark page background (#121926), so a
+     fill alone gives a 1.00:1 capsule there and the shape disappears; over a
+     dark photo region it is nearly as weak. No single fixed ink can clear 3:1
+     against #121926 and still read as ink (that needs ~#4A5262, a mid-grey), so
+     the capsule is defined by its own 1dp ring instead of by fill contrast.
+     Because that ring is the capsule's ONLY boundary it must clear 3:1, exactly
+     like --border-control — so it reuses that token's dark value rather than a
+     bespoke alpha. Its ratios against the dark page, the dark card and a dark
+     photo region are all different numbers and live in the separation tables —
+     the figure that used to sit here was the card's, quoted as the page's. An
+     earlier rgba(255,255,255,.22) was rejected for failing the bar, as were
+     --warm-200 and --border-strong; those margins are tabled too. */
+  --ink-fixed-edge: var(--neutral-400);
+  /* RAISED from --neutral-700 (#6E7789) to --neutral-400 (#C3CBD6) on 2026-08-07,
+     closing audit 26a. At #6E7789 the fixed pair had no complement: --ink-fixed
+     fill and the edge both move dark, and swept over the 256-grey ramp the
+     BETTER of the two bottomed out at 1.99:1 at #4A4A4A (fill 1.99, edge 1.97) —
+     both halves under the 3:1 floor at once. A light edge gives the fixed fill
+     the complement the theme-following plate gets for free. Measured, best of
+     fill-or-edge over the sweep: #C3CBD6 3.30:1 at #6B6B6B, and 10.76:1 against
+     the --ink-fixed fill itself. --neutral-400 is the FIRST rung on the ramp
+     that clears: 500 #A9B2C0 reaches only 2.89:1, 600 2.28:1, 700 1.99:1. The
+     lighter rungs clear too (300 3.98:1, 200 4.10:1) but merge into the 2dp
+     --on-ink-fixed ring that Avatar and ConfirmDialog draw outside it (1.12:1
+     and 1.05:1 against white); 400 keeps 1.64:1 there and stays legible as a
+     separate edge. NOTE THE VISUAL CHANGE: consumers that draw this edge with no
+     outer ring — VerificationBadge's pill — now carry a light hairline instead
+     of a dark one. That is the fix, not a side effect. */
+  /* HOVER STEP for an opaque on-media plate. An opaque plate has no opacity to
+     step, so hover cannot be "more opaque" the way the veil family's medium→strong
+     step was — it is a LIFT: one fixed lighter ink. Theme-independent for the same
+     reason --ink-fixed is: it sits on a photograph, not on a theme surface. White
+     on #454D5A = 8.53:1, so the glyph still clears AA at the hover step. */
+  --ink-fixed-hover: var(--neutral-800);
+  /* ── ON-MEDIA PLATE (theme-FOLLOWING, opaque) — ruling 26b, 2026-08-07 ───────
+     A control on a user photo also sits inside a themed frame. The photo has no
+     theme, but the app around it does, and a fixed dark plate read as a hole in
+     light theme. These three alias the theme pair rather than branching per
+     theme: custom-property substitution resolves at the USE site, so the nearest
+     [data-theme] ancestor wins — a descendant [data-theme] selector would not.
+     THE PLATE STAYS OPAQUE. That is the condition that makes the trade legal:
+     nothing here returns to the alpha veil family (--veil-on-media-*).
+     WHY THE BOUNDARY STILL HOLDS. The plate and its ring are always at OPPOSITE
+     ends of the theme's luminance range, so one of the two always carries the
+     photo. Light theme: the near-white plate carries dark grounds (16.83:1 on
+     near-black), the dark ring carries bright ones (17.61:1 on white). Dark
+     theme: the same pair, swapped. Swept over the 256-grey ramp the WEAKER of
+     the two bottoms out at 4.10:1, at the crossover ground (#7A7A7A) —
+     above the 3:1 non-text floor everywhere, in both themes. The construction it
+     replaced had no such complement: --ink-fixed fill + --ink-fixed-edge ring
+     both move dark, and around #4A4A4A–#5B5B5B BOTH fall under 3:1 (both under 2:1,
+     bottoming at 1.99:1) — the hole audit item 26a records. */
+  /* TRANSLUCENT AGAIN, AT A MEASURED ALPHA (2026-08-07, second pass). The plate
+     is --bg at 70%, mirrored per theme: white-ish plate + DARK glyph in light,
+     dark plate + LIGHT glyph in dark. This is NOT the .20-white plate that was
+     rejected — that one kept a WHITE glyph on a white-ish plate and collapsed to
+     1.00:1 over bright photography. Inverting the glyph per theme reverses the
+     failure direction, so each theme's worst case sits at the OPPOSITE end of
+     the ramp: light fails toward #000000, dark toward #FFFFFF. Both were swept
+     independently over all 256 greys; neither was extrapolated from the other.
+     ALPHA FLOORS, MEASURED (glyph 3:1 / text 4.5:1 / plate-or-ring 3:1):
+       light  0.41 / 0.52 / 0.57      dark  0.48 / 0.61 / 0.62
+     The lowest single alpha clearing every bar in both themes is 0.62, and it
+     lands on 3.00:1 exactly in dark theme (ground #929292) — no margin. 0.70 is
+     shipped for headroom: boundary 3.38 light / 3.29 dark, text 8.01 / 6.23.
+     AgeChip and DistanceChip carry TEXT and therefore set the 4.5:1 bar; the
+     IconButton glyph would have cleared at a lower alpha and does not govern.
+     backdrop-filter:blur() CONTRIBUTES NOTHING TO CONTRAST at any alpha — it
+     changes no luminance. It is a visual effect on this plate, never a boundary,
+     and no figure above credits it.
+     THE RING no longer carries the boundary — --on-media-halo does. See 26d/26e
+     below and in the card. */
+  --on-media-plate:       color-mix(in srgb, var(--bg) 70%, transparent);
+  --on-media-ink:         var(--text-primary); /* glyph/label on the plate       */
+  /* THE RING IS GONE (26e, 2026-08-07). --on-media-edge is RETIRED, not
+     lightened. The sequence is the point: while one 1dp stroke both set the
+     control's visual weight and held the boundary, no colour could be lightened
+     (--border-control bottomed at 1.60:1 light / 1.73:1 dark, lighter rungs
+     worse). Once --on-media-halo existed the ring was measured again and found
+     to contribute NOTHING: swept over 256 greys in both themes, no-ring,
+     --border and --border-control give the IDENTICAL worst case (3.89:1 light at
+     #FAFAFA, 5.85:1 dark at #191919), because the halo already dominates at
+     every ground where the plate fails. A lever is only free once something else
+     carries its load — the same shape as the plate-and-ring pairing rule. */
+  /* THE BOUNDARY, and it must be THEME-FOLLOWING. --shadow-on-photo is a BLACK
+     blur: it helps in light theme by darkening a bright photo away from a light
+     plate, and HURTS in dark by pulling the photo toward a dark plate. Measured
+     with a black-only halo the pair falls to 1.80–2.07:1 in dark at any alpha
+     worth using. Binding --text-primary flips it correctly: dark halo in light
+     theme, light halo in dark.
+     HARD 1dp, NOT A BLUR, and that choice is a measurement decision. A blur's
+     alpha at the boundary is roughly half its nominal value, and the figure
+     depends on which model you believe: 0 1px 4px at .90 gives 3.33:1 light on a
+     half-nominal model but 2.77:1 on a 0.4x one, and light theme's worst ground
+     (#FAFAFA, where plate AND ring both vanish and only the halo separates) has
+     no slack for that uncertainty. A hard 1dp ring has no such ambiguity.
+     MEASURED at alpha .70 plate, best of plate-or-ring-or-halo over 256 greys:
+     3.89:1 light at #FAFAFA, 5.85:1 dark at #191919. (Pure black/white halos
+     measure 4.71 / 6.07; --text-primary is not pure, and binding the token is
+     worth the difference.) The soft drop stays for depth and is credited in
+     neither figure. */
+  --on-media-halo:        0 0 0 1px color-mix(in srgb, var(--text-primary) 55%, transparent),
+                          0 2px 10px rgba(0, 0, 0, .5); /* @kind shadow */
+  /* the LIFT step, same alpha. Glyph worst case over the sweep:
+     8.35:1 light (#000000) / 5.53:1 dark (#FFFFFF). */
+  --on-media-plate-hover: color-mix(in srgb, var(--surface-card) 70%, transparent);
+  /* A visual effect, never a boundary: blur changes no luminance. */
+  --on-media-blur:        blur(6px); /* @kind other */
+  /* 1dp outline for controls whose FILL matches the surface behind them (secondary
+     button, outlined chips). Those are invisible without their border, so it must
+     clear the 3:1 non-text minimum against the PAGE. --warm-200 and --border-strong
+     were both tested there and both fail. The figure that used to close this comment
+     was the WHITE-CARD ratio quoted as the page's — the page ratio is lower, and both
+     live in the separation tables now. */
+  --border-control: var(--neutral-600);
+
+  /* primary action = the neutral CTA (rule: every primary CTA/FAB/button) */
+  --action-primary:       var(--action-cta);
+  --action-primary-press: var(--action-cta-press);
+  --action-primary-tint:  var(--accent-tint);
+  /* ── CONVERSATION ACTIVE — its own role, sourced from the COOL family ────
+     Per the brand spec, cool = "talk" = the other person / conversation active.
+     This is a PRODUCT concept, not an informational status, so it owns the full
+     four-token set rather than borrowing --info-*: changing the info color must
+     never change what "conversation active" looks like.
+     It must NOT follow --accent (that is the warm/affection side) — it was bound
+     to var(--accent) and got swept pink when the accent unified; explicit now.
+     NOT presence either: online/offline use --success / --warning / --text-subtle. */
+  --conversation-active:         #0D79AE;  /* cool BLUE (4.6:1 page). Hue
+                                   separation from --info-fill is verified, so the
+                                   two roles are distinguishable and not just
+                                   differently named; the margin is in readme.md's
+                                   separation table. This comment previously quoted
+                                   info's hex and its own margin, both of which went
+                                   stale when info was re-derived. */
+  --conversation-active-on-fill: #FFFFFF;  /* text ON the cool fill (4.81:1)   */
+  --conversation-active-surface: #E6F2F9;  /* cool tint background             */
+  --conversation-active-fg:      #0A5F89;  /* text on that surface (6.15:1)    */
+  /* the other person's identity colour — same cool role */
+  --other-person:       var(--conversation-active);
+
+  /* warm family aliases → pink/gold side */
+  --warm-apricot: var(--brand-gold); --warm-magenta: var(--brand-pink);
+  /* --warm-coral REMOVED: it failed the state-colour separation rule against both
+     --accent and --danger, in both themes, and no
+     component referenced it. Use --accent, --premium or --danger-fill instead. */
+  /* Spec's named warm colors map onto the authoritative stops — no second set:
+     Apricot = --brand-gold · Magenta/Coral = --brand-pink. The former separate
+     "-logo" literals were the same hexes typed twice; they are aliases now. */
+  --warm-apricot-logo: var(--brand-gold); --warm-magenta-logo: var(--brand-pink);
+  /* Decorative warm tints now come from the pink ramp instead of bespoke hexes.
+     --warm-50/-700 stay as the contrast-audited accent-tint pair (Badge, EmptyState,
+     SystemMessage depend on that measured pairing). */
+  --warm-50: var(--accent-tint); --warm-100: var(--brand-pink-200); --warm-200: var(--brand-pink-300);
+  --warm-700: var(--accent-tint-fg); --warm-800: var(--brand-pink-800);
+  /* cool family aliases → indigo/violet side */
+  /* Spec's named cool colors map onto the authoritative stops: Lavender =
+     --brand-lavender (the light-theme step is lavender-600, dark is lavender-300),
+     Indigo = --brand-navy, and --cool-violet stays the semantic info/conversation
+     indigo (a measured role, not a raw stop). */
+  --cool-lavender: var(--brand-lavender-600); --cool-violet: var(--brand-indigo-600); --cool-indigo: var(--brand-navy);
+  --cool-lavender-logo: var(--brand-lavender);
+  --cool-50: var(--brand-indigo-100); --cool-100: var(--brand-indigo-200); --cool-200: var(--brand-indigo-300);
+  --cool-800: var(--brand-navy-800); --cool-900: var(--brand-navy-900);
+
+  /* signature-gradient aliases */
+  --gradient-warm: var(--gradient-celebration); /* legacy name → now the celebration sweep */
+  --gradient-cool: linear-gradient(120deg, #BB48F8 0%, #5852E4 100%); /* @kind color */
+  --gradient-deltalk: var(--gradient-brand); /* @kind color */
+  --gradient-warm-arm: linear-gradient(180deg, #FFB565 0%, #F24C9A 50%, #BB48F8 100%); /* @kind color */
+  --gradient-cool-arm: linear-gradient(90deg, #A780FE 0%, #5852E4 54%, #261D82 100%);  /* @kind color */
+
+  /* semantic aliases → -fill / -surface */
+  --success: var(--success-fill); --success-tint: var(--success-surface);
+  --danger: var(--danger-fill);   --danger-tint: var(--danger-surface);
+  --warning: var(--warning-fill);
+  --info: var(--info-fill);
+  /* PREMIUM — the user's OWN outbound paid affordances.
+     WARM family: affection and reach, which the spec assigns to warm. Must never
+     borrow a cool token (cool = "the other person / conversation active") — the
+     retired --super-like alias once read var(--info-fill), an outright borrow.
+     Deliberately not gold: --warning owns amber, and the two appeared in the same
+     action row, so gold would have collided with it. (That row lived in
+     SwipeActions, since deleted — the constraint still holds wherever premium and
+     warning meet, but the original example is gone.)
+     ⚠ CURRENTLY UNCONSUMED. Every consumer — ConsumableCounter, Paywall, PlanCard,
+     PremiumBadge, SwipeActions, SwipeCard — has been deleted. Kept, not removed,
+     because the DECISION (premium is a warm brand-pink ramp step, separated from
+     accent and danger) was ruled on and is expensive to re-derive; the tokens are
+     the cheapest way to preserve it for the next premium surface. Awaiting a
+     ruling on keep-vs-retire — do not build on them without re-checking. */
+  /* RE-DERIVED FROM THE BRAND RAMP (was the ad-hoc #9E2183, and #B21E63 before it —
+     both hand-nudged hexes that predate the ramps and were never checked against
+     them). Premium is warm affection, so it comes from the PINK ramp: it is a
+     TONAL variant of the brand pink, not a new hue family.
+     --brand-pink-700 — 8.38:1 page / 8.77:1 card. Clears the state-separation
+     rule against --accent and --danger-fill on the LUMINANCE axis, the robust one
+     in light; margins in readme.md's separation table. */
+  --premium:         var(--brand-pink-700);
+  --premium-on-fill: #FFFFFF;   /* white ON the premium fill — 8.77:1             */
+  /* RETIRED: --super-like and --boost. They aliased --premium but named the
+     rejected swipe-stack paradigm (up-swipe super-like, boost), had zero
+     consumers after SwipeActions/SwipeCard/ConsumableCounter were deleted, and
+     kept inviting someone to rebuild the feature. Use --premium directly. */
+  /* SCRIM — one token for modal backdrops. BottomSheet/ConfirmDialog/Dialog each
+     had their own literal (.44/.5/.42 of rgba(26,22,38)) for the same concept.
+     --scrim-media is the separate photo-overlay ramp (gradient over user photos),
+     which is intentionally near-black and theme-independent. */
+  --scrim:       rgba(18, 25, 38, 0.46);
+  --scrim-media: rgba(8, 6, 16, 0.60);
+  --hover-veil: rgba(18, 25, 38, 0.06);
+
+  /* ── ON-MEDIA VEILS — theme-INDEPENDENT, like --ink-fixed ────────────
+     Chips, buttons and waveforms that sit ON a user photo have no theme
+     surface to answer to, so these do not flip. Three weights only; every
+     component-local rgba(255,255,255,.16/.18/.20/.22/.4) collapsed into them
+     (differences of 2% were invisible and untracked). Ink veils reuse
+     --scrim-media / --gradient-media-scrim — do not invent a fourth alpha. */
+  --veil-on-media-weak:   rgba(255, 255, 255, 0.16);  /* chip fill on a photo   */
+  --veil-on-media-medium: rgba(255, 255, 255, 0.20);  /* icon button on a photo */
+  --veil-on-media-strong: rgba(255, 255, 255, 0.40);  /* inactive waveform bar  */
+  --gradient-media-scrim: linear-gradient(to top, rgba(8,6,16,.86) 0%, rgba(8,6,16,.32) 36%, rgba(8,6,16,0) 58%); /* @kind color */
+
+  /* ── NEUTRAL LADDER — the system's audited blue-grays, named ──────────
+     Deliberately NOT an evenly-interpolated ramp like the brand ramps: every
+     neutral here exists because it CLEARS A MEASURED BAR (3:1 for control
+     outlines, 4.5:1 for text), and an even ladder missed nine of them by
+     ΔL .03–.05, which would have broken those measurements. So the ladder is
+     the measured set, named in lightness order — identical hexes, now trackable.
+     Text neutrals (--text-subtle #636E82, --text-secondary #5D6675,
+     --text-disabled #A2AAB7) and the dark surfaces (#1D2432 / #161D2B) sit
+     BETWEEN steps by measurement and stay semantic. */
+  --neutral-100: #FFFFFF;  /* card, light                                  */
+  --neutral-200: #F8FAFC;  /* page bg, light                               */
+  --neutral-300: #EEF2F7;  /* well, light                                  */
+  --neutral-400: #C3CBD6;  /* decorative border, light (1.64:1 on the white card) */
+  --neutral-500: #A9B2C0;  /* emphasised border / grab handle, light       */
+  --neutral-600: #828B9C;  /* control outline + switch off-track, light (3.43:1 on the
+                              white card; it is lower against the page) */
+  --neutral-700: #6E7789;  /* control outline, dark + --ink-fixed-edge — ratios per
+                              ground in the separation tables */
+  --neutral-800: #454D5A;  /* decorative border, dark                      */
+  --neutral-900: #121926;  /* ink — page bg dark, --text-primary light, --ink-fixed */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LIGHT RE-SCOPE — lets a subtree force LIGHT even under a dark ancestor
+   (e.g. side-by-side theme docs). Re-asserts every token the dark block
+   overrides. Mirrors :root; keep in sync with it.
+   ═══════════════════════════════════════════════════════════════════════ */
+[data-theme="light"], .theme-light {
+  --bg: #F8FAFC; --surface-card: #FFFFFF; --surface-well: #EEF2F7;
+  --border: #C3CBD6; --border-strong: #A9B2C0;
+  --text-primary: #121926; --text-secondary: #5D6675; --text-subtle: #636E82; --text-disabled: #A2AAB7;
+  --action-cta: #121926; --action-cta-press: #2E3542; --text-on-cta: #FFFFFF;
+  --gradient-brand: linear-gradient(135deg, #F24C9A 0%, #BB48F8 100%); /* @kind color */ --text-on-brand: #FFFFFF;
+  --chip-selected-fill: var(--gradient-brand-strong); --chip-selected-text: var(--text-on-brand); /* light re-scope — Chip's exception, see :root */
+  --success-fill: #3E9D6E; --success-on-fill: #06301E; --success-surface: #E4F3EB; --success-text: #1F7A50;
+  --danger-fill: #C81E3A; --danger-on-fill: #FFFFFF; --danger-surface: #FBEAEC; --danger-text: #B02034;
+  --warning-fill: var(--brand-gold-500); --warning-on-fill: var(--brand-gold-900); --warning-surface: var(--brand-gold-100); --warning-text: var(--brand-gold-700);
+  --info-fill: var(--brand-indigo-600); --info-on-fill: #FFFFFF; --info-surface: var(--brand-indigo-100); --info-text: var(--brand-indigo-600);
+  --surface-cool: #1D2432; --surface-cool-raised: #2A3346; --text-on-cool: #F4F1FF;
+  --nav-active: var(--brand-lavender-600);
+  --accent: #F24C9A; --accent-press: var(--brand-pink-600); --accent-fg: #FFFFFF; --accent-tint: var(--brand-pink-100); --accent-tint-fg: var(--brand-pink-800);
+  --focus-ring: var(--accent); --surface-input: #FFFFFF; --switch-track-off: #828B9C; --border-control: #828B9C;
+  --logo-wordmark: var(--brand-navy-500);   /* #261D82 — the wordmark IS the deep navy stop */
+  /* Tagline sits a few steps lighter than the wordmark, same family: it must read as
+     a subtitle, not a second brand name. navy-300 was tested first and fails AA
+     (3.19:1 on the page); navy-400 clears it at 6.36:1 while measuring 2.00:1
+     softer than the wordmark, so it is the lightest step that still holds. */
+  --logo-tagline:  var(--brand-navy-400);   /* #4D54A9 */
+  --action-primary: #121926; --action-primary-press: #2E3542; --action-primary-tint: var(--brand-pink-100);
+  --other-person: #0D79AE; --conversation-active: #0D79AE;
+  --conversation-active-on-fill: #FFFFFF; --conversation-active-surface: #E6F2F9; --conversation-active-fg: #0A5F89;
+  /* Chat-bubble aliases must be RE-DECLARED per scope. A custom property declared
+     only on :root computes its var() substitution AT :root, and that already-resolved
+     value inherits — so a [data-theme] subtree would keep the light values. */
+  --bubble-sent-fill: var(--action-primary);    --bubble-sent-on-fill: var(--text-on-cta);
+  --bubble-received-fill: var(--surface-card);  --bubble-received-on-fill: var(--text-primary);
+  --bubble-timestamp: var(--text-subtle);
+  --bubble-status-read: var(--conversation-active); --bubble-status-failed: var(--danger);
+
+  --warm-magenta: #F24C9A; --warm-700: var(--brand-pink-800); --warm-50: var(--brand-pink-100); --warm-100: #F9D2E4; --warm-200: #F4B6D2;
+  --cool-violet: var(--brand-indigo-600); --cool-lavender: var(--brand-lavender-600); --cool-50: var(--brand-indigo-100);
+  --success: #3E9D6E; --success-tint: #E4F3EB; --danger: #C81E3A; --danger-tint: #FBEAEC;
+  --warning: var(--brand-gold-500); --info: var(--brand-indigo-600);
+  --premium: var(--brand-pink-700); --premium-on-fill: #FFFFFF;
+  /* SCRIM — one token for modal backdrops. BottomSheet/ConfirmDialog/Dialog each
+     had their own literal (.44/.5/.42 of rgba(26,22,38)) for the same concept.
+     --scrim-media is the separate photo-overlay ramp (gradient over user photos),
+     which is intentionally near-black and theme-independent. */
+  --scrim:       rgba(18, 25, 38, 0.46);
+  /* ON-MEDIA PLATE — REDECLARED PER THEME ON PURPOSE (2026-08-07). These alias
+     --bg / --text-primary / --surface-card, and an alias resolves where it is
+     DECLARED: left only in :root it froze light and dark theme rendered the
+     light construction. Keep in sync with :root and the dark block. */
+  --on-media-plate:       color-mix(in srgb, var(--bg) 70%, transparent);
+  --on-media-ink:         var(--text-primary);
+  --on-media-halo:        0 0 0 1px color-mix(in srgb, var(--text-primary) 55%, transparent),
+                          0 2px 10px rgba(0, 0, 0, .5); /* @kind shadow */
+  --on-media-plate-hover: color-mix(in srgb, var(--surface-card) 70%, transparent);
+  --on-media-blur:        blur(6px); /* @kind other */
+  --scrim-media: rgba(8, 6, 16, 0.60);
+  --hover-veil: rgba(18, 25, 38, 0.06);
+  --shadow-xs: 0 1px 2px rgba(26,22,38,.05); --shadow-sm: 0 2px 8px rgba(26,22,38,.06);
+  --shadow-md: 0 6px 20px rgba(26,22,38,.08); --shadow-lg: 0 16px 40px rgba(26,22,38,.12);
+  --shadow-xl: 0 28px 64px rgba(26,22,38,.16);
+  color-scheme: light;
+
+  /* ── LEGACY ALIASES — re-declared per scope ────────────────────────────
+     A custom property declared only on :root substitutes its var() AT :root;
+     the resolved value then inherits, so a [data-theme] SUBTREE would keep the
+     light values. Every alias that must re-resolve per theme is repeated here. */
+  --paper: var(--bg); --paper-raised: var(--surface-card); --paper-sunken: var(--surface-well);
+  --surface: var(--bg);
+  --ink: var(--text-primary); --ink-70: var(--text-secondary); --ink-50: var(--text-subtle); --ink-30: var(--text-disabled);
+  --line: var(--border); --line-strong: var(--border-strong); --border-subtle: var(--border);
+  --text-muted: var(--text-secondary);
+  --text-on-warm: var(--text-on-cta); --text-on-gradient-warm: var(--text-on-brand);
+  --avatar-ring-color: var(--gradient-brand);
+  --warm-apricot: var(--brand-gold); --cool-indigo: var(--brand-navy);
+  --gradient-warm: var(--gradient-celebration); --gradient-deltalk: var(--gradient-brand);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DARK THEME  (data-theme="dark" or .theme-dark on any ancestor)
+   ═══════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"], .theme-dark {
+  /* ── 1. NEUTRALS — DARK ────────────────────────────────────────────── */
+  --bg:             #121926;
+  --surface-card:   #1D2432;
+  --surface-well:   #161D2A;
+  --border:         #454D5A;    /* 2.06:1 on the dark page, non-text */
+  --border-strong:  #5C6473;
+  --text-primary:      #F8FAFC;    /* primary text — 14.86:1 on the dark card,
+                                      16.83:1 on the dark page */
+  --text-secondary: #9AA4B2;    /* supporting — 6.98:1 on the dark page */
+  --text-subtle:    #828C9E;    /* metadata — 4.59:1 on the dark card, 5.19:1 dark page */
+  --text-disabled:  #5A6373;    /* placeholder — 2.91:1 on the dark page, exempt */
+
+  /* Primary CTA — DARK = near-white. */
+  --action-cta:       #F8FAFC;
+  --action-cta-press: #E2E8F0;
+  --text-on-cta:      #121926;  /* dark ink on the light CTA (15.1:1)   */
+
+  /* ── 3. GRADIENT — IDENTICAL to light (single brand gradient) ───────
+     Both stops (#F24C9A / #BB48F8) are visible on #121926 too, so the brand
+     gradient is NOT theme-split any more. --gradient-brand-strong and
+     --gradient-celebration inherit unchanged from :root. */
+  --gradient-brand:  linear-gradient(135deg, #F24C9A 0%, #BB48F8 100%); /* @kind color */
+  --text-on-brand:   #FFFFFF;
+  /* Chip exception, dark value — see :root for the full note. The darkened-for-white
+     stops (--gradient-brand-strong) sit only 2.74–3.13:1 from dark --surface-well,
+     barely separating a selected chip from an unselected one. The undarkened gradient
+     + a dark ink instead separates 4.34–5.05:1 and still clears 4.5:1 with its own
+     text (5.95:1 / 5.11:1, measured 2026-08-13). --brand-navy-900 is an existing ramp
+     step, not a new hex — same pattern as --warning-on-fill/--info-on-fill. */
+  --chip-selected-fill: var(--gradient-brand);
+  --chip-selected-text: var(--brand-navy-900);
+
+  /* ── 4. SEMANTIC COLORS — DARK ─────────────────────────────────────── */
+  /* SUCCESS */
+  --success-fill:    #4FB985;  /* (7.22:1)                               */
+  --success-on-fill: #06251A;  /* dark ink on the green fill (6.69)      */
+  --success-surface: #17281F;
+  --success-text:    #7FE3B0;  /* on surface (9.94) / page (11.33)       */
+  /* DANGER — RED family (hue 6), not pink-red. The old #F26E86 was hue 350 and
+     sat too close to the then --accent, so a focused field and an invalid field
+     were indistinguishable. See the STATE-COLOUR SEPARATION rule below. */
+  --danger-fill:     #FF6B5B;  /* (6.29:1) — hue-separated from --accent */
+  --danger-on-fill:  #3A0C14;  /* dark ink on the red fill (6.04)        */
+  --danger-surface:  #33161A;
+  --danger-text:     #FFA9A0;  /* on surface (9.0) / page (9.59)         */
+  /* WARNING */
+  --warning-fill:    var(--brand-gold-500);  /* 10.10:1 page — same ramp step as light */  /* (9.49:1)                               */
+  --warning-on-fill: var(--brand-gold-900);  /* dark ink ON amber — 10.45:1     */
+  --warning-surface: #2A2318;                /* dark surface tint (semantic, not a ramp step) */
+  --warning-text:    var(--brand-gold-300);  /* 12.88 page · 11.38 card · 9.6 on the dark tint */
+  /* INFO */
+  /* INFO in dark — same indigo/lavender ramp family, light end (dark needs a light
+     fill to clear AA on #121926): lavender-400 is 7.94:1 page, and is verified
+     against --accent, --danger-fill and --premium; margins in readme.md's
+     separation table. */
+  --info-fill:       var(--brand-lavender-400);  /* 7.94:1 page                 */
+  --info-on-fill:    var(--brand-navy-900);      /* dark ink on it — 8.97:1     */
+  --info-surface:    #1B2242;                    /* dark surface tint (semantic, not a ramp step) */
+  --info-text:       var(--brand-lavender-300);  /* 9.00 on surface · 10.22 page */
+
+
+  /* ── 5. LEGACY ALIASES — DARK values ───────────────────────────────── */
+  --surface-cool: #0E1622; --surface-cool-raised: #222A3A; --text-on-cool: #E9ECF5;
+
+  /* ONE PINK IDENTITY, tuned per theme — the solid accent no longer flips
+     warm→cool. Dark reuses the exact focus-ring pink so the two can never
+     diverge; the warm↔cool duality lives in --gradient-brand and the logo. */
+  --accent:          #E481AF;            /* 5.97:1 on the #121926 page    */
+  --accent-press:    #EE9CC1;            /* lighter on press, dark-theme convention */
+  --accent-fg:       var(--text-on-cta); /* #121926 ink on the pink fill (5.97:1) */
+  --accent-tint:     #502B3C;            /* pink-leaning subtle fill, hue 332 (1.30:1 vs page) */
+  --accent-tint-fg:  #F4B6D2;            /* on accent-tint (7.12:1)       */
+  --focus-ring:      var(--accent);      /* focus IS the accent — bound, never a second value */
+  --switch-track-off: #6E7789;           /* vs the #1D2432 knob/card — see tables */
+  /* Wordmark in dark = the light lavender from the original logo artwork, NOT
+     near-white: #F8FAFC broke the "no pure white" rule and stripped the wordmark
+     of its brand identity. Sampled exactly from assets/wordmark-horizontal-dark.svg
+     and wordmark-vertical-dark.svg, which both bake this value — so the token and
+     the baked-fill assets now agree instead of drifting. Cool family. */
+  /* Dark wordmark is BOUND TO --nav-active's lavender (brand-lavender-400), not a
+     generic light purple: the wordmark and the active tab are the two places the
+     brand's cool identity carries the interface, so they must be the same value.
+     Replaces the earlier #C3C0FF. 7.94:1 page · 7.01:1 card. */
+  --logo-wordmark:   var(--brand-lavender-400);   /* #B99FFF */
+  /* Tagline recedes on dark exactly as it does on light — one step DARKER, not
+     lighter: on a dark surface a lighter step is louder, which would invert the
+     hierarchy. lavender-500 is the darkest step still clearing AA (6.00:1 page). */
+  --logo-tagline:    var(--brand-lavender-500);   /* #A780FE */
+  --border-control:  #6E7789;            /* 1dp control outline vs the dark page. The
+                                            figure here was the dark CARD's — stripped,
+                                            same defect as the light twin */
+  --surface-input:   var(--surface-card);
+
+  --action-primary:       var(--action-cta);
+  --action-primary-press: var(--action-cta-press);
+  --action-primary-tint:  var(--accent-tint);
+  /* COOL family in dark — the cool role does NOT track --accent (see :root). */
+  --conversation-active:         #82C4FF;  /* cool BLUE (9.46:1 page). Hue
+                                   separation from --info-fill verified; margin in
+                                   readme.md's separation table. */
+  --conversation-active-on-fill: #0A1F33;  /* dark ink ON the blue (8.98:1)    */
+  --conversation-active-surface: #16283D;
+  --conversation-active-fg:      #9FD3FF;  /* on that surface (9.42:1)         */
+  --other-person:        var(--conversation-active);
+  /* Chat-bubble aliases must be RE-DECLARED per scope. A custom property declared
+     only on :root computes its var() substitution AT :root, and that already-resolved
+     value inherits — so a [data-theme] subtree would keep the light values. */
+  --bubble-sent-fill: var(--action-primary);    --bubble-sent-on-fill: var(--text-on-cta);
+  --bubble-received-fill: var(--surface-card);  --bubble-received-on-fill: var(--text-primary);
+  --bubble-timestamp: var(--text-subtle);
+  --bubble-status-read: var(--conversation-active); --bubble-status-failed: var(--danger);
+
+
+  /* warm/cool family aliases, dark-tuned */
+  --warm-magenta: #F062B0; --warm-700: #F7A0C4;
+  --warm-50: #2A1E28; --warm-100: #3A2632; --warm-200: #4A2E3C;
+  --cool-violet: var(--brand-lavender-400); --cool-lavender: var(--brand-lavender-300); --cool-50: #1B2242;
+
+  /* semantic aliases → -fill / -surface (dark) */
+  --success: var(--success-fill); --success-tint: var(--success-surface);
+  --danger: var(--danger-fill);   --danger-tint: var(--danger-surface);
+  --warning: var(--warning-fill);
+  --info: var(--info-fill);
+  /* Dark nav-active — brand-lavender-400: 7.01:1 on the dark card, 7.94:1 on
+     the page. Hue separation from the dark --accent verified. Same reasoning as
+     light. */
+  --nav-active:      var(--brand-lavender-400);
+  /* Premium in dark — RE-DERIVED FROM THE BRAND RAMP (was the ad-hoc #FFC2DD, and
+     #F583B4 before it). Same pink family as light, one tonal end away: dark needs a
+     LIGHT premium to clear AA on #121926, so it takes the light end of the same ramp.
+     --brand-pink-200 — 12.53:1 page / 11.06:1 card. Verified against --accent and
+     --danger-fill; margins in readme.md's separation table, where the danger pair
+     is flagged as passing on ONE axis only. On-fill is also a ramp step. */
+  --premium:         var(--brand-pink-200);
+  --premium-on-fill: var(--brand-pink-900);  /* dark ink ON that fill — 12.5:1 */
+  /* dark needs a deeper scrim: the page under it is already dark. */
+  --scrim:       rgba(4, 7, 12, 0.62);
+  --scrim-media: rgba(4, 3, 9, 0.62);
+  --hover-veil: rgba(255, 255, 255, 0.08);
+
+  /* deeper shadows on dark surfaces */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.45);
+  --shadow-md: 0 6px 20px rgba(0,0,0,.5);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,.55);
+  --shadow-xl: 0 28px 64px rgba(0,0,0,.6);
+  color-scheme: dark;
+
+  /* ── LEGACY ALIASES — re-declared per scope ────────────────────────────
+     A custom property declared only on :root substitutes its var() AT :root;
+     the resolved value then inherits, so a [data-theme] SUBTREE would keep the
+     light values. Every alias that must re-resolve per theme is repeated here. */
+  --paper: var(--bg); --paper-raised: var(--surface-card); --paper-sunken: var(--surface-well);
+  --surface: var(--bg);
+  --ink: var(--text-primary); --ink-70: var(--text-secondary); --ink-50: var(--text-subtle); --ink-30: var(--text-disabled);
+  --line: var(--border); --line-strong: var(--border-strong); --border-subtle: var(--border);
+  --text-muted: var(--text-secondary);
+  --text-on-warm: var(--text-on-cta); --text-on-gradient-warm: var(--text-on-brand);
+  --avatar-ring-color: var(--gradient-brand);
+  --warm-apricot: var(--brand-gold); --cool-indigo: var(--brand-navy);
+  --gradient-warm: var(--gradient-celebration); --gradient-deltalk: var(--gradient-brand);
+
+  /* ON-MEDIA PLATE — REDECLARED PER THEME ON PURPOSE (2026-08-07). These alias
+     --bg / --text-primary / --surface-card, and an alias resolves where it is
+     DECLARED: left only in :root it froze light and dark theme rendered the
+     light construction. Keep in sync with :root and the light block. */
+  --on-media-plate:       color-mix(in srgb, var(--bg) 70%, transparent);
+  --on-media-ink:         var(--text-primary);
+  --on-media-halo:        0 0 0 1px color-mix(in srgb, var(--text-primary) 55%, transparent),
+                          0 2px 10px rgba(0, 0, 0, .5); /* @kind shadow */
+  --on-media-plate-hover: color-mix(in srgb, var(--surface-card) 70%, transparent);
+  --on-media-blur:        blur(6px); /* @kind other */
+}

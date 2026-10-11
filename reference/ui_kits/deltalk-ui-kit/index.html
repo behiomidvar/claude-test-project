@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" data-theme="light"><head><meta charset="utf-8"><title>Deltalk UI Kit — v1.0</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="kit.css">
+<style>
+.cover-main{display:flex;flex-direction:column;justify-content:space-between;padding:80px}
+.cover-top{display:flex;flex-direction:column;gap:0}
+.lock{width:392px;height:auto;display:block}
+.cover-mid{display:flex;flex-direction:column;gap:18px}
+.cover-mid .rule{width:132px;height:6px;border-radius:var(--radius-hairline);background:var(--gradient-brand)}
+.cover-mid h1{margin:0;font-family:var(--font-latin);font-size:88px;line-height:.98;font-weight:700;letter-spacing:-.035em;direction:ltr;unicode-bidi:isolate;text-align:left}
+.cover-mid .fa{margin:0;font-size:24px;font-weight:500;color:var(--text-secondary);line-height:1.6}
+.meta{display:grid;grid-template-columns:repeat(4,max-content);gap:0 56px;direction:ltr;unicode-bidi:isolate;text-align:left}
+.meta div{display:flex;flex-direction:column;gap:5px}
+.meta dt{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-subtle)}
+.meta dd{margin:0;font-family:var(--font-latin);font-size:15px;font-weight:600}
+.strip{display:flex;flex-direction:column}
+.strip span{flex:1}
+.toc{display:flex;flex-direction:column;gap:0}
+.toc a{display:grid;grid-template-columns:56px 1fr 300px;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--border);direction:ltr;unicode-bidi:isolate;text-align:left;color:var(--text-primary)}
+.toc a:first-child{border-top:1px solid var(--border)}
+.toc a:hover{color:var(--text-primary);background:var(--surface-well)}
+.toc .n{font-family:var(--font-mono);font-size:12px;color:var(--accent)}
+.toc .t{font-family:var(--font-latin);font-size:24px;font-weight:700}
+.toc .d{font-family:var(--font-latin);font-size:12.5px;line-height:1.65;color:var(--text-secondary)}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px}
+.about h4{margin:0 0 10px;font-family:var(--font-latin);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate;text-align:left}
+.about p{margin:0 0 12px;font-family:var(--font-latin);font-size:13px;line-height:1.75;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate;text-align:left}
+.about p b{color:var(--text-primary);font-weight:600}
+.about ul{margin:0;padding-inline-start:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.about li{font-family:var(--font-latin);font-size:13px;line-height:1.6;color:var(--text-secondary);direction:ltr;unicode-bidi:isolate;text-align:left;padding-inline-start:14px;position:relative}
+.about li::before{content:"";position:absolute;inset-inline-start:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+</style></head><body>
+
+<section class="sheet sheet--cover">
+  <div class="cover-main">
+    <div class="cover-top"><img class="lock" src="../../assets/wordmark-horizontal-light.svg" alt="Deltalk"></div>
+    <div class="cover-mid">
+      <div class="rule"></div>
+      <h1>UI Kit</h1>
+      <p class="fa">کیت رابط کاربری دل‌تاک — مبانی، کامپوننت‌ها و صفحه‌ها</p>
+    </div>
+    <dl class="meta">
+      <div><dt>Version</dt><dd>1.0</dd></div>
+      <div><dt>Released</dt><dd>July 2026</dd></div>
+      <div><dt>Platform</dt><dd>Android · RTL</dd></div>
+      <div><dt>Components</dt><dd>48</dd></div>
+    </dl>
+  </div>
+  <div class="strip">
+    <span style="background:var(--brand-gold)"></span>
+    <span style="background:var(--brand-pink)"></span>
+    <span style="background:var(--brand-lavender)"></span>
+    <span style="background:var(--brand-purple)"></span>
+    <span style="background:var(--brand-indigo)"></span>
+    <span style="background:var(--brand-navy)"></span>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="rh"><span class="rh-l">Deltalk UI Kit · v1.0</span><span class="rh-r">Contents</span></div>
+  <div class="sh"><span class="num">00</span><h2>Contents</h2>
+    <p>Three reference sheets. Everything is drawn live from the Deltalk design system — the same token files and the same 49 React components that ship to production — so this kit cannot drift from the source of truth.</p>
+  </div>
+  <nav class="toc">
+    <a href="01-foundations.html"><span class="n">01</span><span class="t">Foundations</span><span class="d">Logo lockups, the six brand accent stops and their nine-step ramps, the neutral ladder, every semantic role in light and dark, type scale, spacing, shape, elevation, motion, iconography.</span></a>
+    <a href="02-components.html"><span class="n">02</span><span class="t">Components</span><span class="d">All 48 components in isolation, grouped by concern, each with its variants and states — default, selected, focus, pressed, disabled, error, loading, empty — rendered in light and dark side by side.</span></a>
+    <a href="03-screens.html"><span class="n">03</span><span class="t">Screens</span><span class="d">Seven assembled screens — Onboarding, Discover, Chat, Likes, Profile, Settings, Paywall — at 390 × 844, each in both themes, built only from kit components and real Persian content.</span></a>
+  </nav>
+  <div class="about">
+    <div>
+      <h4>How to read this kit</h4>
+      <p>Documentation language is <b>English</b>; every piece of product content is <b>Persian</b>, because Persian is the source language of the product and not a translation. Numerals in UI content are Persian (۰–۹); the phone field and the OTP boxes are the two documented exceptions and use Latin digits.</p>
+      <p>Layout is <b>RTL by default</b>. Component code, token names and props stay English.</p>
+      <p>Every colour on these sheets is read from a semantic token at render time. Where a value is worth naming it is printed in monospace next to the specimen.</p>
+    </div>
+    <div>
+      <h4>Scope &amp; caveats</h4>
+      <ul>
+        <li>Type: IRANSansMobile (NoEn) is the only Persian family — UI, body and headings alike. Hanken Grotesk is used for Latin, JetBrains Mono for token names.</li>
+        <li>Icons: Lucide (MIT), 2px stroke, rounded caps. Swap for a brand-owned set if one exists.</li>
+        <li>Portrait imagery uses Unsplash placeholders — replace with licensed photography.</li>
+        <li>Paywall is drawn from the preserved <span class="mono">--premium</span> token family; it has no live component yet.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</body></html>

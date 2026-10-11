@@ -1,0 +1,88 @@
+<!-- @dsCard group="7. Components" viewport="900x1180" name="Forms — the input family" subtitle="Rest vs focus (2dp brand-pink ring), RTL text vs the LTR phone exception, textarea, select trigger, switches, and the typed DateOfBirthFieldGroup. Buttons have their own card." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);direction:rtl;color:var(--text-primary);font-family:var(--font-sans)}
+.wrap{display:flex;flex-direction:column;gap:20px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pair{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
+.themebox{border-radius:var(--radius-card);padding:var(--pad-card);background:var(--bg);color:var(--text-primary)}
+.themelbl{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--text-subtle);margin-bottom:12px}
+.st{display:grid;grid-template-columns:max-content 1fr;gap:12px;align-items:start}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--text-subtle);text-transform:uppercase;margin-bottom:10px}
+.spec{background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--gutter-screen)}
+.states{display:flex;flex-direction:column;gap:var(--gap-stack)}
+.st__n{font-size:11px;font-weight:700;color:var(--text-subtle);padding-top:14px;letter-spacing:.03em;white-space:nowrap}
+/* Static depiction of the focus state: a @dsCard renders unfocused, so :focus-within
+   can never match here. Mirrors the real rule (2dp ring in --focus-ring, the brand pink). */
+.is-focusdemo:not(.dt-field--error) .dt-field__wrap,.is-focusdemo:not(.dt-phone--error) .dt-phone__wrap{border-width:var(--border-focus-w);border-color:var(--focus-ring)}
+/* error+focus rows: the demo must NOT paint pink — danger wins, same as the real rule */
+.is-focusdemo.dt-field--error .dt-field__wrap,.is-focusdemo.dt-phone--error .dt-phone__wrap{border-width:var(--border-focus-w);border-color:var(--danger)}
+.themebox{border:1px solid var(--border)}
+.dobcap{direction:ltr;text-align:left;unicode-bidi:isolate;margin:0;font-size:11px;line-height:1.7;color:var(--text-secondary)}
+.dobcap b{color:var(--text-primary)}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Input, Switch, PhoneInput, Select, DateOfBirthFieldGroup } = window.DeltalkDesignSystem_288455;
+const Mail = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
+function FieldSpec({theme,phone,setPhone}){
+  return <div className="themebox" data-theme={theme}>
+    <div className="themelbl">{theme.toUpperCase()}</div>
+    <div className="cols">
+      <div>
+        <div className="cap">RTL — text</div>
+        <div className="spec"><div className="states">
+          <div className="st"><span className="st__n">REST</span><Input placeholder="چی صدات کنیم؟" /></div>
+          <div className="st"><span className="st__n">FOCUS</span><Input className="is-focusdemo" placeholder="چی صدات کنیم؟" /></div>
+          <div className="st"><span className="st__n">FILLED</span><Input defaultValue="نیلوفر" /></div>
+          <div className="st"><span className="st__n">ERROR+FOCUS</span><Input className="is-focusdemo" defaultValue="نیلوفر@" error="خطا بر فوکوس مقدم است" iconLeft={<Mail/>} /></div>
+          <div className="st"><span className="st__n">OFF</span><Input defaultValue="قابل ویرایش نیست" disabled /></div>
+        </div></div>
+      </div>
+      <div>
+        <div className="cap">LTR — phone</div>
+        <div className="spec"><div className="states">
+          <div className="st"><span className="st__n">REST</span><PhoneInput label={null} value="" onChange={()=>{}} /></div>
+          <div className="st"><span className="st__n">FOCUS</span><PhoneInput className="is-focusdemo" label={null} value={phone} onChange={setPhone} /></div>
+          <div className="st"><span className="st__n">FILLED</span><PhoneInput label={null} value={phone} onChange={setPhone} /></div>
+          <div className="st"><span className="st__n">ERROR+FOCUS</span><PhoneInput className="is-focusdemo" label={null} value="912" onChange={()=>{}} error="خطا بر فوکوس مقدم است" /></div>
+          <div className="st"><span className="st__n">OFF</span><PhoneInput label={null} value="9123456789" onChange={()=>{}} disabled /></div>
+        </div></div>
+      </div>
+    </div>
+  </div>;
+}
+function Demo(){
+  const [on,setOn]=React.useState(true);
+  const [dob,setDob]=React.useState({day:'12',month:2,year:'1363'});
+  const [phone,setPhone]=React.useState('9123456789');
+  return <div className="wrap">
+    <div>
+      <div className="cap">Rest vs. focus — 2dp brand-pink ring, both themes</div>
+      <div className="pair">
+        <FieldSpec theme="light" phone={phone} setPhone={setPhone} />
+        <FieldSpec theme="dark" phone={phone} setPhone={setPhone} />
+      </div>
+    </div>
+    <div className="cols">
+      <Input label="دربارهٔ من" multiline rows={3} placeholder="یک چیز که کمتر کسی دربارهٔ تو می‌دونه…" />
+      <Select label="شهر" options={[{value:'thr',label:'تهران'},{value:'isf',label:'اصفهان'},{value:'shz',label:'شیراز'}]} value="thr" onChange={()=>{}} />
+    </div>
+    <div>
+      <div className="cap">DateOfBirthFieldGroup — typed, never a wheel or calendar</div>
+      <div className="spec" style={{display:'grid',gridTemplateColumns:'1.15fr 1fr',gap:16,alignItems:'start'}}>
+        <DateOfBirthFieldGroup day={dob.day} month={dob.month} year={dob.year} onChange={setDob} />
+        <p className="dobcap" dir="ltr">Three typed fields in one row — <b>روز · ماه · سال</b>, right to left, each its own single frame with its own visible label; the group has no frame. The month is always a <b>name</b>, never a number. Auto-advances forward, backspace steps back. Errors are blur-gated in the danger tokens; a live <b>۴۱ ساله</b> line confirms the date once valid.</p>
+      </div>
+    </div>
+    <div className="row">
+      <Switch label="پیام‌های صوتی" checked={on} onChange={()=>setOn(v=>!v)} />
+      <Switch label="این کاربر هم بلاک شود" variant="restricting" defaultChecked />
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

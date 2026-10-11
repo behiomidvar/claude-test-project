@@ -1,0 +1,17 @@
+<!-- @dsCard group="1. Brand" viewport="700x216" name="Three-dots device" subtitle="Someone is about to speak — a recurring brand motif (loading, breaks, builds)" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="card.css">
+<style>body{margin:0;padding:24px;background:var(--paper);font-family:var(--font-sans);display:flex;gap:26px;align-items:center;direction:rtl}
+.box{display:flex;align-items:center;justify-content:center;height:96px;border-radius:var(--radius-lg)}
+.dots{display:inline-flex;gap:8px}
+.d{width:14px;height:14px;border-radius:50%;animation:dt-typing 1.4s var(--ease-in-out) infinite}
+.d:nth-child(2){animation-delay:.18s}.d:nth-child(3){animation-delay:.36s}
+p{margin:0;color:var(--ink-70);font-size:15px;line-height:1.75;max-width:280px}
+/* English prose in an RTL document must be isolated, or its trailing full stop
+   reorders to the left edge and renders as a stray leading period. */
+p{direction:ltr;unicode-bidi:isolate;text-align:left}
+</style></head>
+<body>
+<div class="box" style="background:var(--surface-card);box-shadow:var(--shadow-md);padding:0 30px"><span class="dots"><span class="d" style="background:var(--cool-violet)"></span><span class="d" style="background:var(--cool-violet)"></span><span class="d" style="background:var(--cool-violet)"></span></span></div>
+<div class="box" style="background:var(--gradient-deltalk);padding:0 30px"><span class="dots"><span class="d" style="background:#fff"></span><span class="d" style="background:#fff"></span><span class="d" style="background:#fff"></span></span></div>
+<p>Use for loading states, section breaks, and build beats — not only in chat.</p>
+</body></html>

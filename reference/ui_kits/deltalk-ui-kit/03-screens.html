@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" data-theme="light"><head><meta charset="utf-8"><title>Deltalk UI Kit — 03 Screens</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="kit.css">
+<style>
+.pair{display:grid;grid-template-columns:390px 390px;gap:44px;justify-content:center;direction:ltr}
+.scrhd{display:flex;align-items:baseline;gap:14px;margin:0 0 6px;direction:ltr;text-align:left}
+.scrhd .nm{font-family:var(--font-latin);font-size:20px;font-weight:700}
+.scrhd .fa{font-size:14px;color:var(--text-secondary)}
+.scrnote{margin:0 auto 22px 0;max-width:86ch;font-family:var(--font-latin);font-size:12.5px;line-height:1.75;color:var(--text-secondary);direction:ltr;text-align:left}
+.scrsec{border-top:1px solid var(--border);padding-top:24px;margin-bottom:46px}
+.scrsec:last-child{margin-bottom:0}
+</style></head><body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel">
+const SCREENS = window.KIT_SCREENS;
+const Phone = ({ theme, children }) => <div className="ph-wrap">
+  <div className="ph" data-theme={theme} dir="rtl">{children}</div>
+  <span className="ph-cap">{theme} · 390 × 844</span>
+</div>;
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.Fragment>
+    <section className="sheet">
+      <div className="rh"><a className="rh-l" href="index.html" style={{color:'var(--text-subtle)'}}>← Deltalk UI Kit · v1.0</a><span className="rh-r">03 Screens</span></div>
+      <div className="sh"><span className="num">03</span><h2>Screens</h2>
+        <p>Seven assembled screens at 390 × 844, each in both themes. Every screen is composed only from kit components and design-system tokens — there is no screen-local styling beyond layout, and no prototype scaffolding: no theme toggle, no tweaks panel, no developer chrome. Content is real Deltalk product copy in Persian, with Persian numerals throughout.</p>
+      </div>
+      {SCREENS.map(s => <div className="scrsec" key={s.id}>
+        <div className="scrhd"><span className="nm">{s.name}</span><span className="fa">{s.fa}</span></div>
+        <p className="scrnote">{s.note}</p>
+        <div className="pair">
+          <Phone theme="light">{s.render()}</Phone>
+          <Phone theme="dark">{s.render()}</Phone>
+        </div>
+      </div>)}
+    </section>
+  </React.Fragment>
+);
+</script>
+</body></html>

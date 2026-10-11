@@ -7,9 +7,15 @@ import {useLayout} from '../core/layout';
 /**
  * Setup check, not a real scene: compact logo, one Persian sentence and
  * TypingDots on --bg. Rendered once per theme by <Promo>.
+ *
+ * Sizes are DS tokens times `u`. The DS is drawn for a phone, so the
+ * video multiplies its small UI sizes (logo, dots) up.
  */
 
-// TypingDots is drawn at app-UI size. Tune once the real component is in.
+// Compact lockup is 36px tall in the app's top bar; three times that on video.
+const LOGO_HEIGHT = 108;
+// TypingDots size="lg" has 13px dots; scaled up as one unit. `scale` must be a
+// string: React 18 appends px to a number.
 const TYPING_DOTS_SCALE = 3;
 
 export const TestScene: React.FC = () => {
@@ -25,35 +31,35 @@ export const TestScene: React.FC = () => {
 				flexDirection: isLandscape ? 'row' : 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				gap: 72 * u,
+				gap: `calc(var(--space-16) * ${u})`,
 				paddingInline: safe.inline,
 				paddingBlockStart: safe.blockStart,
 				paddingBlockEnd: safe.blockEnd,
 			}}
 		>
-			<InlineLogo size={(isLandscape ? 240 : 200) * u} />
+			<InlineLogo height={LOGO_HEIGHT * u} />
 			<div
 				style={{
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: isLandscape ? 'flex-start' : 'center',
-					gap: 56 * u,
+					gap: `calc(var(--space-12) * ${u})`,
 				}}
 			>
 				<p
+					className="dt-display"
 					style={{
 						margin: 0,
-						fontSize: (orientation === 'square' ? 64 : 72) * u,
-						fontWeight: 'var(--fw-semibold)',
+						fontSize: `calc(var(--text-display-xl) * ${u})`,
 						textAlign: isLandscape ? 'start' : 'center',
 						textWrap: 'balance',
-						maxInlineSize: (isLandscape ? 1100 : 860) * u,
+						maxInlineSize: (isLandscape ? 1000 : 860) * u,
 					}}
 				>
 					{COPY.testSentence}
 				</p>
-				<div style={{scale: TYPING_DOTS_SCALE * u, transformOrigin: 'center'}}>
-					<TypingDots />
+				<div style={{scale: String(TYPING_DOTS_SCALE * u)}}>
+					<TypingDots size="lg" />
 				</div>
 			</div>
 		</div>

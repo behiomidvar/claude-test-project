@@ -12,7 +12,7 @@ import {ThemeScope} from '../core/ThemeScope';
 export const TypingDotsProbe: React.FC<{readonly sync: boolean}> = ({sync}) => {
 	const dots = (
 		<AbsoluteFill style={{alignItems: 'center', justifyContent: 'center'}}>
-			<div style={{scale: 6}}>
+			<div style={{scale: '6'}}>
 				<TypingDots />
 			</div>
 		</AbsoluteFill>

@@ -1,0 +1,53 @@
+/* Deltalk spacing — 4px base grid. Generous, unhurried margins are part of the brand
+   ("slow is a feature"): prefer more breathing room than a typical dense app. */
+:root {
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.25rem;  /* 20 */
+  --space-6: 1.5rem;   /* 24 */
+  --space-8: 2rem;     /* 32 */
+  --space-10: 2.5rem;  /* 40 */
+  --space-12: 3rem;    /* 48 */
+  --space-16: 4rem;    /* 64 */
+  --space-20: 5rem;    /* 80 */
+  --space-24: 6rem;    /* 96 */
+
+  /* semantic — adopted from the spec layer (merge decision §3).
+     Supersedes the earlier "extra-generous" gutter; still on the 4px grid. */
+  --gutter-screen: var(--space-5); /* 20 — mobile screen horizontal padding */
+  --gap-section:   var(--space-6); /* 24 — between major sections */
+  --pad-card:      var(--space-4); /* 16 — card interior padding */
+  --gap-card:      var(--space-3); /* 12 — card-to-card gap */
+  --gap-stack:     var(--space-4); /* 16 — stacked inputs / vertical rhythm */
+  --gap-inline:    var(--space-2); /* 8  — element gap within a row */
+
+  /* control dimensions & touch targets (Android Material — merge §3/§5) */
+  --touch-min:           48px;   /* minimum interactive hit target (dp) */
+  --control-h-button:    52px;   /* full-width primary CTA height */
+  --control-h-input:     48px;   /* text field height */
+  /* ── COMPONENT METRIC ROLES ──────────────────────────────────────────
+     These capture the optical values that components had been inventing
+     individually (chip 6/11, bubble 10/14, banner 14/16, meta gap 5). They are
+     the EXISTING pixel values, unchanged — named so they are tracked and can be
+     re-tuned in one place. DOCUMENTED EXCEPTION: a component metric may sit on
+     a 2px sub-grid when the 4px grid would visibly distort a small pill or
+     bubble; the 4px roles above still govern layout (gutters, sections, cards). */
+  /* WITHDRAWN: --pad-chip (6px 11px). Its vertical half was what produced the
+     off-grid pill heights this ramp was blamed for — a pill's height now comes
+     from a --size-* step (see sizes.css → THE DECLARED-HEIGHT RULE) and only
+     the horizontal half survives, below. Do not reintroduce a two-value pad
+     token for a fixed-shape component. */
+  --pad-pill-x:    11px;  /* small pills: Badge, AgeChip, DistanceChip,
+                             new-match pill. Sub-grid by the same documented
+                             exception as before — HORIZONTAL only, so it can
+                             no longer affect a height.                     */
+  --pad-control-x: 18px;  /* 48dp chips: Chip, InterestPicker              */
+  --pad-bubble: 10px 14px;  /* ChatBubble, VoicePlayer                   */
+  --pad-banner: 14px 16px;  /* SafetyTipsBanner and banner-like rows     */
+  --gap-tight:  5px;        /* bubble meta row: time + delivery tick     */
+  --border-focus-w:      2px;    /* focus/error ring width (color = --focus-ring / --danger).
+                                    2dp vs the 1dp rest border so the jump is clearly felt. */
+}

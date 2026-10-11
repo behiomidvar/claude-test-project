@@ -1,0 +1,40 @@
+<!-- @dsCard group="8. Selection & Forms" viewport="720x520" name="Selection controls" subtitle="Radio, checkbox (with indeterminate & error), segmented control, and dropdown select." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:760px;margin:0 auto}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:var(--text-micro);font-weight:var(--fw-bold);color:var(--text-subtle);margin-bottom:10px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Radio, Checkbox, SegmentedControl, Select } = window.DeltalkDesignSystem_288455;
+function Demo(){
+  const [g,setG]=React.useState('men');
+  const [c1,setC1]=React.useState(true);
+  const [seg,setSeg]=React.useState('all');
+  const [city,setCity]=React.useState('');
+  return <div className="grid">
+    <div><div className="cap">RADIO</div>
+      <Radio value={g} onChange={setG} options={[
+        {value:'women',label:'خانم‌ها'},{value:'men',label:'آقایان'},
+        {value:'all',label:'همه',hint:'به همه نشان داده شود'},{value:'na',label:'گزینهٔ غیرفعال',disabled:true}]}/>
+    </div>
+    <div><div className="cap">CHECKBOX</div>
+      <Checkbox checked={c1} onChange={()=>setC1(v=>!v)} label="نمایش سن روی پروفایل"/>
+      <Checkbox indeterminate label="اعلان‌های انتخابی" hint="برخی روشن‌اند"/>
+      <Checkbox error label="پذیرش قوانین" hint="برای ادامه لازم است"/>
+      <Checkbox disabled label="گزینهٔ غیرفعال"/>
+    </div>
+    <div><div className="cap">SEGMENTED CONTROL</div>
+      <SegmentedControl value={seg} onChange={setSeg} options={[{value:'all',label:'همه'},{value:'online',label:'آنلاین'},{value:'new',label:'تازه‌ها'}]}/>
+    </div>
+    <div><div className="cap">SELECT</div>
+      <Select value={city} onChange={setCity} label="شهر" placeholder="انتخاب شهر" options={[
+        {value:'thr',label:'تهران'},{value:'mhd',label:'مشهد'},{value:'isf',label:'اصفهان'},{value:'shz',label:'شیراز'},{value:'tbz',label:'تبریز'}]}/>
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

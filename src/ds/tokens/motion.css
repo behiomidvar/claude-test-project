@@ -1,0 +1,33 @@
+/* Deltalk motion — the signature is the UNFOLD, never the swipe.
+   Things ease open and reveal; nothing snaps or bounces aggressively.
+   Warmth = gentle, unhurried. The three-dots typing indicator is the brand's core micro-motion. */
+:root {
+  /* durations */
+  --dur-fast: 140ms; /* @kind other */
+  --dur-base: 240ms; /* @kind other */
+  --dur-slow: 420ms; /* @kind other */
+  --dur-unfold: 560ms; /* @kind other */
+
+  /* easings — soft, human. A gentle overshoot for warmth, never a hard bounce. */
+  --ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1.0);   /* @kind other */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);       /* @kind other */
+  --ease-in-out: cubic-bezier(0.45, 0, 0.15, 1); /* @kind other */
+  --ease-gentle-over: cubic-bezier(0.34, 1.4, 0.64, 1); /* @kind other */
+
+  /* interaction feedback */
+  --press-scale: 0.97;      /* @kind other */
+  --hover-lift: -2px;       /* @kind other */
+}
+
+@keyframes dt-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes dt-unfold {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes dt-unblur {
+  from { filter: blur(18px); }
+  to { filter: blur(0); }
+}

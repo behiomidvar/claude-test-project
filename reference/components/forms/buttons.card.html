@@ -1,0 +1,223 @@
+<!-- @dsCard group="7. Components" viewport="1180x2560" name="Buttons — hierarchy, sizes, icons" subtitle="Button + IconButton: which variant is primary vs secondary, the three sizes, and when a button takes an icon. Both themes." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);direction:rtl;color:var(--text-primary);font-family:var(--font-sans)}
+.themes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tbox{border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);background:var(--surface-card);color:var(--text-primary)}
+.tlbl{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--text-subtle);margin-bottom:14px}
+.sec{direction:ltr;text-align:left;unicode-bidi:isolate;margin:0 0 4px;font-size:11.5px;font-weight:800;letter-spacing:.02em;color:var(--text-primary)}
+.sub{direction:ltr;text-align:left;unicode-bidi:isolate;margin:0 0 12px;font-size:10.5px;line-height:1.65;color:var(--text-secondary)}
+.rows{display:flex;flex-direction:column;gap:11px}
+.r{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center}
+.n{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:9px;font-weight:800;letter-spacing:.05em;color:var(--text-subtle)}
+.inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.hr{height:1px;background:var(--border);margin:18px 0}
+.tbl{width:100%;border-collapse:collapse;direction:ltr;text-align:left;font-size:11px;margin-top:18px}
+.tbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-subtle);font-weight:800;padding:7px 9px;border-bottom:2px solid var(--border-strong)}
+.tbl td{padding:8px 9px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-secondary)}
+.tbl td b{color:var(--text-primary)}
+.mono{font-family:var(--font-mono);font-size:10.5px;color:var(--text-primary);white-space:nowrap}
+.note{direction:ltr;text-align:left;unicode-bidi:isolate;margin:16px 0 0;font-size:11.5px;line-height:1.75;color:var(--text-secondary);background:var(--surface-well);border:1px solid var(--border);border-radius:var(--radius-md);padding:13px 15px}
+.note b{color:var(--text-primary)}
+/* Each strip CONTAINS the measured worst ground — #191919 band (dark theme's worst)
+   on the photo strip, #FAFAFA on the bright strip. Do not swap either for a
+   flattering ground; showing onMedia on a dark strip alone is how the 1.00:1
+   bright-ground failure shipped. */
+.onmedia{display:inline-flex;gap:10px;align-items:center;padding:12px;border-radius:var(--radius-md);background-image:linear-gradient(270deg,#191919 0 34%,rgba(25,25,25,0) 34%),url("https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80&fit=crop&crop=faces");background-size:cover;background-position:50% 92%}
+.onmedia--bright{background-image:linear-gradient(270deg,#FAFAFA 0 34%,#FFFFFF 60%,#E8EEF4)}
+.r--wide{display:block}
+.r--wide>.n{display:block;margin-bottom:8px}
+.grounds{display:flex;gap:12px;align-items:flex-start}
+.ground{display:flex;flex-direction:column;gap:6px;width:180px;flex:0 0 auto}
+.gl{font-family:var(--font-mono);font-size:9px;line-height:1.5;letter-spacing:.05em;text-transform:uppercase;direction:ltr;color:var(--text-subtle);white-space:normal;max-width:180px}
+.sz{display:inline-flex;flex-direction:column;align-items:center;gap:4px}
+.sz i{font-style:normal;font-size:8.5px;font-weight:800;letter-spacing:.06em;color:var(--text-subtle)}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:9.5px;line-height:1.5;color:var(--text-subtle)}
+/* FORCED FOCUS. .ff applies exactly what :focus-visible now applies — the variant's own
+   --_shadow COMPOSED with the ring — so every ring below is the real one, not a mock.
+   Keep this in step with .dt-btn:focus-visible / .dt-iconbtn:focus-visible; a forced
+   state that drifts from the real rule is worse than no specimen. */
+/* FALLBACK IS LOAD-BEARING: without it, an undefined --_shadow (stale bundle, foreign mount)
+   makes the whole declaration invalid at computed-value time -> box-shadow:none, and the
+   !important then also suppresses each variant's own shadow. The specimen would silently
+   show no rings AND no halo under a caption asserting both. Never drop the fallback. */
+.ff button{box-shadow:var(--_shadow, 0 0 #0000),var(--ring)!important}
+.fail{color:var(--danger-text);font-weight:800}
+.tbl td.fail{color:var(--danger-text);font-weight:700}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Button, IconButton } = window.DeltalkDesignSystem_288455;
+/* Glyphs come from the ONE shared set (components/core/icons.jsx, built on dsIcon).
+   Never declare a local icon helper here — the mirroring rule lives in dsIcon. */
+const DI = window.DeltalkIcons;
+const Send  = (p) => <DI.Send size={20} {...p}/>;
+const Heart = (p) => <DI.Heart size={20} {...p}/>;
+const Plus  = (p) => <DI.Plus size={20} {...p}/>;
+const More  = (p) => <DI.MoreVertical size={20} {...p}/>;
+
+function Sheet({ theme }){
+  return <div className="tbox" data-theme={theme}>
+    <div className="tlbl" dir="ltr">{theme.toUpperCase()} THEME</div>
+
+    <p className="sec" dir="ltr">HIERARCHY — one primary per screen</p>
+    <p className="sub" dir="ltr">Rank by weight, not by colour. Only the top of the hierarchy is a solid fill.</p>
+    <div className="rows">
+      <div className="r"><span className="n" dir="ltr">PRIMARY</span><Button variant="primary">ادامه</Button></div>
+      <div className="r"><span className="n" dir="ltr">GRADIENT</span><Button variant="gradient">شروع گفتگو</Button></div>
+      <div className="r"><span className="n" dir="ltr">SECONDARY</span><Button variant="secondary">ویرایش پروفایل</Button></div>
+      <div className="r"><span className="n" dir="ltr">GHOST</span><Button variant="ghost">بعداً</Button></div>
+      <div className="r"><span className="n" dir="ltr">DISABLED · solid</span><Button variant="primary" disabled>ادامه</Button></div>
+      <div className="r"><span className="n" dir="ltr">DISABLED · secondary</span><Button variant="secondary" disabled>ویرایش پروفایل</Button></div>
+      <div className="r"><span className="n" dir="ltr">DISABLED · ghost</span><Button variant="ghost" disabled>بعداً</Button></div>
+    </div>
+
+    <div className="hr"></div>
+    <p className="sec" dir="ltr">DANGER — TWO WEIGHTS, CHOSEN BY REVERSIBILITY</p>
+    <p className="sub" dir="ltr">Solid destructive = irreversible. tone="danger" on secondary/ghost = reversible but consequential. Solid variants ignore tone.</p>
+    <div className="rows">
+      <div className="r"><span className="n" dir="ltr">DESTRUCTIVE</span><Button variant="destructive">حذف حساب</Button></div>
+      <div className="r"><span className="n" dir="ltr">ghost·danger</span><Button variant="ghost" tone="danger">خروج از حساب</Button></div>
+      <div className="r"><span className="n" dir="ltr">secondary·danger</span><Button variant="secondary" tone="danger">ترک گفت‌وگو</Button></div>
+      <div className="r"><span className="n" dir="ltr">SECONDARY</span><Button variant="secondary">ویرایش پروفایل</Button></div>
+    </div>
+
+    <div className="hr"></div>
+    <p className="sec" dir="ltr">SIZES — 40 / 48 / 56</p>
+    <p className="sub" dir="ltr">48 (md) is the default. All three clear 48dp: 40 keeps its visual size and gains a transparent inset to --size-48 inside Button, so no call site needs clear space. Never grow the label to reach the minimum.</p>
+    <div className="rows">
+      <div className="r"><span className="n" dir="ltr">40 (sm)</span><Button size="sm">کوچک</Button></div>
+      <div className="r"><span className="n" dir="ltr">48 (md)</span><Button size="md">متوسط</Button></div>
+      <div className="r"><span className="n" dir="ltr">56 (lg)</span><Button size="lg">بزرگ</Button></div>
+      <div className="r"><span className="n" dir="ltr">BLOCK · 48</span><Button block>ثبت و ادامه</Button></div>
+    </div>
+
+    <div className="hr"></div>
+    <p className="sec" dir="ltr">WITH / WITHOUT ICON</p>
+    <p className="sub" dir="ltr">Text alone is the default. An icon is added only when it names the action faster than the word does.</p>
+    <div className="rows">
+      <div className="r"><span className="n" dir="ltr">NO ICON</span><Button variant="primary">ذخیره</Button></div>
+      <div className="r"><span className="n" dir="ltr">iconLeft → START</span><Button variant="secondary" iconLeft={<Heart/>}>لایک کردم</Button></div>
+      <div className="r"><span className="n" dir="ltr">iconRight → END</span><Button variant="primary" iconRight={<Send/>}>فرستادن</Button></div>
+    </div>
+
+    <div className="hr"></div>
+    <p className="sec" dir="ltr">ICONBUTTON — SHAPE CARRIES MEANING</p>
+    <p className="sub" dir="ltr">Rounded square is the default. shape="circle" is an opt-in: the control floats over content or belongs to the avatar family. Sizes are pixel-named 36/40/48/52; sm/md/lg are legacy aliases for 36/48/52. 36 and 40 clear 48dp through a transparent inset — the glyph never grows.</p>
+    <div className="rows">
+      <div className="r"><span className="n" dir="ltr">SQUARE · 36/40/48/52</span>
+        <div className="inline">
+          <span className="sz" dir="ltr"><IconButton label="بیشتر" variant="outline" size="36"><More/></IconButton><i>36 (sm)</i></span>
+          <span className="sz" dir="ltr"><IconButton label="بیشتر" variant="outline" size="40"><More/></IconButton><i>40</i></span>
+          <span className="sz" dir="ltr"><IconButton label="بیشتر" variant="outline" size="48"><More/></IconButton><i>48 (md)</i></span>
+          <span className="sz" dir="ltr"><IconButton label="بیشتر" variant="outline" size="52"><More/></IconButton><i>52 (lg)</i></span>
+          <span className="cap" dir="ltr">DEFAULT — search · filter · settings · back · three-dot · close</span>
+        </div>
+      </div>
+      <div className="r"><span className="n" dir="ltr">CIRCLE · 36/40/48/52</span>
+        <div className="inline">
+          <span className="sz" dir="ltr"><IconButton label="لایک" variant="outline" shape="circle" size="36"><Heart/></IconButton><i>36 (sm)</i></span>
+          <span className="sz" dir="ltr"><IconButton label="لایک" variant="outline" shape="circle" size="40"><Heart/></IconButton><i>40</i></span>
+          <span className="sz" dir="ltr"><IconButton label="لایک" variant="outline" shape="circle" size="48"><Heart/></IconButton><i>48 (md)</i></span>
+          <span className="sz" dir="ltr"><IconButton label="لایک" variant="outline" shape="circle" size="52"><Heart/></IconButton><i>52 (lg)</i></span>
+          <span className="cap" dir="ltr">OPT-IN — Like/Pass · on-photo hearts · composer send</span>
+        </div>
+      </div>
+      <div className="r"><span className="n" dir="ltr">SQUARE · fills</span>
+        <div className="inline">
+          <IconButton label="بیشتر" variant="ghost" size="md"><More/></IconButton>
+          <IconButton label="بیشتر" variant="outline" size="md"><More/></IconButton>
+          <IconButton label="افزودن" variant="solid" size="md"><Plus/></IconButton>
+          <span className="cap" dir="ltr">ghost · outline · solid</span>
+        </div>
+      </div>
+      <div className="r r--wide"><span className="n" dir="ltr">ON MEDIA</span>
+        <div className="inline">
+          <span className="grounds">
+            <span className="ground">
+              <span className="onmedia">
+                <IconButton variant="onMedia" shape="circle" label="لایک"><Heart/></IconButton>
+                <IconButton variant="onMedia" label="بستن"><More/></IconButton>
+                <IconButton variant="onMedia" shape="circle" size="40" label="پخش"><Heart/></IconButton>
+              </span>
+              <span className="gl">dark ground · leading band is #191919, dark theme's worst over the sweep</span>
+            </span>
+            <span className="ground">
+              <span className="onmedia onmedia--bright">
+                <IconButton variant="onMedia" shape="circle" label="لایک"><Heart/></IconButton>
+                <IconButton variant="onMedia" label="بستن"><More/></IconButton>
+                <IconButton variant="onMedia" shape="circle" size="40" label="پخش"><Heart/></IconButton>
+              </span>
+              <span className="gl">bright ground · leading band is #FAFAFA, light theme's worst · glyph/text 8.01:1 light, 6.23:1 dark · boundary 3.89:1 / 5.85:1</span>
+            </span>
+          </span>
+          <span className="cap" dir="ltr">A control ON a user photo: --on-media-plate (--bg at 70%) + --on-media-halo, glyph --on-media-ink. Theme-following — light plate with dark glyph, dark plate with light glyph.<br/><br/><b>1. Mount it inside a themed tree.</b> The --on-media-* tokens are redeclared per theme block; a subtree with no [data-theme] gets the light construction.<br/><b>2. Do not add a ring.</b> --on-media-halo is the whole boundary. A border ring measurably adds nothing and only adds weight.<br/><b>3. The blur contributes nothing to contrast.</b> Never cite --on-media-blur as the reason a plate reads; it is a visual effect only.<br/><br/>Derivation — the alpha sweep, the rejected constructions, the failed ring and shadow levers — is in the README under "On-media plate", and in AUDIT-unchecked-decisions.md items 26a–26e.</span>
+        </div>
+      </div>
+      <div className="r"><span className="n" dir="ltr">CIRCLE · fills</span>
+        <div className="inline">
+          <IconButton label="لایک" variant="ghost" shape="circle" size="md"><Heart/></IconButton>
+          <IconButton label="لایک" variant="outline" shape="circle" size="md"><Heart/></IconButton>
+          <IconButton label="ارسال" variant="solid" shape="circle" size="md"><Send/></IconButton>
+          <span className="cap" dir="ltr">ghost · outline · solid</span>
+        </div>
+      </div>
+    </div>
+
+    <div className="hr"></div>
+    <p className="sec" dir="ltr">FOCUS — FORCED, HARDEST CASE OF EACH FAMILY · <b>TWO-TONE, CLEARS 3:1 EVERYWHERE</b></p>
+    <p className="sub" dir="ltr">Each ring below is the real one — the variant's own shadow composed with var(--ring). The ring is now a PAIR at opposite ends of the neutral ladder: a 2px --ring-ink (--neutral-900, #121926) inner contour and a 2px --ring-edge (--neutral-100, #FFFFFF) outer one, 4px total, outside the control. Whichever tone the ground swallows, the other separates — so the worst case is the best of the two, never one colour's floor. Theme-independent, because the ring's ground includes a user photograph and a photograph has no theme. The accent is gone from this construction; read the table under the sheets for why.</p>
+    <div className="rows">
+      <div className="r"><span className="n" dir="ltr">ghost · card</span>
+        <div className="inline"><span className="ff"><Button variant="ghost">بعداً</Button></span>
+          <span className="cap" dir="ltr">Hardest of the flat family: no fill and no border, so the ring is the only mark the control has. <b>17.61:1 light / 15.55:1 dark vs --surface-card ✓</b> — the ink contour carries it on white, the white contour on the dark card</span></div>
+      </div>
+      <div className="r"><span className="n" dir="ltr">secondary · fill = ground</span>
+        <div className="inline"><span className="ff"><Button variant="secondary">ویرایش پروفایل</Button></span>
+          <span className="cap" dir="ltr">Hardest ground: the fill IS --surface-card, the surface behind it. <b>Ring 17.61:1 light / 15.55:1 dark vs that same surface ✓</b> — a fill that equals its ground no longer matters, because the ring no longer depends on a single tone</span></div>
+      </div>
+      <div className="r r--wide"><span className="n" dir="ltr">ONMEDIA · HALO SURVIVES FOCUS</span>
+        <span className="grounds">
+          <span className="ground">
+            <span className="onmedia ff">
+              <IconButton variant="onMedia" shape="circle" label="لایک"><Heart/></IconButton>
+              <IconButton variant="onMedia" label="بستن"><More/></IconButton>
+            </span>
+            <span className="gl">dark ground · #191919 band</span>
+          </span>
+          <span className="ground">
+            <span className="onmedia onmedia--bright ff">
+              <IconButton variant="onMedia" shape="circle" label="لایک"><Heart/></IconButton>
+              <IconButton variant="onMedia" label="بستن"><More/></IconButton>
+            </span>
+            <span className="gl">bright ground · #FAFAFA band — light theme's worst</span>
+          </span>
+        </span>
+        <span className="cap" dir="ltr"><b>The 1dp halo is still there inside the ring — that is the fix.</b> The variant publishes its shadow as --_shadow and the focus rule composes var(--_shadow),var(--ring), so the boundary that carries contrast (3.89:1 light / 5.85:1 dark) survives focus instead of being replaced by it. <b>A variant that adds a box-shadow must set --_shadow, never box-shadow</b>, or focus will clobber it again. The ring layered outside it now measures <b>8.01:1 light / 6.52:1 dark against the plate</b> and <b>4.22:1 against the raw photograph at its worst grey (#7C7C7C)</b>, so both boundaries hold at once. <b>Read the two grounds against each other:</b> in DARK theme the halo is light and --ring-ink is dark, so you can see three distinct bands. In LIGHT theme the halo is dark and abuts a dark inner contour, so they read as ONE thicker band — the halo is still composited and still measures 3.89:1, but it is no longer visually separable while focused. Swapping the two tones only moves that merge to the other theme, so the order was left alone.</span>
+      </div>
+    </div>
+  </div>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div>
+    <div className="themes"><Sheet theme="light"/><Sheet theme="dark"/></div>
+
+    <table className="tbl">
+      <thead><tr><th>Variant</th><th>Rank</th><th>Fill</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td className="mono">primary</td><td><b>Primary</b></td><td>solid <span className="mono">--action-cta</span> (neutral)</td><td>The one committing action on a screen — continue, save, submit. Highest contrast in the system.</td></tr>
+        <tr><td className="mono">gradient</td><td><b>Primary — expressive</b></td><td><span className="mono">--gradient-brand</span></td><td>A brand moment where the action IS the product: start a conversation, first match. At most one per screen, never alongside a solid primary.</td></tr>
+        <tr><td className="mono">secondary</td><td><b>Secondary</b></td><td>card surface + 1dp <span className="mono">--border-control</span></td><td>The alternative to the primary — edit, change, view. Sits beside a primary without competing.</td></tr>
+        <tr><td className="mono">ghost</td><td><b>Tertiary</b></td><td>transparent</td><td>Dismiss, skip, cancel, "later". No fill, no border — lowest weight.</td></tr>
+        <tr><td className="mono">destructive</td><td><b>Primary — irreversible</b></td><td>solid <span className="mono">--danger-fill</span></td><td>The action cannot be undone: delete the account, a destructive dialog's confirm.</td></tr>
+        <tr><td className="mono">tone="danger"</td><td><b>Secondary / tertiary — danger</b></td><td>label <span className="mono">--danger-text</span>, outline unchanged</td><td>Reversible but consequential — leave the conversation, log out. Danger's <b>lighter</b> weight; the solid <span className="mono">destructive</span> stays reserved for the irreversible. Ignored by solid variants.</td></tr>
+      </tbody>
+    </table>
+
+    <p className="note" dir="ltr">Hierarchy and shape rules, the logical <span className="mono">iconLeft</span>/<span className="mono">iconRight</span> behaviour, the 48dp exception, and the focus ring's measured figures, defect history and retired single-tone numbers are all in readme.md — under "Buttons" and "Focus ring — two-tone, closed".</p>
+  </div>
+);
+</script><script src="../../theme-toggle.js"></script></body></html>

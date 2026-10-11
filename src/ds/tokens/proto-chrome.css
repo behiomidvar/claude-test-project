@@ -1,0 +1,43 @@
+/* ═════════════════════════════════════════════════════════════════
+   PROTOTYPE CHROME — presentation only, DELIBERATELY OUTSIDE THEME SCOPE
+   ═════════════════════════════════════════════════════════════════
+
+   These are the "table the phone sits on": the desk surface behind a device
+   mock and the physical bezel rings around its screen. They are photography
+   props, not app UI.
+
+   Three rules, all deliberate:
+
+   1. NOT THEMED. Defined once on :root with literal values and never
+      redeclared under [data-theme="dark"]. A desk does not change colour when
+      the app inside the phone switches to dark mode — flipping it would break
+      the illusion that you are looking at one physical object. This is the ONE
+      token family in Deltalk that is allowed to be theme-invariant, and it is
+      allowed precisely because it is not part of the product.
+
+   2. NEVER REFERENCED BY A REAL SCREEN OR COMPONENT. No component under
+      components/, no guideline card's specimen content, and no screen inside a
+      device frame may use these. Their only legitimate consumers are the
+      prototype shells themselves (currently ui_kits/deltalk-app/App.jsx).
+      If one of these shows up inside a component, that is a bug: the component
+      has reached outside the product to style itself with stage scenery.
+
+   3. NOT ON A BRAND RAMP, AND EXEMPT FROM THAT REQUIREMENT. The desk is a warm
+      paper-stock neutral and the bezel a near-black aubergine; neither is a step
+      in any of the six brand ramps and neither should be reconciled onto one.
+      They are outside the palette for the same reason they are outside the
+      theme. Do NOT flag these in a hardcoded-hex audit — this file IS their
+      tracking. (Recorded in AUDIT-unchecked-decisions.md.)
+   ═════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* desk/table surface behind the device */
+  --proto-desk-bg: #EDE4D6; /* @kind color */
+  /* inner bezel ring — the frame itself */
+  --proto-bezel: #1A1626; /* @kind color */
+  /* outer highlight ring, catches light */
+  --proto-bezel-edge: #2A2440; /* @kind color */
+  /* Device drop shadow. The alpha colour is --proto-bezel at 32%; kept as a
+     whole shadow token so a mock never reassembles the offsets by hand. */
+  --proto-device-shadow: 0 40px 90px rgba(26, 22, 38, 0.32); /* @kind shadow */
+}

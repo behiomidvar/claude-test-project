@@ -15,16 +15,16 @@
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "remotion": "4.0.534"
   },
   "devDependencies": {
     "@remotion/bundler": "4.0.534",
     "@remotion/renderer": "4.0.534",
     "@types/node": "22.15.30",
-    "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6",
+    "@types/react": "18.3.27",
+    "@types/react-dom": "18.3.7",
     "pngjs": "7.0.0",
     "typescript": "5.8.3"
   }

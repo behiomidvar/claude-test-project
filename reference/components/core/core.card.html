@@ -1,0 +1,259 @@
+<!-- @dsCard group="7. Components" viewport="920x2680" name="Core — Card, Avatar, Badge, Chip" subtitle="Surfaces, avatars with edge-anchored status and the completion arc, read-only badges vs. interactive chips, and every chip state in both themes" -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>
+body{margin:0;padding:80px 24px 28px;background:var(--bg);direction:rtl;font-family:var(--font-sans);color:var(--text-primary)}
+.wrap{display:flex;flex-direction:column;gap:26px;max-width:860px;margin:0 auto}
+.sec{display:flex;flex-direction:column;gap:12px}
+.sec>h3{margin:0;font-size:15px;font-weight:800;direction:ltr;text-align:left;unicode-bidi:isolate}
+.sec>p{margin:0;font-size:12.5px;color:var(--text-secondary);line-height:1.7;max-width:70ch;direction:ltr;text-align:left;unicode-bidi:isolate}
+.row{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.avwrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.avwrap span.lbl{font-family:var(--font-mono);font-size:10px;color:var(--text-subtle);direction:ltr;unicode-bidi:isolate}
+.def{display:flex;gap:12px;flex-wrap:wrap}
+.def .item{flex:1;min-width:180px;border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 13px;background:var(--surface-card)}
+.def .item .t{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.def .item small{display:block;font-size:11px;color:var(--text-secondary);line-height:1.55;direction:ltr;text-align:left;unicode-bidi:isolate}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vs .card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;background:var(--surface-card)}
+.vs .card h4{margin:0 0 4px;font-size:13px;direction:ltr;text-align:left;unicode-bidi:isolate}
+.vs .card .tap{font-size:11px;font-weight:700;font-family:var(--font-mono);direction:ltr;unicode-bidi:isolate}
+.tap-yes{color:var(--success-text)} .tap-no{color:var(--text-subtle)}
+.themepair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{border:1px solid var(--border);border-radius:var(--radius-card);padding:var(--pad-card);background:var(--bg);color:var(--text-primary)}
+.panel .plbl{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text-subtle);margin-bottom:12px}
+.states{display:flex;flex-direction:column;gap:11px}
+.strow{display:flex;align-items:center;gap:12px}
+.strow .sn{width:92px;flex-shrink:0;font-size:11px;color:var(--text-secondary)}
+.is-press{transform:scale(.96)}
+.is-focus{outline:2px solid var(--focus-ring);outline-offset:2px}
+.note{font-size:11.5px;color:var(--text-secondary);line-height:1.7;background:var(--surface-well);border-radius:var(--radius-md);padding:11px 13px;direction:ltr;text-align:left;unicode-bidi:isolate}
+.note b{color:var(--text-primary)}
+.sec p.readmore{font-size:11.5px;color:var(--text-subtle);direction:ltr;text-align:left;unicode-bidi:isolate;margin:8px 0 0}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="tweaks-panel.js"></script>
+<script type="text/babel">
+const { Card, Avatar, Badge, Chip } = window.DeltalkDesignSystem_288455;
+const P1="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80&fit=crop&crop=faces";
+const P2="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&fit=crop&crop=faces";
+const fa=v=>String(v).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[+d]);
+// The figure never lives inside the arc — it is text beside it.
+function ArcSet(){
+  return <div className="row" style={{alignItems:'flex-start'}}>
+    {[0,40,80,100].map(v=><div className="avwrap" key={v}>
+      <Avatar name="ع" size="lg" src={P1} progress={v}/>
+      <span className="lbl">progress={'{'}{v}{'}'}</span>
+    </div>)}
+    <div className="avwrap">
+      <Avatar name="ع" size="lg" src={P2} ring/>
+      <span style={{fontSize:12,color:'var(--text-secondary)'}}>مچ تازه</span>
+      <span className="lbl">ring — closed, for contrast</span>
+    </div>
+  </div>;
+}
+/* The drop rule, rendered rather than asserted. {0} is included deliberately:
+   0 vs 100 is the pair that collides if the fill is dropped at 100 on a rung
+   where no check can replace it. */
+function ArcDropSet(){
+  /* One ROW PER RUNG, not a single wrapping flex: a wrap boundary must never fall
+     between a rung's {0} and its {100}, since that pair IS the comparison this
+     specimen exists to show. */
+  return <div style={{display:'flex',flexDirection:'column',gap:14}}>
+    {['xs','sm','md','lg'].map(sz=>
+      <div key={sz} style={{display:'grid',gridTemplateColumns:'34px repeat(3,1fr)',alignItems:'center',gap:12}}>
+        <span className="lbl" style={{textAlign:'start'}}>{sz}</span>
+        {[0,40,100].map(v=>
+          <div className="avwrap" key={v}>
+            <Avatar name="ع" size={sz} src={P1} progress={v}/>
+            <span className="lbl">{'{'}{v}{'}'}</span>
+          </div>)}
+      </div>)}
+  </div>;
+}
+const Pin=<svg viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.4 3.5 5.9c0 3 4 8.1 4.2 8.3a.4.4 0 00.6 0c.2-.2 4.2-5.3 4.2-8.3C12.5 3.4 10.5 1.5 8 1.5z" stroke="currentColor" strokeWidth="1.4"/><circle cx="8" cy="5.9" r="1.6" fill="currentColor"/></svg>;
+
+// A chip demo panel locked to one theme so both render regardless of the global toggle.
+function ChipStates(){
+  return <div className="states">
+    <div className="strow"><span className="sn">Default</span><Chip>کتاب و متن‌های بلند</Chip></div>
+    <div className="strow"><span className="sn">Selected</span><Chip selected>گفت‌وگوی شبانه</Chip></div>
+    <div className="strow"><span className="sn">Pressed</span><Chip className="is-press">آشپزی</Chip></div>
+    <div className="strow"><span className="sn">Disabled</span><Chip disabled>در دسترس نیست</Chip></div>
+    <div className="strow"><span className="sn">Focused</span><Chip className="is-focus">پیاده‌روی</Chip></div>
+    <div className="strow"><span className="sn">Leading icon</span><Chip iconLeft={Pin}>نزدیک من</Chip></div>
+    <div className="strow"><span className="sn">Removable, selected</span><Chip selected removable onRemove={()=>{}}>‏۱۸ تا ۲۸ سال</Chip></div>
+    <div className="strow"><span className="sn">Removable, unselected</span><Chip removable onRemove={()=>{}}>پیشنهادی</Chip></div>
+  </div>;
+}
+
+// Feel controls reshape the token layer the components read from, so one choice
+// re-forms every card, chip, badge, and avatar at once (not single-property nudging).
+const CORNER={geometric:0.35,balanced:1,pillowy:1.9};
+const DENSITY={compact:0.72,comfortable:1,spacious:1.35};
+const SHADOWS={
+  flat:{'--shadow-xs':'none','--shadow-sm':'none','--shadow-md':'none','--shadow-lg':'none','--shadow-xl':'none'},
+  elevated:{'--shadow-xs':'0 2px 6px rgba(0,0,0,.14)','--shadow-sm':'0 6px 16px rgba(0,0,0,.16)','--shadow-md':'0 14px 34px rgba(0,0,0,.20)','--shadow-lg':'0 26px 60px rgba(0,0,0,.24)','--shadow-xl':'0 40px 90px rgba(0,0,0,.28)'}
+};
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{
+  "corner": "balanced",
+  "density": "comfortable",
+  "finish": "soft"
+}/*EDITMODE-END*/;
+function Demo(){
+  const [t,setTweak]=window.useTweaks(TWEAK_DEFAULTS);
+  const r=CORNER[t.corner]??1, s=DENSITY[t.density]??1;
+  const feel={
+    '--radius-xs':`calc(6px * ${r})`,'--radius-sm':`calc(10px * ${r})`,'--radius-md':`calc(14px * ${r})`,
+    '--radius-lg':`calc(20px * ${r})`,'--radius-xl':`calc(28px * ${r})`,'--radius-2xl':`calc(36px * ${r})`,
+    '--radius-input':`calc(12px * ${r})`,'--radius-button':`calc(16px * ${r})`,'--radius-card':`calc(20px * ${r})`,
+    '--space-1':`calc(0.25rem * ${s})`,'--space-2':`calc(0.5rem * ${s})`,'--space-3':`calc(0.75rem * ${s})`,
+    '--space-4':`calc(1rem * ${s})`,'--space-5':`calc(1.25rem * ${s})`,'--space-6':`calc(1.5rem * ${s})`,'--space-8':`calc(2rem * ${s})`,
+    gap:`calc(26px * ${s})`,
+    ...(t.finish!=='soft'?SHADOWS[t.finish]:{})
+  };
+  const {TweaksPanel,TweakSection,TweakRadio}=window;
+  return <React.Fragment>
+  <div className="wrap" style={feel}>
+
+    <div className="sec">
+      <h3>Surfaces</h3>
+      <div className="cols">
+        <Card pad="sm"><b>Raised</b><div style={{color:'var(--text-secondary)',fontSize:14,marginTop:6}}>On background</div></Card>
+        <Card variant="cool" pad="sm"><b>Cool</b><div style={{fontSize:14,marginTop:6,opacity:.85}}>Deep surface</div></Card>
+        <Card variant="gradient" pad="sm"><b>Gradient</b><div style={{fontSize:14,marginTop:6,opacity:.9}}>Hero only</div></Card>
+      </div>
+    </div>
+
+    <div className="sec">
+      <h3>Avatar — status indicator</h3>
+      <div className="row">
+        <div className="avwrap"><Avatar name="د" size="sm" src={P2} online /><span className="lbl">sm 40</span></div>
+        <div className="avwrap"><Avatar name="آوا ت" size="md" src={P1} online /><span className="lbl">md 52</span></div>
+        <div className="avwrap"><Avatar name="سارا م" size="lg" src={P1} online /><span className="lbl">lg 72</span></div>
+        <div className="avwrap"><Avatar name="نیما ک" size="xl" src={P2} online /><span className="lbl">xl 112</span></div>
+        <div className="avwrap"><Avatar name="رضا" size="lg" src={P2} blur={12} /><span className="lbl">soft reveal</span></div>
+        <div className="avwrap"><Avatar name="ری" size="lg" ring /><span className="lbl">initials</span></div>
+      </div>
+      <h4 style={{margin:'6px 0 0',fontSize:13}}>Ring meanings — and which wins</h4>
+      <div className="row">
+        <div className="avwrap"><Avatar name="آوا ت" size="lg" src={P1} ring="match" /><span className="lbl">ring="match"</span></div>
+        <div className="avwrap"><Avatar name="سارا م" size="lg" src={P2} ring="cool" /><span className="lbl">ring="cool"</span></div>
+        <div className="avwrap"><Avatar name="نیما ک" size="lg" src={P1} ring={['match','cool']} online /><span className="lbl">both → match</span></div>
+        <div className="avwrap"><Avatar name="د" size="sm" src={P2} ring={['match','cool']} /><span className="lbl">both · sm</span></div>
+      </div>
+      <div className="note"><b>Precedence: match beats cool.</b> The gradient ring means <b>new match</b>; the cool ring means <b>conversation active</b> (the other person). When both are true the avatar shows the <b>gradient</b> — a new match is a rare, time-bounded event the user must not miss, while conversation-active is recurring ambient state already carried by <code style={{fontFamily:'var(--font-mono)'}}>Badge variant="active"</code>, the presence dot and the typing indicator, so it loses nothing by yielding the ring. Two concentric rings were rejected: at <code style={{fontFamily:'var(--font-mono)'}}>sm</code>/<code style={{fontFamily:'var(--font-mono)'}}>xs</code> they muddy into a single ambiguous colour.</div>
+      <p>The active-conversation dot is <b>center-anchored on the circle's perimeter</b> at the bottom inline-end (45°), so it never covers the subject. It's sized <b>26% of the avatar diameter</b> at every size and carries a <b>2dp ring in --surface-card</b> to separate it from the photo. <b>RTL decision:</b> the dot follows the layout's inline-end edge (bottom-left in RTL, bottom-right in LTR) via logical properties — it's positional chrome, not a directional gesture, so it mirrors with the reading direction and stays consistent app-wide.</p>
+    </div>
+
+    <div className="sec">
+      <h3>Avatar <code style={{fontFamily:'var(--font-mono)',fontSize:13}}>progress</code> — the completion arc</h3>
+      <p>An <b>open arc over a neutral track</b> — never a closed ring, because a closed brand-gradient ring already means <b>new match</b>. <b>300° sweep, permanent 60° gap at the bottom</b>, and <b>the track carries that same sweep</b>, so the silhouette is an open arc at every value <b>including 0</b>. <b>The figure lives ON the ring</b>: a pill in the gap at the bottom edge, centred on the avatar's vertical axis — <code>--ink-fixed</code> below 100, <code>--gradient-brand</code> at 100, with <code>--on-ink-fixed</code> content throughout. <b>The same slot</b> holds a check at 100, and <b>wherever that check renders the filled arc is dropped</b> — it is replaced by the check rather than merely switched off, so where no check fits the fill stays.</p>
+      <div className="themepair">
+        <div className="panel" data-theme="light"><div className="plbl">Light</div><ArcSet/></div>
+        <div className="panel" data-theme="dark"><div className="plbl">Dark</div><ArcSet/></div>
+      </div>
+      <div className="themepair" style={{marginTop:10}}>
+        <div className="panel" data-theme="light"><div className="plbl">Light — the drop rule</div><ArcDropSet/></div>
+        <div className="panel" data-theme="dark"><div className="plbl">Dark — the drop rule</div><ArcDropSet/></div>
+      </div>
+      <div className="note"><b>Why it can never close.</b> Completion and “new match” would otherwise be the same silhouette at a glance, so the 60° gap is structural — the <b>track</b> is drawn on the same 300° path as the fill, so <code>progress={'{'}0{'}'}</code> reads as an empty arc rather than a full grey circle. <b>Never shrink the gap.</b></div>
+      <div className="note"><b>ONE SLOT, TWO STATES — and the two differ in fill.</b> The figure sits in a pill on the ring, and the pill and the check are <b>one element whose content switches</b>, so they can never both appear. <b>Below 100:</b> <code>--ink-fixed</code> fill, <code>--on-ink-fixed</code> Persian digits — neutral. <b>At 100:</b> <code>--gradient-brand</code> fill, <code>--on-ink-fixed</code> mark — <b>completion is the only branded moment on the ring</b>. Never <code>--success</code>, which is presence. There is no caption beneath the avatar; the figure appears exactly once.</div>
+      <div className="note"><b>The figure drops itself where it will not fit — a missing pill at a small size is not a bug.</b> <code>progress</code> is legal at every size and the arc always renders. The <b>pill</b> needs <b>≥64px</b> (<code>lg</code>, <code>xl</code>); the <b>check</b> needs <b>≥36px</b> (<code>sm</code> and up). So <code>lg</code>/<code>xl</code> show both, <code>sm</code>/<code>md</code> show the arc alone below 100 and arc + check at 100, and <code>xs</code> shows the arc alone — with the fill kept at 100 there, so completion still reads. The block above gives each rung its own row so <code>{'{'}0{'}'}</code> and <code>{'{'}100{'}'}</code> stay adjacent.</div>
+      <p className="readmore">Derivations, contrast measurements, the gap-clearance sweep and the superseded rules live in <code>readme.md</code> → the completion-arc section.</p>
+    </div>
+
+    <div className="sec">
+      <h3>Badge vs. Chip — what's tappable</h3>
+      <div className="vs">
+        <div className="card">
+          <h4>Badge</h4>
+          <div className="tap tap-no">● read-only · not tappable</div>
+          <p style={{fontSize:12,color:'var(--text-secondary)',margin:'8px 0 12px',lineHeight:1.6}}>System-assigned status. No border, small caption text, tight pill. It states a fact — you can't act on it.</p>
+          <div className="row">
+            <Badge variant="active">همین الان در گفت‌وگو</Badge>
+            <Badge variant="success">تأییدشده</Badge>
+            <Badge variant="danger">گزارش‌شده</Badge>
+            <Badge variant="warm">تازه</Badge>
+            <Badge variant="cool">صوتی</Badge>
+          </div>
+        </div>
+        <div className="card">
+          <h4>Chip</h4>
+          <div className="tap tap-yes">◉ interactive · tappable (48dp)</div>
+          <p style={{fontSize:12,color:'var(--text-secondary)',margin:'8px 0 12px',lineHeight:1.6}}>User choice. Visible 1dp border, larger 48dp target, checkmark when chosen. The border + size signal “press me”.</p>
+          <div className="row">
+            <Chip>کتاب</Chip>
+            <Chip selected>گفت‌وگوی شبانه</Chip>
+            <Chip iconLeft={Pin}>نزدیک من</Chip>
+          </div>
+        </div>
+      </div>
+      <div className="note"><b>Tell them apart at a glance:</b> a selected <b>chip is filled with the brand gradient</b> and has a ≥48dp height; a <b>badge is a flat tinted pill, borderless and compact</b>. Color plus size plus the gradient signal “press me”.</div>
+    </div>
+
+    <div className="sec">
+      <h3>Badge variants — usage</h3>
+      <div className="def">
+        <div className="item"><div className="t"><Badge variant="active">همین الان</Badge></div><small>Live conversation dot. Appears on chat list rows & profile headers.</small></div>
+        <div className="item"><div className="t"><Badge variant="success">تأییدشده</Badge></div><small>Verified profile. Appears on profile & discovery cards.</small></div>
+        <div className="item"><div className="t"><Badge variant="danger">گزارش‌شده</Badge></div><small>Reported/flagged. Appears in safety & moderation views.</small></div>
+        <div className="item"><div className="t"><Badge variant="warm">تازه</Badge></div><small>New match / new item. Appears on matches & inbox.</small></div>
+        <div className="item"><div className="t"><Badge variant="cool">صوتی</Badge></div><small>Voice-note present. Appears on message rows.</small></div>
+      </div>
+    </div>
+
+    <div className="sec">
+      <h3>Chip states — light &amp; dark</h3>
+      <p>Selection is never color-only: a selected chip is <b>filled with the brand gradient, drops its border, and gains a trailing checkmark</b> — three cues, safe for color-blind users. <b>The selected fill is a per-theme pair</b> — the one exception to "branded fills use the gradient identically in both themes" (switch, progress, badges and match-rings keep the shared binding). Light: <code style={{fontFamily:'var(--font-mono)'}}>--gradient-brand-strong</code> + white — 5.39:1 / 6.17:1. Dark: the undarkened <code style={{fontFamily:'var(--font-mono)'}}>--gradient-brand</code> + <code style={{fontFamily:'var(--font-mono)'}}>--brand-navy-900</code> ink — 5.95:1 / 5.11:1. Reason: the darkened-for-white stops sat only 2.74–3.13:1 from dark <code style={{fontFamily:'var(--font-mono)'}}>--surface-well</code>, barely separating from an unselected chip; this pair lifts that to 4.34–5.05:1. Unselected text is <code style={{fontFamily:'var(--font-mono)'}}>--text-body</code> on <code style={{fontFamily:'var(--font-mono)'}}>--surface-well</code> (≥12:1 both themes).</p>
+      <div className="themepair">
+        <div className="panel" data-theme="light"><div className="plbl">Light</div><ChipStates/></div>
+        <div className="panel" data-theme="dark"><div className="plbl">Dark</div><ChipStates/></div>
+      </div>
+    </div>
+
+    <div className="sec">
+      <h3>Chip variants — usage</h3>
+      <div className="def">
+        <div className="item"><div className="t"><Chip>کتاب</Chip></div><small>Interest / preference. Appears in onboarding & profile editing.</small></div>
+        <div className="item"><div className="t"><Chip selected>انتخاب‌شده</Chip></div><small>Chosen state (checkmark). Any multi-select group.</small></div>
+        <div className="item"><div className="t"><Chip iconLeft={Pin}>نزدیک من</Chip></div><small>Icon chip. Quick filters with a leading glyph.</small></div>
+        <div className="item"><div className="t"><Chip selected removable onRemove={()=>{}}>‏۱۸ تا ۲۸</Chip></div><small>Removable, selected. Close replaces the check. Discovery filter bar.</small></div>
+      </div>
+    </div>
+
+    <div className="sec">
+      <h3>Chip — check vs. close, the four combinations</h3>
+      <p>The two marks never show together: a check and a close are two answers to "what does pressing this do". <code style={{fontFamily:'var(--font-mono)'}}>removable</code> <b>replaces</b> the check with <code style={{fontFamily:'var(--font-mono)'}}>Icons.Close</code> in the same trailing slot — it does not add a second glyph, and it works whether the chip is selected or not. A removable chip is <b>one tap target</b>: the whole chip's click fires <code style={{fontFamily:'var(--font-mono)'}}>onRemove</code>, not a nested × button inside the 48dp shape (that was the old <code style={{fontFamily:'var(--font-mono)'}}>onRemove</code> span — retired here, since a button nested in a button is invalid HTML and two targets in one shape). The close glyph is <code style={{fontFamily:'var(--font-mono)'}}>currentColor</code>, so it always carries the label's own figure — checked here against the 3:1 UI-shape floor, which the label's 4.5:1+ text figure already clears on both fills, both themes.</p>
+      <div className="def">
+        <div className="item"><div className="t"><Chip>کتاب</Chip></div><small>Unselected, not removable — no trailing glyph.</small></div>
+        <div className="item"><div className="t"><Chip removable onRemove={()=>{}}>پیشنهادی</Chip></div><small>Unselected, removable — close only.</small></div>
+        <div className="item"><div className="t"><Chip selected>گفت‌وگوی شبانه</Chip></div><small>Selected, not removable — check only.</small></div>
+        <div className="item"><div className="t"><Chip selected removable onRemove={()=>{}}>‏۱۸ تا ۲۸</Chip></div><small>Selected, removable — close, not check.</small></div>
+      </div>
+    </div>
+
+    <div className="sec">
+      <h3>Chip — emoji exception</h3>
+      <p>Emoji are otherwise unused system-wide. <b>One recorded exception (2026-08-13):</b> the <code style={{fontFamily:'var(--font-mono)'}}>emoji</code> prop, interest-selection chips only — a decorative glyph, not an icon: no token, no size scale, no theme, no contrast figure. Sized at <code style={{fontFamily:'var(--font-mono)'}}>1.15em</code> off the label's own font-size so it doesn't read small next to it; height stays the declared 48dp.</p>
+      <div className="themepair">
+        <div className="panel" data-theme="light"><div className="plbl">Light</div><div className="row"><Chip emoji="📚">کتاب و متن‌های بلند</Chip><Chip emoji="🌙" selected>گفت‌وگوی شبانه</Chip><Chip emoji="🎧">موسیقی</Chip></div></div>
+        <div className="panel" data-theme="dark"><div className="plbl">Dark</div><div className="row"><Chip emoji="📚">کتاب و متن‌های بلند</Chip><Chip emoji="🌙" selected>گفت‌وگوی شبانه</Chip><Chip emoji="🎧">موسیقی</Chip></div></div>
+      </div>
+    </div>
+
+  </div>
+  <TweaksPanel>
+    <TweakSection label="Feel" />
+    <TweakRadio label="Corners" value={t.corner} options={['geometric','balanced','pillowy']} onChange={v=>setTweak('corner',v)} />
+    <TweakRadio label="Density" value={t.density} options={['compact','comfortable','spacious']} onChange={v=>setTweak('density',v)} />
+    <TweakRadio label="Finish" value={t.finish} options={['flat','soft','elevated']} onChange={v=>setTweak('finish',v)} />
+  </TweaksPanel>
+  </React.Fragment>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

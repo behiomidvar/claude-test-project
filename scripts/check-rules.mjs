@@ -31,11 +31,13 @@ const rules = [
 	{id: 'ds-bundle', re: /_ds_bundle/, msg: 'import components from their source .jsx, not _ds_bundle.js'},
 	{id: 'transition-all', re: /transition-all|transition:\s*all\b/, msg: 'no transition-all'},
 	{id: 'banned-word', re: /پسند|همدل/, msg: 'use «لایک» / «مچ»; never «پسند» or «همدل»'},
-	{id: 'goftogoo', re: /گفت[‌ ]گو/, msg: '«گفتگو» is written without a half-space'},
+	{id: 'goftogoo', re: /گفت[\u200c ]?و?[\u200c ]گو|گفت[\u200c ]وگو/, msg: '«گفتگو» is locked: one word, no half-space, no «و»'},
+	{id: 'photo-reveal', re: /dt-unblur|\bunblur|<Avatar[^>]*\bblur=/, msg: 'the blur-to-clear photo reveal was removed from the product; never show or imply it'},
 	{id: 'mi-space', re: /(^|[\s«'"`])(ن?می) (?=[؀-ۿ])/, msg: '«می» prefix needs ZWNJ (\\u200c), not a space'},
 	{id: 'arabic-letters', re: /[يك٠-٩]/, msg: 'Arabic ي/ك or Arabic-Indic digits; use Persian ی/ک and ۰-۹'},
 	{id: 'emoji', re: /\p{Extended_Pictographic}/u, msg: 'no emoji'},
 	{id: 'heat-urgency', re: /آتش|آتیش|داغ|فوری|عجله|فقط امروز|تا دیر نشده|منقضی|ثانیه آخر/, msg: 'no zap/fire/heat language, urgency or expiry'},
+	{id: 'numeric-scale', re: /\bscale:\s*(?!['"`]|String\()[\w(]/, msg: 'React 18 appends px to a numeric `scale`; pass a string'},
 	{id: 'swipe', re: /\b(swipe|swiping|rewind|onDrag|draggable)\b/i, msg: 'Discover has no swipe, drag or rewind'},
 ];
 

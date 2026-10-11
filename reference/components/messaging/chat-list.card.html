@@ -1,0 +1,26 @@
+<!-- @dsCard group="Messaging" viewport="440x460" name="ChatListItem — conversation rows" subtitle="States: unread, read, muted, and a new match with no messages yet. Persian numerals for time & counts." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+.list{max-width:380px;margin:0 auto;background:var(--surface-card);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--border-subtle)}
+.list>*+*{border-top:1px solid var(--border-subtle)}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { ChatListItem } = window.DeltalkDesignSystem_288455;
+const A="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=160&q=80&fit=crop&crop=faces";
+const B="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&q=80&fit=crop&crop=faces";
+const C="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&q=80&fit=crop&crop=faces";
+const D="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=160&q=80&fit=crop&crop=faces";
+function Demo(){
+  return <div className="list">
+    <ChatListItem name="سارا" avatar={A} preview="جواب پرسشت خنده‌م انداخت — مخصوصاً…" time="۹:۴۱" unread={3} online state="unread"/>
+    <ChatListItem name="نیما" avatar={B} preview="باشه، پس شنبه می‌بینمت." time="دیروز" state="read" outgoing/>
+    <ChatListItem name="آوا" avatar={C} preview="لینک آهنگه رو فرستادم برات" time="۲ روز پیش" unread={12} state="muted"/>
+    <ChatListItem name="رها" avatar={D} time="اکنون" state="newMatch" online/>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>

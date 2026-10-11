@@ -7,35 +7,33 @@
  * `npm run ds:sync` checks every entry against the copied files and fails
  * when one is missing.
  *
- * Status: ./reference was NOT present when this was written. Entries marked
- * UNCONFIRMED come from the brief, not from the files. Fix them here once
- * the sync report shows the real names.
+ * Verified against ./reference (Deltalk Design System.zip) on 2026-10-11.
  */
 
-/** Tokens ThemeScope re-declares on its own element. */
+/** Tokens ThemeScope re-declares on its own element (tokens/colors.css). */
 export const THEME_SCOPE_TOKENS = {
-	/** Named in the brief ("test scene on --bg"). UNCONFIRMED against tokens/*.css. */
 	background: '--bg',
-	/** UNCONFIRMED. The brief does not name the foreground/text token. */
 	color: '--text-primary',
 } as const;
 
-/** Tokens the hard rules in CLAUDE.md refer to by name. UNCONFIRMED. */
+/** Tokens the hard rules in CLAUDE.md refer to by name. */
 export const RULE_TOKENS = {
 	actionCta: '--action-cta',
 	gradientBrand: '--gradient-brand',
 	gradientCelebration: '--gradient-celebration',
+	navActive: '--nav-active',
+	logoWordmark: '--logo-wordmark',
 	fwSemibold: '--fw-semibold',
 } as const;
 
-/** CSS keyframe names the DS components run on wall-clock time. UNCONFIRMED. */
+/** CSS keyframes the DS runs on wall-clock time (tokens/motion.css). */
 export const DS_KEYFRAMES = ['dt-typing', 'dt-unfold'] as const;
 
-/** Self-hosted font. Family name must match what styles.css / tokens use. */
+/** Self-hosted font (tokens/fonts.css, tokens/typography.css). */
 export const FONT = {
-	/** UNCONFIRMED: must equal the first family in the DS font stack. FontGate verifies this. */
+	/** First family in --font-sans / --font-display. FontGate verifies this. */
 	family: 'IRANSansMobile',
-	/** Relative to src/ds/assets/fonts. File-name suffix -> CSS weight. */
+	/** Relative to src/ds/assets/fonts. There is no 600 file. */
 	files: {
 		300: 'IRANSansMobile-Light.ttf',
 		400: 'IRANSansMobile-Regular.ttf',
@@ -45,21 +43,25 @@ export const FONT = {
 	},
 } as const;
 
-/** Logo files, relative to src/ds/assets. All UNCONFIRMED file names. */
+/** Logo files, relative to src/ds/assets (readme.md, LOGO LOCKUP SPEC). */
 export const LOGOS = {
-	/** Uses currentColor. Inline it (InlineLogo), max one per frame. */
-	compact: 'logo/deltalk-compact.svg',
-	/** Full lockups, one per theme. Use as <img>. */
+	/**
+	 * Compact horizontal lockup, 152x36 art box. The wordmark is currentColor,
+	 * so it is inlined (InlineLogo), max one per frame (gradient ids dtwc/dtcc).
+	 * Scale by height only.
+	 */
+	compact: 'logo-compact.svg',
+	/** Full lockups with fills baked per theme. Safe as <img>. */
 	lockup: {
-		light: 'logo/deltalk-lockup-light.svg',
-		dark: 'logo/deltalk-lockup-dark.svg',
+		light: 'wordmark-horizontal-light.svg',
+		dark: 'wordmark-horizontal-dark.svg',
 	},
 } as const;
 
-/** Motion durations from the brief, in ms. Convert with msToFrames(). */
-export const DURATIONS_MS = {
-	fast: 140,
-	base: 240,
-	slow: 420,
-	slower: 560,
+/** Motion duration tokens (tokens/motion.css): 140 / 240 / 420 / 560 ms. */
+export const DURATION_TOKENS = {
+	fast: '--dur-fast',
+	base: '--dur-base',
+	slow: '--dur-slow',
+	unfold: '--dur-unfold',
 } as const;

@@ -1,0 +1,51 @@
+<!-- @dsCard group="Safety" viewport="760x720" name="Safety — report, tips, blocked users" subtitle="Report flow (reason list + confirmation), safety tips banner, and blocked-user list rows with unblock." -->
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--paper);direction:rtl}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;max-width:820px;margin:0 auto}
+.stack{display:flex;flex-direction:column;gap:16px}
+.cap{direction:ltr;text-align:left;unicode-bidi:isolate;font-size:var(--text-micro);font-weight:var(--fw-bold);color:var(--text-subtle);margin-bottom:8px}
+.sheet{border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--border-subtle)}
+.list{background:var(--surface-card);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-subtle)}
+.list>*+*{border-top:1px solid var(--border-subtle)}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { ReportFlow, SafetyTipsBanner, BlockedUserItem, ConfirmDialog, Button } = window.DeltalkDesignSystem_288455;
+const A="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&q=80&fit=crop&crop=faces";
+const B="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&q=80&fit=crop&crop=faces";
+function Demo(){
+  const [step,setStep]=React.useState('reason');
+  const [reason,setReason]=React.useState('');
+  const [confirm,setConfirm]=React.useState(false);
+  return <div className="grid">
+    <div><div className="cap">REPORT FLOW</div>
+      <div className="sheet"><ReportFlow step={step} value={reason} name="سارا"
+        onSelect={setReason} onSubmit={()=>setStep('done')} onDone={()=>{setStep('reason');setReason('');}}/></div>
+    </div>
+    <div className="stack">
+      <div><div className="cap">SAFETY TIPS</div>
+        <SafetyTipsBanner variant="tip" onLink={()=>{}}/>
+        <div style={{height:12}}/>
+        <SafetyTipsBanner variant="warn" title="مراقب باش" linkLabel={null}>کسی که خیلی زود پول یا اطلاعات شخصی می‌خواهد، پرچم قرمز است.</SafetyTipsBanner>
+      </div>
+      <div><div className="cap">BLOCK / UNMATCH (destructive)</div>
+        <Button variant="destructive" onClick={()=>setConfirm(true)}>مسدودسازی کاربر</Button>
+      </div>
+      <div><div className="cap">BLOCKED USERS</div>
+        <div className="list">
+          <BlockedUserItem name="کاربر حذف‌شده" avatar={A} meta="مسدود شده در ۱۲ خرداد" onUnblock={()=>{}}/>
+          <BlockedUserItem name="نیما" avatar={B} meta="مسدود شده در ۳ اردیبهشت" unblocking/>
+        </div>
+      </div>
+    </div>
+    <ConfirmDialog open={confirm} variant="destructive" title="سارا مسدود شود؟"
+      confirmLabel="مسدود کن" cancelLabel="انصراف" onConfirm={()=>setConfirm(false)} onCancel={()=>setConfirm(false)}>
+      او دیگر نمی‌تواند تو را ببیند یا پیام بدهد و دیگر مچ نیستید.
+    </ConfirmDialog>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script><script src="../../theme-toggle.js"></script></body></html>
