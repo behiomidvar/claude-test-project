@@ -9,6 +9,8 @@ import {useLayout} from './layout';
  * By default the logical device width maps onto the frame's short edge
  * (1080 * u px), so a component has the same video size in every format.
  * Without `height`, the box's logical height is measured from its content.
+ * `scale` multiplies that factor for a deliberate hero moment, still through
+ * the same single transform (the component itself is never re-sized).
  */
 
 /** Logical device width in dp. From the brief; the DS has no device-width token. */
@@ -20,10 +22,13 @@ export const DeviceScale: React.FC<{
 	readonly height?: number;
 	/** Rendered width in video px. Defaults to the frame's short edge. */
 	readonly targetWidth?: number;
+	/** Extra multiplier on top of the device scale. Default 1. */
+	readonly scale?: number;
 	readonly style?: React.CSSProperties;
-}> = ({children, height, targetWidth, style}) => {
+}> = (props) => {
+	const {children, height, targetWidth, style} = props;
 	const {u} = useLayout();
-	const target = targetWidth ?? 1080 * u;
+	const target = (targetWidth ?? 1080 * u) * (props.scale ?? 1);
 	const scale = target / DEVICE_WIDTH_DP;
 	const inner = useRef<HTMLDivElement>(null);
 	const [measured, setMeasured] = useState<number | null>(null);
@@ -42,7 +47,9 @@ export const DeviceScale: React.FC<{
 	const logicalHeight = height ?? measured ?? 0;
 
 	return (
-		<div style={{position: 'relative', inlineSize: target, blockSize: logicalHeight * scale, ...style}}>
+		// flexShrink 0: as a flex item this box would otherwise shrink to its
+		// (empty) min-content, and the absolutely placed content would drift off center.
+		<div style={{position: 'relative', flexShrink: 0, inlineSize: target, blockSize: logicalHeight * scale, ...style}}>
 			<div
 				ref={inner}
 				style={{

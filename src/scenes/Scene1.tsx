@@ -28,6 +28,9 @@ const QUESTION_SCALE = 1.6;
 const QUESTION_MAX_WIDTH = 888;
 
 const DOTS_COLOR = 'var(--conversation-active)';
+// The lead dots open the video alone; at device scale they are ~36px, too quiet
+// for the opening beat, so they get twice the device scale.
+const LEAD_DOTS_SCALE = 2;
 
 export const Scene1: React.FC = () => {
 	const frame = useCurrentFrame();
@@ -71,7 +74,7 @@ export const Scene1: React.FC = () => {
 							opacity: leadDotsOpacity,
 						}}
 					>
-						<DeviceScale>
+						<DeviceScale scale={LEAD_DOTS_SCALE}>
 							<div style={{display: 'flex', justifyContent: 'center'}}>
 								<TypingDots size="lg" color={DOTS_COLOR} />
 							</div>

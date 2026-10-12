@@ -30,8 +30,10 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 - `npm run test:framesync`: renders TypingDots stills at frames 0/10/40, twice
   each. They must differ from each other and repeat exactly. Add `-- --harness`
   to run without `src/ds`.
-- `npm run render:scene1`: Scene 1 (9:16) to `out/scene1.mp4`.
-- `npm run render:test`: 2 s setup test (`Dev/Test-9x16`) to `out/test.mp4`.
+- `npm run render:scene1`: Scene 1 (9:16) to `renders/scene1.mp4`.
+- `npm run render:test`: 2 s setup test (`Dev/Test-9x16`) to `renders/test.mp4`.
+- Deliverable renders go to `renders/` and are committed (reviewers work from
+  GitHub). `out/` is gitignored scratch (stills, framesync checks).
 - If Remotion can't download its Chrome, pass
   `--browser-executable <chrome-headless-shell>` to renders.
 
@@ -42,7 +44,8 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
   Scenes live in `src/scenes/` (built so far: `Scene1`, 0-4 s).
 - Real DS components go inside `<DeviceScale>`: it lays them out at the logical
   393 dp device width and scales the subtree with one transform (393 dp maps to the
-  frame's short edge). Never re-derive component sizes by hand.
+  frame's short edge). Never re-derive component sizes by hand; for a hero moment
+  pass `scale` (a multiplier on the same transform).
 - `src/ds/` mirrors the design system: `styles.css` (imported once in `Root.tsx`),
   `tokens/`, `assets/`, and `components/**/*.jsx` + `.d.ts`. Import components from
   `src/ds` (generated barrel over the source `.jsx`). Never use `_ds_bundle.js`.
