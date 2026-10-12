@@ -31,6 +31,7 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
   each. They must differ from each other and repeat exactly. Add `-- --harness`
   to run without `src/ds`.
 - `npm run render:scene1`: Scene 1 (9:16) to `renders/scene1.mp4`.
+- `npm run render:scene1-2`: Scenes 1-2 (9:16, 270 frames) to `renders/scene1-2.mp4`.
 - `npm run render:test`: 2 s setup test (`Dev/Test-9x16`) to `renders/test.mp4`.
 - Deliverable renders go to `renders/` and are committed (reviewers work from
   GitHub). `out/` is gitignored scratch (stills, framesync checks).
@@ -41,7 +42,9 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 - 30 fps. Three compositions (`Deltalk-9x16` 1080x1920, `Deltalk-16x9` 1920x1080,
   `Deltalk-1x1` 1080x1080) render one scene tree, `<Promo>`. Layout comes from
   `useLayout()` (orientation, unit `u`, safe area), never from the composition id.
-  Scenes live in `src/scenes/` (built so far: `Scene1`, 0-4 s).
+  Scenes live in `src/scenes/` (built so far: `Scene1` 0-4 s, `Scene2` 4-9 s). Each
+  scene has its own `<FrameSync>` (scene-local time). Scenes may overlap across a cut
+  so the three-dots motif stays one element (Scene 1 stays mounted 1.5 s into Scene 2).
 - Real DS components go inside `<DeviceScale>`: it lays them out at the logical
   393 dp device width and scales the subtree with one transform (393 dp maps to the
   frame's short edge). Never re-derive component sizes by hand; for a hero moment

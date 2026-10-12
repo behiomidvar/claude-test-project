@@ -17,6 +17,12 @@ import {useDurationFrames, useEasing} from '../core/motion';
  *   2.0-3.5  Hold on the question.
  *   3.5-4.0  Small dots unfold back in beneath it: the motif into Scene 2.
  *
+ * Across the cut (Scene 2's local 0-45, played here so the dots stay the very
+ * same element and never jump phase or position):
+ *   4.0-4.42 The question folds out: dt-unfold reversed, --dur-slow.
+ *   4.5-     The small dots hold, then fade (--dur-unfold) as Scene 2's first
+ *            bubble unfolds. Promo keeps this sequence mounted until 5.5 s.
+ *
  * Light theme, flat --bg, no gradient, no logo. Nothing slides off screen.
  */
 
@@ -32,6 +38,9 @@ const DOTS_COLOR = 'var(--conversation-active)';
 // for the opening beat, so they get twice the device scale.
 const LEAD_DOTS_SCALE = 2;
 
+/** Seconds Scene 1 stays mounted past its 4 s, to play the cut (see above). */
+export const SCENE1_TAIL_SECONDS = 1.5;
+
 export const Scene1: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
@@ -41,6 +50,14 @@ export const Scene1: React.FC = () => {
 
 	const handoffAt = Math.round(1.2 * fps);
 	const dotsReturnAt = Math.round(3.5 * fps);
+	const exitAt = 4 * fps;
+	const dotsOutAt = exitAt + Math.round(0.5 * fps);
+	const exitMs = (exitAt / fps) * 1000;
+	const tailDotsOpacity = interpolate(frame, [dotsOutAt, dotsOutAt + unfoldFrames], [1, 0], {
+		easing: easeOutSoft,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
 	const leadDotsOpacity = interpolate(frame, [handoffAt, handoffAt + unfoldFrames], [1, 0], {
 		easing: easeOutSoft,
 		extrapolateLeft: 'clamp',
@@ -82,27 +99,30 @@ export const Scene1: React.FC = () => {
 					</div>
 				</Sequence>
 
-				<Sequence from={handoffAt} layout="none" name="Question">
-					<FrameSync style={{position: 'relative'}}>
-						<p
-							style={{
-								margin: 0,
-								fontFamily: 'var(--font-display)',
-								fontWeight: 'var(--fw-medium)',
-								fontSize: `calc(var(--text-display-lg) * ${QUESTION_SCALE * u})`,
-								lineHeight: 'var(--lh-normal)',
-								letterSpacing: 'var(--ls-normal)',
-								color: 'var(--text-primary)',
-								textAlign: 'center',
-								textWrap: 'balance',
-								maxInlineSize: QUESTION_MAX_WIDTH * u,
-								animation: 'dt-unfold var(--dur-unfold) var(--ease-out-soft) both',
-							}}
-						>
-							{COPY.scene1.question}
-						</p>
-					</FrameSync>
-				</Sequence>
+				{/* Exit: the unfold played in reverse at the cut, holding the folded state. */}
+				<div style={{animation: `dt-unfold var(--dur-slow) var(--ease-out-soft) ${exitMs}ms reverse forwards`}}>
+					<Sequence from={handoffAt} layout="none" name="Question">
+						<FrameSync style={{position: 'relative'}}>
+							<p
+								style={{
+									margin: 0,
+									fontFamily: 'var(--font-display)',
+									fontWeight: 'var(--fw-medium)',
+									fontSize: `calc(var(--text-display-lg) * ${QUESTION_SCALE * u})`,
+									lineHeight: 'var(--lh-normal)',
+									letterSpacing: 'var(--ls-normal)',
+									color: 'var(--text-primary)',
+									textAlign: 'center',
+									textWrap: 'balance',
+									maxInlineSize: QUESTION_MAX_WIDTH * u,
+									animation: 'dt-unfold var(--dur-unfold) var(--ease-out-soft) both',
+								}}
+							>
+								{COPY.scene1.question}
+							</p>
+						</FrameSync>
+					</Sequence>
+				</div>
 
 				<Sequence from={dotsReturnAt} layout="none" name="Dots return">
 					<FrameSync
@@ -113,6 +133,7 @@ export const Scene1: React.FC = () => {
 							display: 'flex',
 							justifyContent: 'center',
 							marginBlockStart: `calc(var(--space-8) * ${u})`,
+							opacity: tailDotsOpacity,
 						}}
 					>
 						<div style={{animation: 'dt-unfold var(--dur-slow) var(--ease-out-soft) both'}}>

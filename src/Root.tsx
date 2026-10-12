@@ -6,14 +6,14 @@ import {TestPromo} from './dev/TestPromo';
 import {TypingDotsProbe} from './dev/TypingDotsProbe';
 
 // Format is undecided: three compositions, one scene tree (<Promo>).
-// Currently Scene 1 only (4 s).
+// Currently Scenes 1-2 (4 s + 5 s).
 export const RemotionRoot: React.FC = () => (
 	<>
 		<Folder name="Deltalk">
 			<Composition
 				id="Deltalk-9x16"
 				component={Promo}
-				durationInFrames={120}
+				durationInFrames={270}
 				fps={30}
 				width={1080}
 				height={1920}
@@ -21,7 +21,7 @@ export const RemotionRoot: React.FC = () => (
 			<Composition
 				id="Deltalk-16x9"
 				component={Promo}
-				durationInFrames={120}
+				durationInFrames={270}
 				fps={30}
 				width={1920}
 				height={1080}
@@ -29,7 +29,7 @@ export const RemotionRoot: React.FC = () => (
 			<Composition
 				id="Deltalk-1x1"
 				component={Promo}
-				durationInFrames={120}
+				durationInFrames={270}
 				fps={30}
 				width={1080}
 				height={1080}
