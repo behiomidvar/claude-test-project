@@ -11,6 +11,8 @@ components; nothing animates yet.
 > happens with the SFX mix in Phase 3.
 
 Review files (all in `renders/store-promo-phase1/`):
+- `reference-vs-storyboard.png`: your frames L01/L02/L03/L05/L07 (top row) next to the
+  matching key poses (bottom row)
 - `storyboard-9x16.png` and `storyboard-16x9.png`: contact sheets, one key pose per scene
 - `s1-9x16.png` … `s9-16x9.png`: each pose on its own
 - `animatic-9x16-half.mp4`: an animatic at half scale, with each pose held for its
@@ -20,11 +22,21 @@ Review files (all in `renders/store-promo-phase1/`):
 Re-render with `npm run storyboard:store` and print the timeline with `npm run timeline:store`.
 
 ## References
-- **`reference/video/reference.mp4` does not exist, so the reference study was skipped.**
-- **`reference/photos/` did not exist.** I created it with a README that lists the
-  expected files (`aida`, `sara`, `negar`, `me`). Until those files exist, every portrait
-  is the DS neutral tile `portrait-tone-light.png`. `<PhotoGate>` preloads every portrait
-  and waits on each `<img>` before a frame renders.
+- **`reference/video/reference.mp4` does not exist, so the video study was skipped.**
+- **Your reference frames, uploaded mid-phase (`reference/L01–L07`, light, and `D01–D07`,
+  dark), now drive the compositions.**
+  - S2 follows L01, S3 follows L02, S4 L03, S6 L05 and S7 L07. S5, S8 and S9 have no frame.
+  - I took the screen content from them: Sara ۳۸ from تهران, «هدفش از دلتاک»,
+    «فیلترها», «حداکثر فاصله» up to ۱۵۰ km, «دنبال چی می‌گرده؟», the chat times and
+    the ۹:۴۱ status bar.
+  - I followed them where they conflict with CLAUDE.md, except for the deviations
+    listed below.
+- **Photos.** They are bundled from `reference/` (as uploaded) or `reference/photos/`.
+  `<PhotoGate>` preloads them and waits on every `<img>`.
+  - Aida is `L01-aida.jpg` and Sara is `L02-L03-L07-L08-sara.jpg`.
+  - **Assumed:** Negar is the «blue-eyed-brunette» stock portrait.
+  - **Missing:** the user's own photo (`me`, S8), which shows the DS neutral tile. The
+    blonde «portrait-young-family» upload is unassigned.
 
 ## Timeline (beat-snapped)
 
@@ -58,8 +70,8 @@ cut, the render fails rather than silently moving the cut.
 
 ## Rules applied in every scene
 - **One gradient per frame.** The highlighted headline word carries `--gradient-brand`
-  until that scene's UI gradient appears: the selected chip (S3), the verification
-  rosette (S5), the ON switch (S6) or the celebration ring (S8). At that point the word
+  until that scene's UI gradient appears: the selected chip (S3), the ON switch (S6)
+  or the celebration ring (S8). At that point the word
   settles to a flat `--accent` over `--dur-fast`, before the UI gradient fills. The two
   gradients never share a frame.
 - **Warm and cool sides.** The user is `MessageBubble from="me"` (DS: `--bubble-sent-fill`,
@@ -81,61 +93,68 @@ cut, the render fails rather than silently moving the cut.
 - **Out:** the dots stay on screen as the same element while S2's headline unfolds, then
   fold away.
 
-### S2 · Start (b6–13) — `s2`
-- **Layout:** headline on top («گفتگو» in the brand gradient). The phone unfolds up from
-  the bottom edge, cropped by the frame on purpose.
+### S2 · Start (b6–13) — after L01
+- **Layout:** no phone. Aida's photo card leans back. The conversation floats in front of
+  it, one depth nearer:
+  - the user's dark question over the card's top edge;
+  - her white answer over its other edge;
+  - her cool typing dots below.
+- **Headline:** at the bottom, with «گفتگو» in the brand gradient.
 - **Beats:**
-  - b7: Aida's card unfolds.
-  - b9: the user's dark bubble, with a pop.
-  - b10: Aida's typing dots.
-  - b11: her white answer, with a pop.
-- **Camera:** a slow push-in from 1.00 to 1.04.
-- **Depth:** the bubbles sit one parallax layer nearer than the phone.
+  - b7: the card unfolds.
+  - b9: the question, with a pop.
+  - b10: the typing dots.
+  - b11: the answer, with a pop.
+- **Camera:** a slow push-in, with parallax between the card and the bubbles.
 
-### S3 · Goal (b13–18) — `s3`
-- **Layout:** the composition flips. The phone hangs from the top edge and the headline
-  sits below it.
-- **Match cut in:** Aida's three typing dots unfold into the three goal chips.
+### S3 · Goal (b13–18) — after L02
+- **Layout:** the phone leans, showing Sara's profile (photo, «هدفش از دلتاک: رابطه‌ی
+  جدی»). The user's own goal card stands off the phone's edge.
+- **Match cut in:** her typing dots unfold into the three chips.
 - **Beats:**
-  - b14: the sheet unfolds.
+  - b14: the card unfolds.
   - b14–15: the chips appear, one per eighth note.
   - b16: «رابطه‌ی جدی» is selected with a gentle overshoot and a pop. The headline word
     settles to flat at the same moment.
-- **Out:** the chips fold back into three dots.
 
-### S4 · Message before match (b18–24) — `s4`
-- **Layout:** a macro close-up with no phone, using DS `Card` + `Input multiline` + `Button`.
-- **Typing:** b19–23, character by character in RTL (about 18 characters per second),
-  with a soft tick every two or three characters.
-- **Counter:** «۲ پیام برات مونده» is the field's hint.
-- **Camera:** a slow push-in toward the caret.
-- **Button:** «لایک و ارسال» is the neutral primary button.
+### S4 · Message before match (b18–24) — after L03
+- **Layout:** Sara's photo is on screen, and the sheet «پیام همراه لایک برای سارا»
+  stands out over both phone edges:
+  - her prompt answer in a well;
+  - the message typing in character by character, b19–23, about 18 characters per
+    second, with a soft tick every two or three characters;
+  - «۲ پیام برات مونده»;
+  - «ارسال لایک», the neutral primary button with a heart.
+- **Camera:** a slow push-in toward the field.
 
-### S5 · Verified (b24–29) — `s5`
+### S5 · Verified (b24–29) — no reference frame
+- **Layout:** no phone. Negar's photo card.
 - **Beats:**
-  - b24 (downbeat): Negar's card unfolds.
-  - b26: the `VerificationBadge` settles beside her name with `--ease-gentle-over`, and
-    the headline word goes flat.
-  - b27: the success toast unfolds, with a pop.
+  - b26: the `VerificationBadge` (lg, on the photo) settles beside her name with
+    `--ease-gentle-over`.
+  - b27: the success toast unfolds off the card's lower edge, with a pop.
+- **Gradient:** «آدم» keeps the brand gradient. The rosette is flat `--verification` blue,
+  so there is no conflict.
 
-### S6 · Search (b29–34) — `s6`
-- **Layout:** three filter cards stacked in depth, each with its own parallax.
+### S6 · Search (b29–34) — after L05
+- **Layout:** the filters screen. The «فقط آدم‌های تأییدشده» card stands off the phone's
+  edge.
 - **Beats:**
   - b30–31.5: the age handles glide to «۳۲ — ۴۵».
   - b31.5–32.5: the distance handle glides to «۵۰ کیلومتر».
-  - b33: «فقط آدم‌های تأییدشده» turns ON. The switch is `enabling`, so its track is the
-    brand gradient, and the headline word goes flat just before.
+  - b33: the switch turns ON (`enabling`, brand-gradient track). The headline word goes
+    flat just before.
 
-### S7 · Conversation (b34–40) — `s7`
-- **Layout:** the thread with Sara inside the phone. The camera drifts upward as the
-  thread grows.
+### S7 · Conversation (b34–40) — after L07
+- **Layout:** the chat with Sara (back arrow, avatar, verified mark, message times). The
+  phone leans.
 - **Beats:** one message per beat, each with a pop.
   - b35: Sara's question.
   - b36: the user's answer.
   - b37: Sara's voice note; the waveform plays.
   - b38: the user's reply.
   - b38.5: Sara's typing dots.
-  - b39.5: Sara's last message.
+  - b39.5: Sara's last message, which stands off the phone, one depth nearer.
 
 ### S8 · Match (b40–45) — `s8`
 - **Layout:** no phone. The music swells on b40.
@@ -158,42 +177,55 @@ cut, the render fails rather than silently moving the cut.
 - **Gradients:** the logo is the only gradient in the frame.
 
 ## Contradictions and decisions (please confirm)
-1. **Two gradients in S3, S5, S6 and S8.**
-   - **Conflict:** the brief marks a gradient headline word, but each of these scenes'
-     UI already carries a DS gradient: the selected chip
-     (`--chip-selected-fill`), the badge rosette, the `enabling` switch track, and the
-     celebration ring.
-   - **Fix:** the gradient hands off from the word to the UI, as described under "Rules"
-     above.
-2. **The S8 ring is drawn, not taken from Avatar.**
-   - **Conflict:** Avatar's `ring="match"` is the brand gradient, but the brief asks for a
-     celebration ring.
-   - **Fix:** one `--gradient-celebration` stroke around both portraits. It is a motion
-     element, not app UI.
-3. **The S8 highlight covers two words.** «هر» on its own is not a unit, so «هر دو» is
-   highlighted together.
-4. **The user's bubbles are neutral dark, not warm.** That is the DS bubble design. The
-   warm/cool split shows through side and role, and the other person's cues stay cool.
-5. **The composer is `Input multiline`, not `MessageInput`.** `MessageInput` has its own
-   send button, which would duplicate «لایک و ارسال».
-6. **Copy I added that isn't in the brief:** the slider labels «سن» / «فاصله», and Sara as
-   the S4 recipient (she answers in S7 and matches in S8).
-7. **Cut timing moves.** Snapping to the beat moves cuts by up to 0.25 s from the brief. S9
-   is 1.875 s instead of 2 s.
+1. **One gradient per frame overrides the references in S3, S6 and S8.**
+   - **Conflict:** L05 shows the gradient switch and the gradient headline word together.
+     In S3 the brief's selected chip is a gradient, and in S8 the celebration ring is
+     one.
+   - **Fix:** the headline word hands the gradient off to the UI (see "Rules" above).
+2. **No gradient background.** Your frames sit on pastel pink and lavender washes.
+   CLAUDE.md forbids gradients as backgrounds, so every scene is flat `--bg`.
+3. **No in-app logo in S2 and S3.** L01 and L02 show the compact logo. Its mark would be a
+   second gradient next to the headline word, so the logo appears only in S9.
+4. **One highlighted word, not a phrase.** The references highlight «دنبال چی», «قبل از
+   مچ» and «گل بندازه». The brief and CLAUDE.md allow one word, so I used «دنبال»,
+   «قبل» and «گل». The exception is S8, where «هر دو» stays together because «هر» alone
+   is not a unit.
+5. **Headline weight is Bold (700).** The references look Black (900). The font has a
+   900 file, but the DS has no `--fw-black` token.
+6. **S3 uses chips, not L02's tinted rows.** The brief asks for the selected chip.
+7. **S4 button label.** I used L03's «ارسال لایک» in place of the brief's pending
+   «لایک و ارسال».
+8. **S7's last Sara bubble stays on her side.** L07 floats it to the user's side, which
+   would swap the warm/cool sides.
+9. **The S8 ring is drawn, not taken from Avatar.** Avatar's `ring="match"` is the brand
+   gradient, but the brief asks for a celebration ring. It is one
+   `--gradient-celebration` stroke around both portraits.
+10. **A DS doc is stale.** `VerificationBadge.d.ts` calls the rosette gradient-filled, but
+    the `.jsx` paints it flat `--verification` blue. I followed the `.jsx`.
+11. **The composer is `Input multiline`.** `MessageInput` has its own send button, which
+    would duplicate the CTA.
+12. **Cut timing moves.** Snapping to the beat moves cuts by up to 0.25 s from the brief.
+    S9 runs 1.875 s.
+13. **16:9 crops some floating layers.** The landscape frame is shorter, so it crops the
+    lower floating cards in S3, S4, S6 and S7. I'll fix landscape framing with the
+    Phase 2 camera work.
 
 ## Open questions
-1. **S9 runs 1.875 s, short for the logo, the line and the CTA.**
+1. **What are D01–D07 for?** The brief keeps S1–S8 light. Do you want a dark cut of the
+   whole video as well?
+2. **Which photo is the user's own (S8)?** Is it the blonde upload? And is Negar the
+   brunette?
+3. **S9 runs 1.875 s, short for the logo, the line and the CTA.**
    - **Option A:** start S9 on the bar-12 downbeat (27.5 s). S9 gets 2.5 s and S8 drops to
      2.5 s.
    - **Option B:** keep the current timing.
-2. **S5 mixes two points of view.**
+4. **S5 mixes two points of view.**
    - **The issue:** the badge settles on Negar, but the toast says «حسابت تأیید شد», which
      means the user's own account.
    - **Option A:** keep both.
    - **Option B:** show the badge on the user's own card instead.
-3. **The S4 counter «۲ پیام برات مونده» may conflict with CLAUDE.md**, which bans counters
+5. **The S4 counter «۲ پیام برات مونده» may conflict with CLAUDE.md**, which bans counters
    on cards and urgency. It is a quota hint inside the composer, so I kept it. Please
    confirm.
-4. **The store name is still a placeholder.** The CTA shows «[نام فروشگاه]», and it has to
+6. **The store name is still a placeholder.** The CTA shows «[نام فروشگاه]», and it has to
    be a Persian name so no Latin appears on screen.
-5. **The «لایک و ارسال» label is still pending.**

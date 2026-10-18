@@ -29,6 +29,8 @@ export const COPY = {
 	 * ZWNJ is a literal U+200C here (check with a hex view, not by eye).
 	 */
 	store: {
+		// From the reference frames (reference/L01-L07): the phone status bar.
+		statusTime: '۹:۴۱',
 		s1: {question: HOOK_QUESTION},
 		s2: {
 			headline: {text: 'آشنایی، از یه گفتگو شروع می‌شه', highlight: 'گفتگو'},
@@ -40,6 +42,11 @@ export const COPY = {
 		},
 		s3: {
 			headline: {text: 'دنبال چی هستی؟ همون اول بگو', highlight: 'دنبال'},
+			// From reference L02: Sara's profile under the sheet.
+			saraProfile: 'سارا، ۳۸',
+			saraCity: 'تهران',
+			goalLabel: 'هدفش از دلتاک',
+			sheetTitle: 'دنبال چی هستی؟',
 			goals: {
 				serious: 'رابطه‌ی جدی',
 				friendship: 'دوستی و هم‌صحبتی',
@@ -48,12 +55,13 @@ export const COPY = {
 		},
 		s4: {
 			headline: {text: 'قبل از مچ هم می‌شه حرف زد', highlight: 'قبل'},
-			// ADDED (assumption): the recipient is Sara, who answers in S7 and matches in S8.
-			name: 'سارا',
+			// From reference L03: the like-with-a-message sheet for Sara.
+			sheetTitle: 'پیام همراه لایک برای سارا',
+			prompt: 'یک عصر ایده‌آل برای من... یک پیاده‌روی طولانی، بعد یه کافه‌ی دنج و گپ‌زدن تا شب.',
 			message: 'منم عاشق کافه‌های دنجم. تو معمولاً کجا می‌شینی؟',
 			remaining: '۲ پیام برات مونده',
-			// PENDING: label not final.
-			send: 'لایک و ارسال',
+			// The brief's «لایک و ارسال» was pending; reference L03 reads «ارسال لایک».
+			send: 'ارسال لایک',
 		},
 		s5: {
 			headline: {text: 'پشت این نشان، یه آدم واقعیه', highlight: 'آدم'},
@@ -65,9 +73,11 @@ export const COPY = {
 		},
 		s6: {
 			headline: {text: 'دنبال چیزی بگرد که برات مهمه', highlight: 'بگرد'},
-			// ADDED: slider labels.
+			// From reference L05.
+			title: 'فیلترها',
 			ageLabel: 'سن',
-			distanceLabel: 'فاصله',
+			distanceLabel: 'حداکثر فاصله',
+			lookingFor: 'دنبال چی می‌گرده؟',
 			distanceUnit: 'کیلومتر',
 			verifiedOnly: 'فقط آدم‌های تأییدشده',
 			verifiedOnlyNote: 'رایگان، برای همه',
@@ -78,6 +88,8 @@ export const COPY = {
 			theirs1: 'پس پیاده‌روی. کدوم مسیر رو بیشتر دوست داری؟',
 			mine1: 'دربند، صبح‌های جمعه. تو چی؟',
 			voiceDuration: '۰:۱۸',
+			// Message times from reference L07.
+			times: ['۷:۵۰', '۸:۱۵', '۹:۰۵', '۹:۴۰'],
 			mine2: 'صدات رو شنیدم، خوب تعریف می‌کنی.',
 			theirs2: 'ممنون! حالا نوبت توئه، از اون کافه‌ی دنجت بگو.',
 		},

@@ -3,20 +3,39 @@ import {cancelRender, continueRender, delayRender} from 'remotion';
 import type {Theme} from '../core/ThemeScope';
 
 /**
- * Portraits for StorePromo, bundled from reference/photos/ (see its README).
- * A missing portrait falls back to the DS neutral tone tile, so every frame
- * still renders a photo; `MISSING_PHOTOS` lists the fallbacks for the report.
+ * Portraits for StorePromo, bundled (never remote) from reference/photos/
+ * (see its README) or, as uploaded, from reference/ itself. A missing portrait
+ * falls back to the DS neutral tone tile, so every frame still renders a
+ * photo; `MISSING_PHOTOS` lists the fallbacks for the report.
  */
 
 export type Person = 'aida' | 'sara' | 'negar' | 'me';
 const PEOPLE: readonly Person[] = ['aida', 'sara', 'negar', 'me'];
 
-const photoFiles = require.context('../../reference/photos', false, /\.(jpe?g|png|webp)$/);
+// File name patterns. aida / sara follow the uploads' names (L01-aida.jpg,
+// L02-L03-L07-L08-sara.jpg). ASSUMPTION, to confirm: Negar is the uploaded
+// "blue-eyed-brunette" stock portrait. The user ("me") has no photo yet.
+const PATTERNS: Record<Person, RegExp> = {
+	aida: /aida/i,
+	sara: /sara/i,
+	negar: /negar|blue-eyed-brunette/i,
+	me: /^\.\/me\./i,
+};
+
+// reference/ holds the design frames as .png too, so only photo formats are
+// bundled from there.
+const photoDir = require.context('../../reference/photos', false, /\.(jpe?g|png|webp)$/);
+const uploads = require.context('../../reference', false, /\.(jpe?g|webp)$/);
 const toneFiles = require.context('../ds/assets', false, /portrait-tone-(light|dark)\.png$/);
 
 const findPhoto = (person: Person): string | null => {
-	const key = photoFiles.keys().find((k) => new RegExp(`^\\./${person}\\.(jpe?g|png|webp)$`).test(k));
-	return key ? (photoFiles(key) as string) : null;
+	for (const ctx of [photoDir, uploads]) {
+		const key = ctx.keys().find((k) => PATTERNS[person].test(k));
+		if (key) {
+			return ctx(key) as string;
+		}
+	}
+	return null;
 };
 
 const tone = (theme: Theme) => toneFiles(`./portrait-tone-${theme}.png`) as string;

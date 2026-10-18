@@ -48,7 +48,8 @@ export const Headline: React.FC<{
 			style={{
 				margin: 0,
 				fontFamily: 'var(--font-display)',
-				fontWeight: 'var(--fw-medium)',
+				// The reference frames (reference/L01-L07) set headlines heavy.
+				fontWeight: 'var(--fw-bold)',
 				fontSize: `calc(var(--text-display-lg) * ${SCALE[orientation] * u})`,
 				lineHeight: 'var(--lh-snug)',
 				letterSpacing: 'var(--ls-normal)',
@@ -64,7 +65,7 @@ export const Headline: React.FC<{
 					<span
 						style={{
 							display: 'inline-block',
-							...(word === copy.highlight ? {fontWeight: 'var(--fw-bold)', ...highlightStyle(accent)} : null),
+							...(word === copy.highlight ? highlightStyle(accent) : null),
 						}}
 					>
 						{word}
