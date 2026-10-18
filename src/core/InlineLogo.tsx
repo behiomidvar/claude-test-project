@@ -99,11 +99,17 @@ export const InlineLogo: React.FC<{
 	);
 };
 
-/** Full lockup for a theme, as <img>. Safe to repeat. */
+/** Full lockup for a theme, as <img>. Safe to repeat. Scaled by height only. */
 export const LockupLogo: React.FC<{
 	readonly theme: 'light' | 'dark';
 	readonly blockSize: number;
+	readonly orientation?: 'horizontal' | 'vertical';
 	readonly label?: string;
-}> = ({theme, blockSize, label = 'دلتاک'}) => (
-	<img src={assetUrl(LOGOS.lockup[theme])} alt={label} style={{blockSize, inlineSize: 'auto'}} />
+	readonly style?: React.CSSProperties;
+}> = ({theme, blockSize, orientation = 'horizontal', label = 'دلتاک', style}) => (
+	<img
+		src={assetUrl((orientation === 'vertical' ? LOGOS.lockupVertical : LOGOS.lockup)[theme])}
+		alt={label}
+		style={{display: 'block', blockSize, inlineSize: 'auto', ...style}}
+	/>
 );

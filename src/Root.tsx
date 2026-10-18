@@ -2,6 +2,7 @@ import React from 'react';
 import {Composition, Folder} from 'remotion';
 import './ds/styles.css';
 import {Promo} from './Promo';
+import {StorePromo, StoreStoryboard} from './store/StorePromo';
 import {TestPromo} from './dev/TestPromo';
 import {TypingDotsProbe} from './dev/TypingDotsProbe';
 
@@ -32,6 +33,34 @@ export const RemotionRoot: React.FC = () => (
 				durationInFrames={270}
 				fps={30}
 				width={1080}
+				height={1080}
+			/>
+		</Folder>
+		{/* StorePromo: 30 s, 9:16 deliverable plus a 16:9 cut of the same tree. */}
+		<Folder name="StorePromo">
+			<Composition id="StorePromo" component={StorePromo} durationInFrames={30 * 30} fps={30} width={1080} height={1920} />
+			<Composition
+				id="StorePromo-16x9"
+				component={StorePromo}
+				durationInFrames={30 * 30}
+				fps={30}
+				width={1920}
+				height={1080}
+			/>
+			<Composition
+				id="StorePromo-Storyboard"
+				component={StoreStoryboard}
+				durationInFrames={9}
+				fps={30}
+				width={1080}
+				height={1920}
+			/>
+			<Composition
+				id="StorePromo-Storyboard-16x9"
+				component={StoreStoryboard}
+				durationInFrames={9}
+				fps={30}
+				width={1920}
 				height={1080}
 			/>
 		</Folder>

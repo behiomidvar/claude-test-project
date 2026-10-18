@@ -137,7 +137,7 @@ if (families.size > 0 && ![...families].some((f) => f === FONT.family || f.start
 	problems.push(`FONT.family "${FONT.family}" does not appear as a DS font family.`);
 }
 
-for (const logo of [LOGOS.compact, LOGOS.lockup.light, LOGOS.lockup.dark]) {
+for (const logo of [LOGOS.compact, ...Object.values(LOGOS.lockup), ...Object.values(LOGOS.lockupVertical)]) {
 	if (!existsSync(path.join(dest, 'assets', logo))) problems.push(`logo assets/${logo} (src/ds-contract.ts) not found.`);
 }
 const svgs = walk(path.join(dest, 'assets')).filter((f) => f.endsWith('.svg'));

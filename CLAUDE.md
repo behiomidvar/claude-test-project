@@ -33,6 +33,11 @@ font pairing, layered gradients, `brand_assets/`, the Windows screenshot flow).
 - `npm run render:scene1`: Scene 1 (9:16) to `renders/scene1.mp4`.
 - `npm run render:scene1-2`: Scenes 1-2 (9:16, 270 frames) to `renders/scene1-2.mp4`.
 - `npm run render:test`: 2 s setup test (`Dev/Test-9x16`) to `renders/test.mp4`.
+- StorePromo (30 s, `src/store/`; compositions `StorePromo` 9:16 and `StorePromo-16x9`):
+  `npm run storyboard:store` renders one key pose per scene to `out/storyboard/`;
+  `npm run timeline:store` prints the scene cuts snapped to the music's beat map and checks
+  them. Music: `MUSIC_FILE` in `src/store/audio.ts` (currently a generated TEMP track; see
+  `assets/audio/README.md` to swap in a licensed one). Plan: `docs/store-promo-storyboard.md`.
 - Deliverable renders go to `renders/` and are committed (reviewers work from
   GitHub). `out/` is gitignored scratch (stills, framesync checks).
 - If Remotion can't download its Chrome, pass

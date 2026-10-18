@@ -13,7 +13,9 @@
     "test:framesync": "node scripts/test-framesync.mjs",
     "render:test": "remotion render src/index.ts Test-9x16 renders/test.mp4 --codec h264",
     "render:scene1": "remotion render src/index.ts Deltalk-9x16 renders/scene1.mp4 --codec h264 --frames 0-119",
-    "render:scene1-2": "remotion render src/index.ts Deltalk-9x16 renders/scene1-2.mp4 --codec h264"
+    "render:scene1-2": "remotion render src/index.ts Deltalk-9x16 renders/scene1-2.mp4 --codec h264",
+    "timeline:store": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/store-timeline.mjs",
+    "storyboard:store": "remotion render src/index.ts StorePromo-Storyboard out/storyboard/9x16 --sequence --image-format png && remotion render src/index.ts StorePromo-Storyboard-16x9 out/storyboard/16x9 --sequence --image-format png"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",

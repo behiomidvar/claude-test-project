@@ -56,6 +56,11 @@ export const LOGOS = {
 		light: 'wordmark-horizontal-light.svg',
 		dark: 'wordmark-horizontal-dark.svg',
 	},
+	/** Vertical full lockups (mark over wordmark + tagline), same rules. */
+	lockupVertical: {
+		light: 'wordmark-vertical-light.svg',
+		dark: 'wordmark-vertical-dark.svg',
+	},
 } as const;
 
 /** Motion duration tokens (tokens/motion.css): 140 / 240 / 420 / 560 ms. */

@@ -1,0 +1,317 @@
+{
+ "source": "generated",
+ "file": "temp-music.wav",
+ "bpm": 96,
+ "offsetSeconds": 0,
+ "beatsPerBar": 4,
+ "durationSeconds": 30.0,
+ "beats": [
+  {
+   "index": 0,
+   "time": 0.0,
+   "bar": 1,
+   "beat": 1
+  },
+  {
+   "index": 1,
+   "time": 0.625,
+   "bar": 1,
+   "beat": 2
+  },
+  {
+   "index": 2,
+   "time": 1.25,
+   "bar": 1,
+   "beat": 3
+  },
+  {
+   "index": 3,
+   "time": 1.875,
+   "bar": 1,
+   "beat": 4
+  },
+  {
+   "index": 4,
+   "time": 2.5,
+   "bar": 2,
+   "beat": 1
+  },
+  {
+   "index": 5,
+   "time": 3.125,
+   "bar": 2,
+   "beat": 2
+  },
+  {
+   "index": 6,
+   "time": 3.75,
+   "bar": 2,
+   "beat": 3
+  },
+  {
+   "index": 7,
+   "time": 4.375,
+   "bar": 2,
+   "beat": 4
+  },
+  {
+   "index": 8,
+   "time": 5.0,
+   "bar": 3,
+   "beat": 1
+  },
+  {
+   "index": 9,
+   "time": 5.625,
+   "bar": 3,
+   "beat": 2
+  },
+  {
+   "index": 10,
+   "time": 6.25,
+   "bar": 3,
+   "beat": 3
+  },
+  {
+   "index": 11,
+   "time": 6.875,
+   "bar": 3,
+   "beat": 4
+  },
+  {
+   "index": 12,
+   "time": 7.5,
+   "bar": 4,
+   "beat": 1
+  },
+  {
+   "index": 13,
+   "time": 8.125,
+   "bar": 4,
+   "beat": 2
+  },
+  {
+   "index": 14,
+   "time": 8.75,
+   "bar": 4,
+   "beat": 3
+  },
+  {
+   "index": 15,
+   "time": 9.375,
+   "bar": 4,
+   "beat": 4
+  },
+  {
+   "index": 16,
+   "time": 10.0,
+   "bar": 5,
+   "beat": 1
+  },
+  {
+   "index": 17,
+   "time": 10.625,
+   "bar": 5,
+   "beat": 2
+  },
+  {
+   "index": 18,
+   "time": 11.25,
+   "bar": 5,
+   "beat": 3
+  },
+  {
+   "index": 19,
+   "time": 11.875,
+   "bar": 5,
+   "beat": 4
+  },
+  {
+   "index": 20,
+   "time": 12.5,
+   "bar": 6,
+   "beat": 1
+  },
+  {
+   "index": 21,
+   "time": 13.125,
+   "bar": 6,
+   "beat": 2
+  },
+  {
+   "index": 22,
+   "time": 13.75,
+   "bar": 6,
+   "beat": 3
+  },
+  {
+   "index": 23,
+   "time": 14.375,
+   "bar": 6,
+   "beat": 4
+  },
+  {
+   "index": 24,
+   "time": 15.0,
+   "bar": 7,
+   "beat": 1
+  },
+  {
+   "index": 25,
+   "time": 15.625,
+   "bar": 7,
+   "beat": 2
+  },
+  {
+   "index": 26,
+   "time": 16.25,
+   "bar": 7,
+   "beat": 3
+  },
+  {
+   "index": 27,
+   "time": 16.875,
+   "bar": 7,
+   "beat": 4
+  },
+  {
+   "index": 28,
+   "time": 17.5,
+   "bar": 8,
+   "beat": 1
+  },
+  {
+   "index": 29,
+   "time": 18.125,
+   "bar": 8,
+   "beat": 2
+  },
+  {
+   "index": 30,
+   "time": 18.75,
+   "bar": 8,
+   "beat": 3
+  },
+  {
+   "index": 31,
+   "time": 19.375,
+   "bar": 8,
+   "beat": 4
+  },
+  {
+   "index": 32,
+   "time": 20.0,
+   "bar": 9,
+   "beat": 1
+  },
+  {
+   "index": 33,
+   "time": 20.625,
+   "bar": 9,
+   "beat": 2
+  },
+  {
+   "index": 34,
+   "time": 21.25,
+   "bar": 9,
+   "beat": 3
+  },
+  {
+   "index": 35,
+   "time": 21.875,
+   "bar": 9,
+   "beat": 4
+  },
+  {
+   "index": 36,
+   "time": 22.5,
+   "bar": 10,
+   "beat": 1
+  },
+  {
+   "index": 37,
+   "time": 23.125,
+   "bar": 10,
+   "beat": 2
+  },
+  {
+   "index": 38,
+   "time": 23.75,
+   "bar": 10,
+   "beat": 3
+  },
+  {
+   "index": 39,
+   "time": 24.375,
+   "bar": 10,
+   "beat": 4
+  },
+  {
+   "index": 40,
+   "time": 25.0,
+   "bar": 11,
+   "beat": 1
+  },
+  {
+   "index": 41,
+   "time": 25.625,
+   "bar": 11,
+   "beat": 2
+  },
+  {
+   "index": 42,
+   "time": 26.25,
+   "bar": 11,
+   "beat": 3
+  },
+  {
+   "index": 43,
+   "time": 26.875,
+   "bar": 11,
+   "beat": 4
+  },
+  {
+   "index": 44,
+   "time": 27.5,
+   "bar": 12,
+   "beat": 1
+  },
+  {
+   "index": 45,
+   "time": 28.125,
+   "bar": 12,
+   "beat": 2
+  },
+  {
+   "index": 46,
+   "time": 28.75,
+   "bar": 12,
+   "beat": 3
+  },
+  {
+   "index": 47,
+   "time": 29.375,
+   "bar": 12,
+   "beat": 4
+  }
+ ],
+ "downbeats": [
+  0.0,
+  2.5,
+  5.0,
+  7.5,
+  10.0,
+  12.5,
+  15.0,
+  17.5,
+  20.0,
+  22.5,
+  25.0,
+  27.5
+ ],
+ "events": {
+  "swellStart": 25.0,
+  "suspension": 27.5,
+  "resolve": 28.125
+ }
+}
