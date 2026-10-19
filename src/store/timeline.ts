@@ -25,20 +25,18 @@ export type BeatMap = {
 
 export const DURATION_SECONDS = 30;
 
-export const SCENE_IDS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'] as const;
+export const SCENE_IDS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7'] as const;
 export type SceneId = (typeof SCENE_IDS)[number];
 
 /** Scene starts from the brief, in seconds, before snapping. */
 const NOMINAL_STARTS: Record<SceneId, number> = {
-	s1: 0,
-	s2: 4,
-	s3: 8,
-	s4: 11.5,
-	s5: 15,
-	s6: 18,
-	s7: 21,
-	s8: 25,
-	s9: 28,
+	s1: 0, // Hook
+	s2: 3, // Account montage
+	s3: 9.5, // Discover
+	s4: 14, // Like with a message
+	s5: 18, // A day later, then the match
+	s6: 21.5, // Conversation
+	s7: 27, // Final (dark)
 };
 
 /** The beat nearest to `seconds` (ties go to the later beat). */

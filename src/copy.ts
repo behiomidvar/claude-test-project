@@ -14,8 +14,9 @@ const HOOK_QUESTION = 'آخرین بار کِی یه\u00a0گفتگوی\u00a0وا
 
 /**
  * A headline with one highlighted word. `highlight` must equal one
- * space-separated word of `text` exactly; a \u00a0 inside it keeps a two-word
- * unit («هر دو») together as one word.
+ * space-separated word of `text`, optionally followed there by Persian
+ * punctuation («بخون،»), which stays unhighlighted. A \u00a0 keeps a two-word
+ * unit together as one word.
  */
 export type Headline = {readonly text: string; readonly highlight: string};
 
@@ -24,88 +25,90 @@ export const COPY = {
 		question: HOOK_QUESTION,
 	},
 	/**
-	 * StorePromo (30 s). Copy is final from the brief unless marked ADDED
-	 * (needed by the UI, not in the brief, awaiting approval) or PENDING.
-	 * ZWNJ is a literal U+200C here (check with a hex view, not by eye).
+	 * StorePromo (30 s): one person's journey, علی from sign-up to a conversation
+	 * with سارا. Copy is final from the brief unless marked KIT (taken from the DS
+	 * UI kit's real screens) or ADDED (needed by the UI, not in the brief; awaiting
+	 * approval). ZWNJ is a literal U+200C here (check with a hex view, not by eye).
 	 */
 	store: {
-		// From the reference frames (reference/L01-L07): the phone status bar.
+		// The phone status bar, as in the UI kit (ui_kits/deltalk-ui-kit/screens.jsx).
 		statusTime: '۹:۴۱',
+		user: {name: 'علی', profile: 'علی، ۴۱', city: 'تهران'},
+		match: {name: 'سارا', profile: 'سارا، ۳۸', city: 'تهران'},
+		goals: {
+			serious: 'رابطه‌ی جدی',
+			// ADDED: the other two goal options, as in the earlier brief.
+			friendship: 'دوستی و هم‌صحبتی',
+			unsure: 'فعلاً مطمئن نیستم',
+		},
 		s1: {question: HOOK_QUESTION},
 		s2: {
-			headline: {text: 'آشنایی، از یه گفتگو شروع می‌شه', highlight: 'گفتگو'},
-			profile: 'آیدا، ۲۹',
-			// The user (dark bubble, from="me").
-			mine: 'نوشتی عصر ایده‌آلت یه پیاده‌روی کنار دریاچه‌ست. کدوم دریاچه؟',
-			// Aida (white bubble, from="them").
-			theirs: 'چیتگر، غروب‌ها. تو کجا راه می‌ری؟',
+			headline: {text: 'چند قدم ساده، و پروفایلت آماده‌ست', highlight: 'چند'},
+			// KIT: the onboarding screen's continue button.
+			next: 'ادامه',
+			steps: {
+				name: 'اسمت چیه؟',
+				goal: 'دنبال چی هستی؟',
+				birth: 'تولدت کِیه؟',
+				gender: 'جنسیتت چیه؟',
+				city: 'کجا زندگی می‌کنی؟',
+				photo: 'چه عکسی ازت ببینیم؟',
+				ready: 'قبل از شروع',
+			},
+			// «۴۱ ساله» is printed by the DS DateOfBirthFieldGroup itself from the date.
+			// ADDED: the other gender option.
+			genders: {woman: 'زن', man: 'مرد'},
+			start: 'شروع کنیم',
+			verify: 'بذار مطمئن بشن خودتی',
+			// The DS VerificationBadge default label, passed explicitly.
+			badge: 'تأییدشده',
 		},
 		s3: {
-			headline: {text: 'دنبال چی هستی؟ همون اول بگو', highlight: 'دنبال'},
-			// From reference L02: Sara's profile under the sheet.
-			saraProfile: 'سارا، ۳۸',
-			saraCity: 'تهران',
-			goalLabel: 'هدفش از دلتاک',
-			sheetTitle: 'دنبال چی هستی؟',
-			goals: {
-				serious: 'رابطه‌ی جدی',
-				friendship: 'دوستی و هم‌صحبتی',
-				unsure: 'فعلاً مطمئن نیستم',
-			},
+			headline: {text: 'بخون، گوش بده، بعد لایک کن', highlight: 'بخون'},
+			// Her prompt, split at the ellipsis into PromptCard's question and answer.
+			promptQuestion: 'یک عصر ایده‌آل برای من…',
+			promptAnswer: 'یه پیاده‌روی طولانی، بعد یه کافه‌ی دنج و گپ‌زدن تا شب.',
+			// ADDED: her Discover voice note's length.
+			voiceDuration: '۰:۲۴',
+			// KIT: Discover's pass button. «لایک» is the DS vocabulary's control label.
+			pass: 'فعلاً نه',
+			like: 'لایک',
 		},
 		s4: {
 			headline: {text: 'قبل از مچ هم می‌شه حرف زد', highlight: 'قبل'},
-			// From reference L03: the like-with-a-message sheet for Sara.
 			sheetTitle: 'پیام همراه لایک برای سارا',
-			prompt: 'یک عصر ایده‌آل برای من... یک پیاده‌روی طولانی، بعد یه کافه‌ی دنج و گپ‌زدن تا شب.',
 			message: 'منم عاشق کافه‌های دنجم. تو معمولاً کجا می‌شینی؟',
 			remaining: '۲ پیام برات مونده',
-			// The brief's «لایک و ارسال» was pending; reference L03 reads «ارسال لایک».
 			send: 'ارسال لایک',
+			sentTitle: 'لایک و پیامت برای سارا رفت',
+			sentBody: 'اگه اونم لایکت کنه، مچ می‌شید و پیامت اولین حرف گفتگوئه.',
 		},
 		s5: {
-			headline: {text: 'پشت این نشان، یه آدم واقعیه', highlight: 'آدم'},
-			profile: 'نگار، ۲۷',
-			// The DS VerificationBadge default label, passed explicitly.
-			badge: 'تأییدشده',
-			toastTitle: 'حسابت تأیید شد',
-			toastBody: 'از حالا کنار اسمت نشان تأیید می‌شینه.',
-		},
-		s6: {
-			headline: {text: 'دنبال چیزی بگرد که برات مهمه', highlight: 'بگرد'},
-			// From reference L05.
-			title: 'فیلترها',
-			ageLabel: 'سن',
-			distanceLabel: 'حداکثر فاصله',
-			lookingFor: 'دنبال چی می‌گرده؟',
-			distanceUnit: 'کیلومتر',
-			verifiedOnly: 'فقط آدم‌های تأییدشده',
-			verifiedOnlyNote: 'رایگان، برای همه',
-		},
-		s7: {
-			headline: {text: 'حرف که گل بندازه، بقیه‌ش راحته', highlight: 'گل'},
-			name: 'سارا',
-			theirs1: 'پس پیاده‌روی. کدوم مسیر رو بیشتر دوست داری؟',
-			mine1: 'دربند، صبح‌های جمعه. تو چی؟',
-			voiceDuration: '۰:۱۸',
-			// Message times from reference L07.
-			times: ['۷:۵۰', '۸:۱۵', '۹:۰۵', '۹:۴۰'],
-			mine2: 'صدات رو شنیدم، خوب تعریف می‌کنی.',
-			theirs2: 'ممنون! حالا نوبت توئه، از اون کافه‌ی دنجت بگو.',
-		},
-		s8: {
-			// The brief marks one word; «هر» alone is not a unit, so «هر دو» stays whole.
-			headline: {text: 'هر دو که لایک کنید، گفتگو باز می‌شه', highlight: 'هر دو'},
+			later: 'یه روز بعد',
+			headline: {text: 'هر دو که لایک کنید، گفتگو باز می‌شه', highlight: 'گفتگو'},
 			title: 'دل‌هاتون به هم رسید',
 			body: 'تو و سارا همدیگه رو لایک کردید',
 			goal: 'هدف هر دوتون: رابطه‌ی جدی',
 			cta: 'شروع گفتگو',
 		},
-		s9: {
+		s6: {
+			headline: {text: 'حرف که گل بندازه، بقیه‌ش راحته', highlight: 'گل'},
+			// ADDED: day separators and message times, spread over two days.
+			yesterday: 'دیروز',
+			today: 'امروز',
+			likeMessageTime: '۲۱:۴۰',
+			theirs1: 'کافه‌ی کوچیکه نزدیک پارک ملت. پس پیاده‌روی هم اهلشی؟',
+			mine1: 'دربند، صبح‌های جمعه. تو چی؟',
+			voiceDuration: '۰:۱۸',
+			mine2: 'صدات رو شنیدم، خوب تعریف می‌کنی.',
+			theirs2: 'ممنون! حالا نوبت توئه، از اون کافه‌ی دنجت بگو.',
+			times: ['۷:۵۰', '۸:۱۵', '۸:۴۰', '۹:۰۵', '۹:۴۰'],
+		},
+		s7: {
 			logoLabel: 'دلتاک',
-			line: 'اول حرف بزن، بعد دل بده',
-			// PENDING: the store name. A Persian placeholder, so no Latin reaches the screen.
-			cta: 'دلتاک رو از [نام فروشگاه] بگیر',
+			line: 'گفتگو با مچ‌هات، رایگانه.',
+			// One store for now; a Google Play cut changes only this line.
+			cta: 'دلتاک رو از بازار بگیر',
 		},
 	},
 	scene2: {

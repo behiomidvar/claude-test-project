@@ -3,62 +3,27 @@ import {AbsoluteFill, Audio, Sequence, useVideoConfig} from 'remotion';
 import {FontGate} from '../core/FontGate';
 import {FrameSync} from '../core/FrameSync';
 import {LogoBudget} from '../core/InlineLogo';
-import {ThemeScope, type Theme} from '../core/ThemeScope';
+import {ThemeScope} from '../core/ThemeScope';
 import {Scene1} from '../scenes/Scene1';
 import {MUSIC, SCENES} from './audio';
+import {FLOW, FLOW_SCENES, FlowFrame, FlowTimeline} from './flow/flow';
 import {PhotoGate} from './photos';
-import {S2Start} from './scenes/S2Start';
-import {S3Goal} from './scenes/S3Goal';
-import {S4Message} from './scenes/S4Message';
-import {S5Verified} from './scenes/S5Verified';
-import {S6Search} from './scenes/S6Search';
-import {S7Conversation} from './scenes/S7Conversation';
-import {S8Match} from './scenes/S8Match';
-import {S9Reveal} from './scenes/S9Reveal';
+import {S7Final} from './scenes/S7Final';
 import {toFrame, type SceneId} from './timeline';
 
 /**
- * StorePromo: 30 s, one scene tree for 9:16 and 16:9 (layout from useLayout()).
+ * StorePromo: 30 s, one person's journey (علی), one scene tree for 9:16 and
+ * 16:9 (layout from useLayout()).
  *
- * PHASE 1: the scenes are static key poses. `StorePromo` is an animatic that
- * holds each pose for its beat-snapped slot over the temp music, so cuts can be
- * checked against the beat; `StorePromo-Storyboard` shows one pose per frame.
+ *   S1      the first promo's Scene 1 (three dots, then the question);
+ *   S2-S6   one continuous phone (FlowTimeline) the camera follows;
+ *   S7      the dark final with the lockup.
+ *
+ * PHASE 1: poses switch hard on their beats (an animatic) over the temp music.
+ * `StorePromo-Storyboard` shows the storyboard stills, one per frame.
  */
 
-type SceneDef = {
-	readonly name: string;
-	readonly theme: Theme;
-	readonly Component: React.FC;
-	/**
-	 * Scene-local frame (at 30 fps) the storyboard shows. Past the DS entry
-	 * animations (dt-unfold, dt-sheet, dt-snack-in), which start at 0.
-	 */
-	readonly keyFrame: number;
-};
-
-export const SCENE_DEFS: Record<SceneId, SceneDef> = {
-	// S1 reuses the first promo's Scene 1; its question is fully in at 2.5 s.
-	s1: {name: 'S1 · Hook', theme: 'light', Component: Scene1, keyFrame: 75},
-	s2: {name: 'S2 · Start', theme: 'light', Component: S2Start, keyFrame: 30},
-	s3: {name: 'S3 · Goal', theme: 'light', Component: S3Goal, keyFrame: 30},
-	s4: {name: 'S4 · Message before match', theme: 'light', Component: S4Message, keyFrame: 30},
-	s5: {name: 'S5 · Verified', theme: 'light', Component: S5Verified, keyFrame: 30},
-	s6: {name: 'S6 · Search', theme: 'light', Component: S6Search, keyFrame: 30},
-	s7: {name: 'S7 · Conversation', theme: 'light', Component: S7Conversation, keyFrame: 30},
-	s8: {name: 'S8 · Match', theme: 'light', Component: S8Match, keyFrame: 30},
-	s9: {name: 'S9 · Final reveal', theme: 'dark', Component: S9Reveal, keyFrame: 30},
-};
-
-const SceneFrame: React.FC<{readonly id: SceneId}> = ({id}) => {
-	const {theme, Component} = SCENE_DEFS[id];
-	return (
-		<ThemeScope theme={theme}>
-			<FrameSync>
-				<Component />
-			</FrameSync>
-		</ThemeScope>
-	);
-};
+const slot = (id: SceneId) => SCENES.find((s) => s.id === id)!;
 
 const Shell: React.FC<{readonly children: React.ReactNode}> = ({children}) => (
 	<FontGate>
@@ -72,39 +37,79 @@ const Shell: React.FC<{readonly children: React.ReactNode}> = ({children}) => (
 	</FontGate>
 );
 
+const Light: React.FC<{readonly children: React.ReactNode}> = ({children}) => (
+	<ThemeScope theme="light">
+		<FrameSync>{children}</FrameSync>
+	</ThemeScope>
+);
+
+const Dark: React.FC<{readonly children: React.ReactNode}> = ({children}) => (
+	<ThemeScope theme="dark">
+		<FrameSync>{children}</FrameSync>
+	</ThemeScope>
+);
+
 export const StorePromo: React.FC = () => {
 	const {fps} = useVideoConfig();
+	const span = (from: SceneId, to: SceneId) => ({
+		from: toFrame(slot(from).start, fps),
+		durationInFrames: toFrame(slot(to).end, fps) - toFrame(slot(from).start, fps),
+	});
 	return (
 		<Shell>
-			{SCENES.map((slot) => (
-				<Sequence
-					key={slot.id}
-					from={toFrame(slot.start, fps)}
-					durationInFrames={toFrame(slot.end, fps) - toFrame(slot.start, fps)}
-					name={SCENE_DEFS[slot.id].name}
-				>
-					<SceneFrame id={slot.id} />
-				</Sequence>
-			))}
+			<Sequence {...span('s1', 's1')} name="S1 · Hook">
+				<Light>
+					<Scene1 />
+				</Light>
+			</Sequence>
+			<Sequence {...span('s2', 's6')} name="S2-S6 · The journey (one phone)">
+				<Light>
+					<FlowTimeline />
+				</Light>
+			</Sequence>
+			<Sequence {...span('s7', 's7')} name="S7 · Final">
+				<Dark>
+					<S7Final />
+				</Dark>
+			</Sequence>
 			{/* TEMP music (see src/store/audio.ts). The SFX and the mix come in Phase 3. */}
 			<Audio src={MUSIC.url} />
 		</Shell>
 	);
 };
 
+type Still = {readonly name: string; readonly node: React.ReactNode; readonly dark?: boolean; readonly localFrame: number};
+
+/** The storyboard stills, in film order. */
+export const STILLS: readonly Still[] = [
+	// S1 reuses Scene 1: the lead dots alone, then the question in.
+	{name: 's1-dots', node: <Scene1 />, localFrame: 15},
+	{name: 's1-question', node: <Scene1 />, localFrame: 75},
+	...FLOW_SCENES.flatMap((scene) =>
+		FLOW[scene].poses
+			.filter((pose) => pose.still)
+			// Local frame 30: past the DS entry animations, which start at 0 on mount.
+			.map((pose) => ({name: `${scene}-${pose.id}`, node: <FlowFrame scene={scene} pose={pose} />, localFrame: 30})),
+	),
+	{name: 's7-dots', node: <S7Final pose="dots" />, dark: true, localFrame: 30},
+	{name: 's7-final', node: <S7Final pose="full" />, dark: true, localFrame: 30},
+];
+
 /**
- * One key pose per frame, in scene order. Scene i is visible on frame i only
- * (outer sequence) and mounted at its own local `keyFrame` there (inner
- * sequence shifted back by keyFrame), CSS animations included.
+ * One still per frame. Still i is visible on frame i only (outer sequence)
+ * and mounted at its own local frame there (inner sequence shifted back).
  */
 export const StoreStoryboard: React.FC = () => (
 	<Shell>
-		{SCENES.map((slot, i) => (
-			<Sequence key={slot.id} from={i} durationInFrames={1} name={SCENE_DEFS[slot.id].name}>
-				<Sequence from={-SCENE_DEFS[slot.id].keyFrame}>
-					<SceneFrame id={slot.id} />
+		{STILLS.map((still, i) => {
+			const Theme = still.dark ? Dark : Light;
+			return (
+				<Sequence key={still.name} from={i} durationInFrames={1} name={still.name}>
+					<Sequence from={-still.localFrame}>
+						<Theme>{still.node}</Theme>
+					</Sequence>
 				</Sequence>
-			</Sequence>
-		))}
+			);
+		})}
 	</Shell>
 );

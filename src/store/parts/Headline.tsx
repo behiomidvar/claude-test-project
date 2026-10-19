@@ -39,7 +39,13 @@ export const Headline: React.FC<{
 }> = ({copy, accent, style}) => {
 	const {u, orientation} = useLayout();
 	const words = copy.text.split(' ');
-	if (!words.includes(copy.highlight)) {
+	// The highlighted word may carry trailing punctuation («بخون،»), which stays unhighlighted.
+	const trail = (word: string) => (word.startsWith(copy.highlight) ? word.slice(copy.highlight.length) : null);
+	const isHighlight = (word: string) => {
+		const rest = trail(word);
+		return rest !== null && /^[،؟.!؛]*$/.test(rest);
+	};
+	if (!words.some(isHighlight)) {
 		throw new Error(`Headline highlight "${copy.highlight}" is not a word of "${copy.text}".`);
 	}
 
@@ -62,13 +68,15 @@ export const Headline: React.FC<{
 			{words.map((word, i) => (
 				<React.Fragment key={i}>
 					{i > 0 ? ' ' : null}
-					<span
-						style={{
-							display: 'inline-block',
-							...(word === copy.highlight ? highlightStyle(accent) : null),
-						}}
-					>
-						{word}
+					<span style={{display: 'inline-block'}}>
+						{isHighlight(word) ? (
+							<>
+								<span style={highlightStyle(accent)}>{copy.highlight}</span>
+								{trail(word)}
+							</>
+						) : (
+							word
+						)}
 					</span>
 				</React.Fragment>
 			))}

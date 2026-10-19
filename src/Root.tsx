@@ -2,7 +2,7 @@ import React from 'react';
 import {Composition, Folder} from 'remotion';
 import './ds/styles.css';
 import {Promo} from './Promo';
-import {StorePromo, StoreStoryboard} from './store/StorePromo';
+import {StorePromo, StoreStoryboard, STILLS} from './store/StorePromo';
 import {TestPromo} from './dev/TestPromo';
 import {TypingDotsProbe} from './dev/TypingDotsProbe';
 
@@ -50,7 +50,7 @@ export const RemotionRoot: React.FC = () => (
 			<Composition
 				id="StorePromo-Storyboard"
 				component={StoreStoryboard}
-				durationInFrames={9}
+				durationInFrames={STILLS.length}
 				fps={30}
 				width={1080}
 				height={1920}
@@ -58,7 +58,7 @@ export const RemotionRoot: React.FC = () => (
 			<Composition
 				id="StorePromo-Storyboard-16x9"
 				component={StoreStoryboard}
-				durationInFrames={9}
+				durationInFrames={STILLS.length}
 				fps={30}
 				width={1920}
 				height={1080}

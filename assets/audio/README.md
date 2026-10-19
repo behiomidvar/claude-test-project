@@ -6,8 +6,8 @@
 
 | File | What |
 |---|---|
-| `temp-music.wav` | 30.000 s, 96 BPM, 4/4, D major, 12 bars. Warm pad, soft e-piano arpeggio, light low pulse. Swell in bar 11 (25 s, the match), suspension on the bar-12 downbeat (27.5 s), resolve on beat 45 (28.125 s, the logo). Stem at about -16 LUFS; the master to -14 LUFS happens in the mix. |
-| `temp-music.beats.json` | Its beat map (`"source": "generated"`): 48 beats, 12 downbeats, and the swell / suspension / resolve events. Times in seconds; the timeline converts to frames. |
+| `temp-music.wav` | 30.000 s, 96 BPM, 4/4, D major, 48 beats. Warm pad, soft e-piano, light low pulse; no drum kit, risers or whooshes. Follows the story's beat-snapped scenes: S1 hook b0–5 (three-note "dots" figure at 0) · S2 account montage b5–15 (brisk but soft eighths, pulse every beat) · S3 discover b15–22 (eases down) · S4 like with a message b22–29 (sparse eighths, room for typing ticks) · S5 b29–34 (held suspension for "a day later", small swell blooming on b32 = 20.0 s, the match chime) · S6 conversation b34–43 (slowest, quietest; suspension on b42) · S7 resolve to Dadd9 on b43 = 26.875 s (the logo). Stem at about -16 LUFS; the master to -14 LUFS happens in the mix. |
+| `temp-music.beats.json` | Its beat map (`"source": "generated"`): 48 beats, 12 downbeats, and the events `timePass` 18.125, `swellStart` 19.375, `match` 20.0, `suspension` 26.25, `resolve` 26.875. Times in seconds; the timeline converts to frames. |
 | `sfx/tick-1..4.wav` | Typing ticks (very short, soft; their level is set in the mix). |
 | `sfx/pop.wav` | Soft pop for bubble entrances. |
 | `sfx/chime.wav` | The one gentle chime for the match. |

@@ -9,17 +9,14 @@ import type {Theme} from '../core/ThemeScope';
  * photo; `MISSING_PHOTOS` lists the fallbacks for the report.
  */
 
-export type Person = 'aida' | 'sara' | 'negar' | 'me';
-const PEOPLE: readonly Person[] = ['aida', 'sara', 'negar', 'me'];
+export type Person = 'me' | 'sara';
+const PEOPLE: readonly Person[] = ['me', 'sara'];
 
-// File name patterns. aida / sara follow the uploads' names (L01-aida.jpg,
-// L02-L03-L07-L08-sara.jpg). ASSUMPTION, to confirm: Negar is the uploaded
-// "blue-eyed-brunette" stock portrait. The user ("me") has no photo yet.
+// File name patterns, matching the uploads: reference/me.jpeg (علی) and
+// reference/L02-L03-L07-L08-sara.jpg (سارا).
 const PATTERNS: Record<Person, RegExp> = {
-	aida: /aida/i,
-	sara: /sara/i,
-	negar: /negar|blue-eyed-brunette/i,
 	me: /^\.\/me\./i,
+	sara: /sara/i,
 };
 
 // reference/ holds the design frames as .png too, so only photo formats are
