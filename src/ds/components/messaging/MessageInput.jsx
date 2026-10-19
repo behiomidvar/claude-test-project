@@ -49,7 +49,7 @@ const SendGlyph   = dsIcon(<path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>, tru
 /** Message composer. `state`: empty | typing | recording | disabled. */
 export function MessageInput({ state='empty', value='', placeholder='پیام بنویس…', recordTime='۰:۰۸',
   blockedText='دیگر نمی‌توانید به این گفت‌وگو پیام بفرستید.', onEmoji, onAttach, onMic, onSend, onCancelRecord, onChange, className='', ...rest }){
-  useOnceStyle('dt-input-css', CSS);
+  useOnceStyle('dt-msginput-css', CSS);
 
   if(state==='disabled'){
     return <div className={['dt-input','dt-input--blocked',className].filter(Boolean).join(' ')} {...rest}>{blockedText}</div>;

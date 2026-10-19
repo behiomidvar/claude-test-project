@@ -10,6 +10,7 @@ import {
 	IconButton,
 	Input,
 	MessageBubble,
+	MessageInput,
 	PhotoGrid,
 	PromptCard,
 	Radio,
@@ -19,17 +20,19 @@ import {
 	TypingDots,
 	VerificationBadge,
 	VoiceNote,
+	VoicePlayer,
 } from '../../ds';
 import {COPY} from '../../copy';
 import {Icons} from '../parts/icons';
 import {PhotoCard} from '../parts/PhotoCard';
 import {photoUrl} from '../photos';
+import {mix, pressScale, progress, unfoldStyle, useMotion} from './motion';
 
 /**
  * The app screens of علی's journey, laid out in dp inside <Phone> (393 wide,
  * below the status bar). Real DS components only; layout follows the DS UI
- * kit's screens (ui_kits/deltalk-ui-kit/screens.jsx). Static poses: Phase 2
- * animates between them.
+ * kit's screens. S2 and S3 are functions of time (`t`, seconds into the scene);
+ * S4-S6 are still settled poses (Phase 3 animates them).
  */
 
 const store = COPY.store;
@@ -40,50 +43,93 @@ const Screen: React.FC<{readonly children: React.ReactNode; readonly style?: Rea
 	</div>
 );
 
-const Title: React.FC<{readonly children: React.ReactNode}> = ({children}) => (
-	<h1 style={{margin: 'var(--gap-section) 0 var(--gap-stack)', fontSize: 'var(--text-h1)', fontWeight: 'var(--fw-bold)', lineHeight: 'var(--lh-tight)'}}>
+const Title: React.FC<{readonly children: React.ReactNode; readonly style?: React.CSSProperties}> = ({children, style}) => (
+	<h1 style={{margin: 'var(--gap-section) 0 var(--gap-stack)', fontSize: 'var(--text-h1)', fontWeight: 'var(--fw-bold)', lineHeight: 'var(--lh-tight)', ...style}}>
 		{children}
 	</h1>
 );
 
-/** A finger tap: a soft press mark over the target (dp, from the screen's top and reading start). */
-export const TapMark: React.FC<{readonly top: number; readonly fromStart: number}> = ({top, fromStart}) => (
-	<span
-		aria-hidden
-		style={{
-			position: 'absolute',
-			insetBlockStart: top - 22,
-			insetInlineStart: fromStart - 22,
-			inlineSize: 'var(--size-44)',
-			blockSize: 'var(--size-44)',
-			borderRadius: 'var(--radius-pill)',
-			background: 'var(--scrim)',
-			boxShadow: '0 0 0 var(--space-2) var(--scrim)',
-			opacity: 0.55,
-		}}
-	/>
-);
+/**
+ * A finger tap (dp from the screen's top and reading start). `t` is seconds
+ * since the tap: the soft mark presses in over --dur-fast, then ripples out
+ * over --dur-slow. Without `t` it is a static mark (settled poses).
+ */
+export const TapMark: React.FC<{readonly top: number; readonly fromStart: number; readonly t?: number}> = ({top, fromStart, t}) => {
+	const motion = useMotion();
+	let opacity = 0.55;
+	let scale = 1;
+	if (t !== undefined) {
+		if (t < -motion.dur.fast || t > motion.dur.slow) {
+			return null;
+		}
+		const down = progress(t, -motion.dur.fast, motion.dur.fast, motion.ease.standard);
+		const out = progress(t, 0, motion.dur.slow, motion.ease.outSoft);
+		opacity = 0.55 * down * (1 - out);
+		scale = mix(1.1, 0.9, down) + 0.6 * out;
+	}
+	return (
+		<span
+			aria-hidden
+			style={{
+				position: 'absolute',
+				insetBlockStart: top - 22,
+				insetInlineStart: fromStart - 22,
+				inlineSize: 'var(--size-44)',
+				blockSize: 'var(--size-44)',
+				borderRadius: 'var(--radius-pill)',
+				background: 'var(--scrim)',
+				boxShadow: '0 0 0 var(--space-2) var(--scrim)',
+				opacity,
+				transform: `scale(${String(scale)})`,
+			}}
+		/>
+	);
+};
+
+/** Wraps a control so it presses (--press-scale) around a tap at t = 0. */
+const Press: React.FC<{readonly t: number; readonly children: React.ReactNode; readonly style?: React.CSSProperties}> = ({t, children, style}) => {
+	const motion = useMotion();
+	return <div style={{transform: `scale(${String(pressScale(t, motion))})`, ...style}}>{children}</div>;
+};
 
 // ---------------------------------------------------------------- S2 onboarding
 
 export type OnboardingStep = 'name' | 'goal' | 'birth' | 'gender' | 'city' | 'photo' | 'ready';
-const STEP_ORDER: OnboardingStep[] = ['name', 'goal', 'birth', 'gender', 'city', 'photo', 'ready'];
+export const STEP_ORDER: OnboardingStep[] = ['name', 'goal', 'birth', 'gender', 'city', 'photo', 'ready'];
 
-// ASSUMED birth date (Jalali 12 Tir 1364), so the field reads «۴۱ ساله» in 1405.
+// Jalali 12 Tir 1364, so the DS field prints «۴۱ ساله» in 1405.
 const BIRTH = {day: '12', month: 3, year: '1364'} as const;
 
-const stepField = (step: OnboardingStep): React.ReactNode => {
+// Seconds into each step when his finger lands, and where (dp from the
+// screen's top and reading start): on the choice itself.
+const TAP: Record<OnboardingStep, {at: number; top: number; fromStart: number}> = {
+	name: {at: 0.06, top: 168, fromStart: 120},
+	goal: {at: 0.22, top: 156, fromStart: 40},
+	birth: {at: 0.1, top: 176, fromStart: 40},
+	gender: {at: 0.22, top: 160, fromStart: 270},
+	city: {at: 0.12, top: 168, fromStart: 120},
+	photo: {at: 0.08, top: 196, fromStart: 70},
+	ready: {at: 0.38, top: 700, fromStart: 196},
+};
+
+/** The step's field at `st` seconds into the step. */
+const StepField: React.FC<{readonly step: OnboardingStep; readonly st: number}> = ({step, st}) => {
 	const s2 = store.s2;
+	const after = (at: number) => st >= at;
 	switch (step) {
-		case 'name':
-			return <Input value={store.user.name} readOnly />;
+		case 'name': {
+			// Typed after the tap, one letter every 80 ms, in reading order.
+			const letters = [...store.user.name];
+			const shown = st < 0.12 ? 0 : Math.min(letters.length, 1 + Math.floor((st - 0.12) / 0.08));
+			return <Input value={letters.slice(0, shown).join('')} readOnly />;
+		}
 		case 'goal':
 			// Radio, not Chip: StepProgress already fills with --gradient-brand, and a
 			// selected Chip would be a second gradient on the same screen.
 			return (
 				<Radio
 					name="goal"
-					value="serious"
+					value={after(TAP.goal.at) ? 'serious' : undefined}
 					options={[
 						{value: 'serious', label: store.goals.serious},
 						{value: 'friendship', label: store.goals.friendship},
@@ -92,12 +138,19 @@ const stepField = (step: OnboardingStep): React.ReactNode => {
 				/>
 			);
 		case 'birth':
-			// The group prints the age itself («۴۱ ساله», = s2.age); no hint line.
-			return <DateOfBirthFieldGroup day={BIRTH.day} month={BIRTH.month} year={BIRTH.year} hint={null} />;
+			// Day, month, year fill in turn; the group prints «۴۱ ساله» itself once complete.
+			return (
+				<DateOfBirthFieldGroup
+					day={after(0.14) ? BIRTH.day : ''}
+					month={after(0.24) ? BIRTH.month : null}
+					year={after(0.34) ? BIRTH.year : ''}
+					hint={null}
+				/>
+			);
 		case 'gender':
 			return (
 				<SegmentedControl
-					value="man"
+					value={after(TAP.gender.at) ? 'man' : undefined}
 					options={[
 						{value: 'woman', label: s2.genders.woman},
 						{value: 'man', label: s2.genders.man},
@@ -105,9 +158,24 @@ const stepField = (step: OnboardingStep): React.ReactNode => {
 				/>
 			);
 		case 'city':
-			return <Select value="tehran" options={[{value: 'tehran', label: store.user.city}]} />;
-		case 'photo':
-			return <PhotoGrid slots={[{state: 'uploaded', src: photoUrl('me')}]} />;
+			return (
+				<Select
+					value={after(0.3) ? 'tehran' : undefined}
+					placeholder={s2.cityPlaceholder}
+					options={[{value: 'tehran', label: store.user.city}]}
+				/>
+			);
+		case 'photo': {
+			// The real upload: the ring fills, then his photo lands in the first slot.
+			const uploading = progress(st, 0.12, 0.3);
+			const slot =
+				st < 0.12
+					? {state: 'empty' as const}
+					: uploading < 1
+						? {state: 'uploading' as const, progress: Math.round(uploading * 100)}
+						: {state: 'uploaded' as const, src: photoUrl('me')};
+			return <PhotoGrid slots={[slot]} />;
+		}
 		case 'ready':
 			return (
 				<Card>
@@ -123,20 +191,20 @@ const stepField = (step: OnboardingStep): React.ReactNode => {
 	}
 };
 
-// Where his finger lands on each step (dp from the screen's top and reading
-// start): on the choice itself, so the camera can stay on the question.
-const TAP_AT: Record<OnboardingStep, {top: number; fromStart: number}> = {
-	name: {top: 168, fromStart: 120},
-	goal: {top: 156, fromStart: 40},
-	birth: {top: 176, fromStart: 300},
-	gender: {top: 160, fromStart: 270},
-	city: {top: 168, fromStart: 120},
-	photo: {top: 196, fromStart: 70},
-	ready: {top: 700, fromStart: 196},
-};
-
-export const OnboardingScreen: React.FC<{readonly step: OnboardingStep; readonly tap?: boolean}> = ({step, tap}) => {
-	const index = STEP_ORDER.indexOf(step);
+/**
+ * S2's onboarding montage at `t` seconds into the scene: one step per beat.
+ * The chrome (back, StepProgress, the button) stays; each step's question and
+ * field unfold in over --dur-base and fold away over --dur-fast before the next.
+ */
+export const OnboardingFlow: React.FC<{readonly t: number}> = ({t}) => {
+	const motion = useMotion();
+	const index = Math.min(STEP_ORDER.length - 1, Math.max(0, Math.floor(t / motion.beat)));
+	const step = STEP_ORDER[index];
+	const st = t - index * motion.beat;
+	const inP = progress(st, 0, motion.dur.base, motion.ease.outSoft);
+	const outP = 1 - progress(st, motion.beat - motion.dur.fast, motion.dur.fast, motion.ease.standard);
+	const content = unfoldStyle(Math.min(inP, outP));
+	const tap = TAP[step];
 	const last = step === 'ready';
 	return (
 		<Screen style={{paddingInline: 'var(--gutter-screen)'}}>
@@ -146,60 +214,136 @@ export const OnboardingScreen: React.FC<{readonly step: OnboardingStep; readonly
 				</IconButton>
 			</div>
 			<StepProgress current={index + 1} total={STEP_ORDER.length} />
-			<Title>{store.s2.steps[step]}</Title>
-			{stepField(step)}
+			<div style={content}>
+				<Title>{store.s2.steps[step]}</Title>
+				<StepField step={step} st={st} />
+			</div>
 			<span style={{flex: 1}} />
-			<div style={{paddingBlock: 'var(--gap-stack) var(--gutter-screen)'}}>
+			<Press t={last ? st - tap.at : -1} style={{paddingBlock: 'var(--gap-stack) var(--gutter-screen)'}}>
 				<Button block size="lg">
 					{last ? store.s2.start : store.s2.next}
 				</Button>
-			</div>
-			{tap ? <TapMark {...TAP_AT[step]} /> : null}
+			</Press>
+			<TapMark top={tap.top} fromStart={tap.fromStart} t={st - tap.at} />
 		</Screen>
 	);
 };
 
-/** After onboarding: the verified mark settles next to his name. */
-export const VerifyScreen: React.FC = () => (
-	<Screen style={{paddingInline: 'var(--gutter-screen)', alignItems: 'center', textAlign: 'center'}}>
-		<Title>{store.s2.verify}</Title>
-		<div style={{marginBlockStart: 'var(--space-8)'}}>
-			<Avatar src={photoUrl('me')} alt={store.user.name} size="xl" />
-		</div>
-		<div style={{display: 'flex', alignItems: 'center', gap: 'var(--gap-inline)', marginBlockStart: 'var(--gap-stack)'}}>
-			<span style={{fontWeight: 'var(--fw-bold)', fontSize: 'var(--text-h2)'}}>{store.user.profile}</span>
-			<VerificationBadge size="lg" status="verified" label={store.s2.badge} />
-		</div>
+/**
+ * After onboarding (`t` seconds since this screen began): the question
+ * unfolds, then his portrait and name, then the VerificationBadge settles with
+ * the gentle overshoot (--ease-gentle-over over --dur-slow).
+ */
+export const VerifyScreen: React.FC<{readonly t?: number}> = ({t = 10}) => {
+	const motion = useMotion();
+	const title = progress(t, 0, motion.dur.base, motion.ease.outSoft);
+	const person = progress(t, 0.12, motion.dur.unfold, motion.ease.outSoft);
+	const badge = progress(t, 0.55, motion.dur.slow, motion.ease.gentleOver);
+	return (
+		<Screen style={{paddingInline: 'var(--gutter-screen)', alignItems: 'center', textAlign: 'center'}}>
+			<div style={unfoldStyle(title)}>
+				<Title>{store.s2.verify}</Title>
+			</div>
+			<div style={{...unfoldStyle(person), display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+				<div style={{marginBlockStart: 'var(--space-8)'}}>
+					<Avatar src={photoUrl('me')} alt={store.user.name} size="xl" />
+				</div>
+				<div style={{display: 'flex', alignItems: 'center', gap: 'var(--gap-inline)', marginBlockStart: 'var(--gap-stack)'}}>
+					<span style={{fontWeight: 'var(--fw-bold)', fontSize: 'var(--text-h2)'}}>{store.user.profile}</span>
+					<span
+						style={{
+							display: 'inline-flex',
+							opacity: Math.min(1, Math.max(0, badge)),
+							transform: `scale(${String(mix(0.6, 1, badge))})`,
+						}}
+					>
+						<VerificationBadge size="lg" status="verified" label={store.s2.badge} />
+					</span>
+				</div>
+			</div>
+		</Screen>
+	);
+};
+
+/** The app between screens: the cool three dots, the brand's own loading state. */
+export const LoadingScreen: React.FC<{readonly opacity: number}> = ({opacity}) => (
+	<Screen style={{alignItems: 'center', justifyContent: 'center', opacity}}>
+		<TypingDots size="lg" color="var(--conversation-active)" />
 	</Screen>
 );
 
 // ---------------------------------------------------------------- S3 discover
 
-/** Sara's single card. `scroll` is the vertical scroll offset in dp: Discover only scrolls. */
-export const DiscoverScreen: React.FC<{readonly scroll: number; readonly tapLike?: boolean}> = ({scroll, tapLike}) => (
+/** Discover's state: unfold progress per part (0-1), scroll (dp), voice playback, a like tap. */
+export type DiscoverState = {
+	readonly card: number;
+	readonly prompt: number;
+	readonly voice: number;
+	readonly buttons: number;
+	readonly scroll: number;
+	readonly playing: boolean;
+	readonly played: number;
+	/** Seconds since the like tap (undefined: no tap). */
+	readonly tapLike?: number;
+};
+
+export const SETTLED_DISCOVER: DiscoverState = {card: 1, prompt: 1, voice: 1, buttons: 1, scroll: 200, playing: false, played: 0.4};
+
+// Her voice note's length in seconds («۰:۲۴»), so playback fills the waveform in real time.
+const VOICE_SECONDS = 24;
+
+/**
+ * S3 at `t` seconds into the scene, slower than S2: the app's dots, then her
+ * one card unfolds (photo, prompt, voice, buttons); the card scrolls
+ * vertically to her prompt and her voice note, which plays; his finger taps «لایک».
+ */
+export const discoverAt = (t: number, beat: number, motion: ReturnType<typeof useMotion>): DiscoverState => {
+	const b = (beats: number) => beats * beat;
+	const cardAt = b(0.8);
+	const playAt = b(3.6);
+	return {
+		card: progress(t, cardAt, motion.dur.unfold, motion.ease.outSoft),
+		prompt: progress(t, cardAt + 0.2, motion.dur.unfold, motion.ease.outSoft),
+		voice: progress(t, cardAt + 0.4, motion.dur.unfold, motion.ease.outSoft),
+		buttons: progress(t, cardAt + 0.5, motion.dur.unfold, motion.ease.outSoft),
+		// Reading pace: two slow scrolls (ease-in-out), never a flick.
+		scroll: mix(0, 130, progress(t, b(2), b(1.2), motion.ease.inOut)) + mix(0, 70, progress(t, b(3.3), b(1), motion.ease.inOut)),
+		playing: t >= playAt,
+		played: Math.max(0, t - playAt) / VOICE_SECONDS,
+		tapLike: t - b(5.5),
+	};
+};
+
+export const DiscoverScreen: React.FC<{readonly state?: DiscoverState}> = ({state = SETTLED_DISCOVER}) => (
 	<Screen>
 		<div style={{flex: 1, minBlockSize: 0, overflow: 'hidden', paddingInline: 'var(--gutter-screen)'}}>
-			<div style={{display: 'flex', flexDirection: 'column', gap: 'var(--gap-card)', transform: `translateY(${-scroll}px)`}}>
-				<PhotoCard who="sara" label={store.match.profile} sub={store.match.city} height={520} />
-				<PromptCard question={store.s3.promptQuestion} answer={store.s3.promptAnswer} />
-				<div style={{display: 'flex'}}>
-					<VoiceNote from="them" duration={store.s3.voiceDuration} playing />
+			<div style={{display: 'flex', flexDirection: 'column', gap: 'var(--gap-card)', transform: `translateY(${-state.scroll}px)`}}>
+				<div style={unfoldStyle(state.card)}>
+					<PhotoCard who="sara" label={store.match.profile} sub={store.match.city} height={520} />
+				</div>
+				<div style={unfoldStyle(state.prompt)}>
+					<PromptCard question={store.s3.promptQuestion} answer={store.s3.promptAnswer} />
+				</div>
+				<div style={unfoldStyle(state.voice)}>
+					<VoicePlayer from="received" duration={store.s3.voiceDuration} playing={state.playing} progress={state.played} />
 				</div>
 			</div>
 		</div>
-		<div style={{display: 'flex', gap: 'var(--gap-inline)', padding: 'var(--gap-card) var(--gutter-screen) var(--gutter-screen)'}}>
+		<div style={{...unfoldStyle(state.buttons), display: 'flex', gap: 'var(--gap-inline)', padding: 'var(--gap-card) var(--gutter-screen) var(--gutter-screen)'}}>
 			<Button variant="secondary" style={{flex: 1}}>
 				{store.s3.pass}
 			</Button>
-			<Button variant="primary" style={{flex: 2}} iconLeft={<Icons.Heart size={18} />}>
-				{store.s3.like}
-			</Button>
+			<Press t={state.tapLike ?? -1} style={{flex: 2, display: 'flex'}}>
+				<Button variant="primary" style={{flex: 1}} iconLeft={<Icons.Heart size={18} />}>
+					{store.s3.like}
+				</Button>
+			</Press>
 		</div>
-		{tapLike ? <TapMark top={724} fromStart={260} /> : null}
+		{state.tapLike !== undefined ? <TapMark top={724} fromStart={260} t={state.tapLike} /> : null}
 	</Screen>
 );
 
-// ---------------------------------------------------------------- S4 like with a message
+// ---------------------------------------------------------------- S4 like with a message (settled poses)
 
 export const ComposerScreen: React.FC<{readonly typed: number; readonly tapSend?: boolean}> = ({typed, tapSend}) => {
 	const s4 = store.s4;
@@ -207,7 +351,7 @@ export const ComposerScreen: React.FC<{readonly typed: number; readonly tapSend?
 	const text = [...s4.message].slice(0, typed).join('');
 	return (
 		<>
-			<DiscoverScreen scroll={260} />
+			<DiscoverScreen />
 			<Screen>
 				<BottomSheet open showClose={false} title={s4.sheetTitle}>
 					<div style={{display: 'flex', flexDirection: 'column', gap: 'var(--gap-stack)'}}>
@@ -244,7 +388,7 @@ export const ComposerScreen: React.FC<{readonly typed: number; readonly tapSend?
 
 export const SentScreen: React.FC = () => (
 	<>
-		<DiscoverScreen scroll={260} />
+		<DiscoverScreen />
 		<Screen>
 			<BottomSheet open showClose={false} title={store.s4.sentTitle}>
 				<p style={{margin: 0, color: 'var(--text-secondary)', lineHeight: 'var(--lh-relaxed)'}}>{store.s4.sentBody}</p>
@@ -253,7 +397,7 @@ export const SentScreen: React.FC = () => (
 	</>
 );
 
-// ---------------------------------------------------------------- S5 a day later, the match
+// ---------------------------------------------------------------- S5 a day later, the match (settled poses)
 
 /** The quiet in-between: the phone rests while «یه روز بعد» passes outside it. */
 export const RestScreen: React.FC = () => (
@@ -308,12 +452,12 @@ export const MatchScreen: React.FC<{readonly tapStart?: boolean}> = ({tapStart})
 	);
 };
 
-// ---------------------------------------------------------------- S6 conversation
+// ---------------------------------------------------------------- S6 conversation (settled poses)
 
 /** The thread; `count` messages after his like-message are shown (0-5), `typing` shows her dots. */
 export const ChatScreen: React.FC<{readonly count: number; readonly typing?: boolean}> = ({count, typing}) => {
 	const s6 = store.s6;
-	const [t1, t2, t3, t4, t5] = s6.times;
+	const [t1, t2, , t4, t5] = s6.times;
 	const thread: React.ReactNode[] = [
 		<MessageBubble key="1" from="them" time={t1}>
 			{s6.theirs1}
@@ -331,8 +475,6 @@ export const ChatScreen: React.FC<{readonly count: number; readonly typing?: boo
 			{s6.theirs2}
 		</MessageBubble>,
 	];
-	// t3 is the voice note's send time; VoiceNote has no time slot, so it is kept for Phase 2.
-	void t3;
 	return (
 		<Screen>
 			<div
@@ -361,8 +503,10 @@ export const ChatScreen: React.FC<{readonly count: number; readonly typing?: boo
 				{thread.slice(0, count)}
 				{typing ? <MessageBubble from="them" typing /> : null}
 			</div>
-			{/* No composer: DS MessageInput and forms/Input share the style id
-			    dt-input-css, so whichever mounts second renders unstyled (reported). */}
+			{/* The composer (MessageInput), now on its own style id: docs/ds-patches.md. */}
+			<div style={{padding: '0 var(--gutter-screen) var(--gutter-screen)'}}>
+				<MessageInput state="empty" placeholder={s6.placeholder} />
+			</div>
 		</Screen>
 	);
 };

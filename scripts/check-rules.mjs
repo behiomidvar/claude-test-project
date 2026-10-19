@@ -30,7 +30,7 @@ const rules = [
 	},
 	{id: 'ds-bundle', re: /_ds_bundle/, msg: 'import components from their source .jsx, not _ds_bundle.js'},
 	{id: 'transition-all', re: /transition-all|transition:\s*all\b/, msg: 'no transition-all'},
-	{id: 'banned-word', re: /پسند|همدل/, msg: 'use «لایک» / «مچ»; never «پسند» or «همدل»'},
+	{id: 'banned-word', re: /پسند|همدل|عکس\s?اصلی/, msg: 'use «لایک» / «مچ» / «عکس اول»; never «پسند», «همدل» or «عکس اصلی»'},
 	{id: 'goftogoo', re: /گفت[\u200c ]?و?[\u200c ]گو|گفت[\u200c ]وگو/, msg: '«گفتگو» is locked: one word, no half-space, no «و»'},
 	{id: 'photo-reveal', re: /dt-unblur|\bunblur|<Avatar[^>]*\bblur=/, msg: 'the blur-to-clear photo reveal was removed from the product; never show or imply it'},
 	{id: 'mi-space', re: /(^|[\s«'"`])(ن?می) (?=[؀-ۿ])/, msg: '«می» prefix needs ZWNJ (\\u200c), not a space'},

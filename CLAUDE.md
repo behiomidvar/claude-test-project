@@ -6,6 +6,10 @@ This repo holds a Remotion + TypeScript promo for **Deltalk**, a Persian-first (
 conversation-first connection app.
 
 ### Source of truth
+- `./reference/product/` is the product: `ux-writing-state.md` (governing UX copy, e.g.
+  the 7 onboarding steps and their exact titles) and `Deltalk-App.dc.html` (the final app
+  prototype). It ranks above the design system's UI kits. Until those files land, the
+  StorePromo brief's flow and copy count as verified.
 - `./reference/` is the design system, extracted from `Motions/Deltalk Design System.zip`
   (the ignored parts below are not committed; re-extract the zip if you need them).
   Before acting, read `readme.md`,
@@ -21,7 +25,8 @@ conversation-first connection app.
 
 ### Commands
 - `npm run dev`: Remotion Studio.
-- `npm run ds:sync`: copy `./reference` into `src/ds/` and check the contract
+- `npm run ds:sync`: copy `./reference` into `src/ds/`, re-apply the local DS patches
+  (`scripts/ds-patches.mjs`, reasons in `docs/ds-patches.md`) and check the contract
   (`ds:check` only checks).
 - `npm run typecheck`, `npm run lint:rules` (the hard rules below that can be
   checked mechanically, plus: every `var(--token)` used must exist in `src/ds`).

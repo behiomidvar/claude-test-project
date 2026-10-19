@@ -56,6 +56,8 @@ export const COPY = {
 				ready: 'قبل از شروع',
 			},
 			// «۴۱ ساله» is printed by the DS DateOfBirthFieldGroup itself from the date.
+			// The DS Select's default placeholder, passed explicitly (city step, before the tap).
+			cityPlaceholder: 'انتخاب کن…',
 			// ADDED: the other gender option.
 			genders: {woman: 'زن', man: 'مرد'},
 			start: 'شروع کنیم',
@@ -103,6 +105,8 @@ export const COPY = {
 			mine2: 'صدات رو شنیدم، خوب تعریف می‌کنی.',
 			theirs2: 'ممنون! حالا نوبت توئه، از اون کافه‌ی دنجت بگو.',
 			times: ['۷:۵۰', '۸:۱۵', '۸:۴۰', '۹:۰۵', '۹:۴۰'],
+			// KIT: the chat composer's placeholder.
+			placeholder: 'یک چیز واقعی بنویس…',
 		},
 		s7: {
 			logoLabel: 'دلتاک',

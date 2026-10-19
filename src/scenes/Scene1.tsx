@@ -41,16 +41,24 @@ const LEAD_DOTS_SCALE = 2;
 /** Seconds Scene 1 stays mounted past its 4 s, to play the cut (see above). */
 export const SCENE1_TAIL_SECONDS = 1.5;
 
-export const Scene1: React.FC = () => {
+/**
+ * Scene 1's beats in seconds: the question's handoff, the small dots' return,
+ * and the cut. The defaults are the first promo's; StorePromo snaps them to
+ * its music.
+ */
+export type Scene1Timing = {readonly questionAt: number; readonly dotsReturnAt: number; readonly exitAt: number};
+const DEFAULT_TIMING: Scene1Timing = {questionAt: 1.2, dotsReturnAt: 3.5, exitAt: 4};
+
+export const Scene1: React.FC<{readonly timing?: Scene1Timing}> = ({timing = DEFAULT_TIMING}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const {u, safe} = useLayout();
 	const unfoldFrames = useDurationFrames('unfold');
 	const easeOutSoft = useEasing('outSoft');
 
-	const handoffAt = Math.round(1.2 * fps);
-	const dotsReturnAt = Math.round(3.5 * fps);
-	const exitAt = 4 * fps;
+	const handoffAt = Math.round(timing.questionAt * fps);
+	const dotsReturnAt = Math.round(timing.dotsReturnAt * fps);
+	const exitAt = Math.round(timing.exitAt * fps);
 	const dotsOutAt = exitAt + Math.round(0.5 * fps);
 	const exitMs = (exitAt / fps) * 1000;
 	const tailDotsOpacity = interpolate(frame, [dotsOutAt, dotsOutAt + unfoldFrames], [1, 0], {

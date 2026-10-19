@@ -24,6 +24,8 @@ export const RULE_TOKENS = {
 	navActive: '--nav-active',
 	logoWordmark: '--logo-wordmark',
 	fwSemibold: '--fw-semibold',
+	/** Tap feedback: the pressed scale (tokens/motion.css). */
+	pressScale: '--press-scale',
 } as const;
 
 /** CSS keyframes the DS runs on wall-clock time (tokens/motion.css). */

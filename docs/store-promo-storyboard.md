@@ -21,6 +21,43 @@ scene tree.
 > The stem sits at −16.2 LUFS with a −1.5 dBFS peak. Mastering to −14 LUFS comes with the SFX
 > mix in Phase 3.
 
+## Phase 2 (S1–S3, 0–13.75 s): built
+
+The S1–S3 cut is `renders/store-promo-phase2.mp4` (1080x1920, temp music). Its
+stills are `renders/store-promo-phase2-stills-9x16.png` and `-16x9.png`.
+
+- **The clock.** Everything in S2–S6 is a function of film time (`FlowFrame`), so a
+  storyboard still and a video frame come from the same code. The timings are in
+  beats, and the durations and easings come from the DS motion tokens
+  (`src/store/flow/motion.tsx`).
+- **The unfold.** Every element enters as the DS unfold: fade in, 8 dp lift and a
+  scale from .98. Headlines unfold word by word in reading order, one word per eighth
+  note, and fold out together over `--dur-base` before the cut. Taps press to
+  `--press-scale` and ripple out. Nothing slides or swipes.
+- **S1.** The question arrives at b2 and the small dots return at b4. The question
+  folds out over `--dur-slow` before the cut, so S2's phone unfolds over only the three
+  dots.
+- **S2.**
+  - One onboarding step per beat. StepProgress advances, and each question and field
+    unfold over `--dur-base` and fold away over `--dur-fast`.
+  - Each step's input:
+    - «علی» types in.
+    - The radio, the date, «مرد» and «تهران» fill on taps.
+    - The photo uploads (the ring, then the photo); its label reads «عکس اول».
+  - The camera eases down for «شروع کنیم»; in 16:9 it eases back to keep the question
+    in.
+  - The verification badge settles with `--ease-gentle-over`.
+  - The app's three cool dots carry the cut into S3.
+- **S3.**
+  - The dots give way to Sara's card: photo, prompt, voice note and buttons, staged.
+  - Two slow ease-in-out scrolls, vertical only.
+  - The camera pushes in from 1.00 to 1.06.
+  - Her voice note plays (VoicePlayer's playhead, at real time for «۰:۲۴»).
+  - His finger presses «لایک».
+- **S4–S6** still hold their settled poses on their beats (Phase 3).
+
+## Phase 1 storyboard (approved)
+
 ## Review files (`renders/store-promo-phase1/`)
 - `storyboard-9x16.png` and `storyboard-16x9.png`: contact sheets of all 19 stills, in film
   order.
@@ -139,9 +176,9 @@ The times are spread over the morning (۷:۵۰ to ۹:۴۰), and nobody plans a m
    has a daily limit. Does that limit spare chat with matches? «گفتگو با مچ‌هات، رایگانه.»
    depends on it.
 5. **Verified-only messages before a match:** this rule appears nowhere in the DS or the kit.
-6. **DS bug:** `forms/Input` and `messaging/MessageInput` share the style id `dt-input-css`,
-   so whichever mounts second renders unstyled. The readme records the same failure for
-   VoiceNote/VoicePlayer. S6 therefore has no composer for now; the fix belongs in the DS.
+6. **DS bug:** `forms/Input` and `messaging/MessageInput` share the style id
+   `dt-input-css`. It now has a local patch, re-applied by `ds:sync` and recorded in
+   `docs/ds-patches.md`, so S6 shows the composer.
 7. **«۴۱ ساله» comes from the DS.** `DateOfBirthFieldGroup` prints it from the date. A
    matching hint line printed it twice, so I removed the hint.
 

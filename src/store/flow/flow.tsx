@@ -7,14 +7,18 @@ import {MUSIC, SCENES} from '../audio';
 import {Headline, type Accent} from '../parts/Headline';
 import {Phone, PHONE_SCREEN_DP} from '../parts/Phone';
 import {toFrame, type SceneId} from '../timeline';
+import {mix, progress, unfoldStyle, useMotion, type Motion} from './motion';
 import {
 	ChatScreen,
 	ComposerScreen,
 	DiscoverScreen,
+	discoverAt,
+	LoadingScreen,
 	MatchScreen,
-	OnboardingScreen,
+	OnboardingFlow,
 	RestScreen,
 	SentScreen,
+	STEP_ORDER,
 	VerifyScreen,
 } from './screens';
 
@@ -23,9 +27,12 @@ import {
  * frame; the camera (zoom and vertical framing) moves over it, the screens
  * change inside it, and each scene's headline sits outside it.
  *
- * A pose is a screen state that starts `at` beats into its scene (beats of the
- * music's beat map, so poses re-snap with the track). PHASE 1: poses switch
- * hard (an animatic); Phase 2 unfolds between them.
+ * Everything is a function of the film's time in seconds (FlowFrame), so the
+ * video and the storyboard stills are computed the same way. Scene timings are
+ * in beats of the music's beat map, so they re-snap with the track.
+ *
+ * PHASE 2: S2 and S3 are animated. S4-S6 still hold settled poses on their
+ * beats (Phase 3).
  */
 
 type FlowSceneId = Extract<SceneId, 's2' | 's3' | 's4' | 's5' | 's6'>;
@@ -33,89 +40,168 @@ type FlowSceneId = Extract<SceneId, 's2' | 's3' | 's4' | 's5' | 's6'>;
 type Camera = {
 	/** Multiplier on the phone's resting size. */
 	readonly zoom: number;
-	/** Vertical framing: 0 frames the phone's top, 1 its bottom. */
+	/** Vertical framing: 0 frames the phone's top, 1 its bottom (at the current zoom). */
 	readonly focus: number;
 };
 
-const REST: Camera = {zoom: 1, focus: 0};
+/**
+ * A camera move: starts `at` beats into the scene, takes `len` beats
+ * (ease-in-out), then holds. `landscape` overrides the target in the shorter
+ * 16:9 window.
+ */
+type Move = {readonly at: number; readonly len: number; readonly to: Camera; readonly landscape?: Camera};
 
-export type Pose = {
-	readonly id: string;
-	/** Beats from the scene's start. */
+type FlowScene = {
+	readonly headline: HeadlineCopy;
+	/** The headline's highlight at `b` beats into the scene; `null` hides the headline. */
+	readonly accent: (b: number) => Accent | null;
+	/** The time marker stands in for the headline (S5's «یه روز بعد»). */
+	readonly later?: (b: number) => boolean;
+	/** Unfold the headline word by word (else it is simply there). */
+	readonly reveal: boolean;
+	readonly moves: readonly Move[];
+	/** The phone's screen at `t` seconds into the scene. */
+	readonly screen: (t: number, motion: Motion) => React.ReactNode;
+	/** Storyboard stills, in beats into the scene. */
+	readonly stills: readonly number[];
+};
+
+// ---------------------------------------------------------------- settled poses (S4-S6, Phase 3)
+
+type Pose = {
 	readonly at: number;
 	readonly screen: React.ReactNode;
 	readonly camera?: Camera;
-	/** The headline's highlight; `null` hides the headline for this pose. */
 	readonly accent: Accent | null;
-	/** Outside the phone, in the headline's place: the time marker. */
 	readonly later?: boolean;
-	/** Shown as a storyboard still. */
 	readonly still?: boolean;
 };
 
-type FlowScene = {readonly headline: HeadlineCopy; readonly poses: readonly Pose[]};
+const poseAt = (poses: readonly Pose[], b: number) => [...poses].reverse().find((p) => p.at <= b + 1e-6) ?? poses[0];
+
+const fromPoses = (headline: HeadlineCopy, poses: readonly Pose[]): FlowScene => ({
+	headline,
+	accent: (b) => poseAt(poses, b).accent,
+	later: (b) => Boolean(poseAt(poses, b).later),
+	reveal: false,
+	moves: poses.flatMap((p) => (p.camera ? [{at: p.at, len: 1, to: p.camera}] : [])),
+	screen: (t, motion) => poseAt(poses, t / motion.beat).screen,
+	stills: poses.filter((p) => p.still).map((p) => p.at + 0.5),
+});
 
 const MESSAGE_LENGTH = [...COPY.store.s4.message].length;
+
+// ---------------------------------------------------------------- the journey
+
+// S2: one onboarding step per beat, then verification, then the app's dots.
+const STEPS_END = STEP_ORDER.length; // beats
+const LOADING_AT = 9.5; // beats into S2
+
+/** A screen layer that unfolds out (fold) while the next one comes in. */
+const Layer: React.FC<{readonly style: React.CSSProperties; readonly children: React.ReactNode}> = ({style, children}) => (
+	<div style={{position: 'absolute', inset: 0, ...style}}>{children}</div>
+);
 
 export const FLOW: Record<FlowSceneId, FlowScene> = {
 	// Brisk montage. StepProgress fills with --gradient-brand on every step, so
 	// the headline's «چند» stays flat accent for the whole scene.
 	s2: {
 		headline: COPY.store.s2.headline,
-		poses: [
-			{id: 'name', at: 0, accent: 'flat', still: true, screen: <OnboardingScreen step="name" tap />},
-			{id: 'goal', at: 1, accent: 'flat', screen: <OnboardingScreen step="goal" tap />},
-			{id: 'birth', at: 2, accent: 'flat', still: true, screen: <OnboardingScreen step="birth" tap />},
-			{id: 'gender', at: 3, accent: 'flat', screen: <OnboardingScreen step="gender" tap />},
-			{id: 'city', at: 4, accent: 'flat', screen: <OnboardingScreen step="city" tap />},
-			{id: 'photo', at: 5, accent: 'flat', still: true, screen: <OnboardingScreen step="photo" tap />},
-			{id: 'ready', at: 6, accent: 'flat', camera: {zoom: 1, focus: 1}, screen: <OnboardingScreen step="ready" tap />},
-			{id: 'verify', at: 7, accent: 'flat', still: true, camera: {zoom: 1.04, focus: 0}, screen: <VerifyScreen />},
+		accent: () => 'flat',
+		reveal: true,
+		moves: [
+			// Down to «شروع کنیم» for the last step (16:9 eases back to keep the
+			// question in), back up for verification.
+			{at: STEPS_END - 1.15, len: 0.6, to: {zoom: 1, focus: 0.8}, landscape: {zoom: 0.74, focus: 1}},
+			{at: STEPS_END - 0.05, len: 0.8, to: {zoom: 1.04, focus: 0}},
 		],
+		screen: (t, motion) => {
+			const verifyAt = STEPS_END * motion.beat;
+			if (t < verifyAt) {
+				return <OnboardingFlow t={t} />;
+			}
+			const out = progress(t, LOADING_AT * motion.beat, motion.dur.base, motion.ease.standard);
+			return (
+				<>
+					<Layer style={unfoldStyle(1 - out)}>
+						<VerifyScreen t={t - verifyAt} />
+					</Layer>
+					{out > 0 ? <LoadingScreen opacity={out} /> : null}
+				</>
+			);
+		},
+		stills: [0.6, 2.6, 5.45, 6.62, 8.6],
 	},
-	// Slows down: read, listen, then like. The card scrolls vertically.
+	// Slower: read, listen, then like. The card scrolls vertically, the camera pushes in.
 	s3: {
 		headline: COPY.store.s3.headline,
-		poses: [
-			{id: 'card', at: 0, accent: 'brand', still: true, camera: {zoom: 1.03, focus: 0}, screen: <DiscoverScreen scroll={0} />},
-			{id: 'prompt', at: 2, accent: 'brand', camera: {zoom: 1.04, focus: 0.5}, screen: <DiscoverScreen scroll={120} />},
-			{id: 'voice', at: 4, accent: 'brand', still: true, camera: {zoom: 1.06, focus: 0.8}, screen: <DiscoverScreen scroll={190} />},
-			{id: 'like', at: 5.5, accent: 'brand', still: true, camera: {zoom: 1.04, focus: 1}, screen: <DiscoverScreen scroll={190} tapLike />},
+		accent: () => 'brand',
+		reveal: true,
+		moves: [
+			{at: 0, len: 1.2, to: {zoom: 1, focus: 0}},
+			{at: 1.6, len: 3, to: {zoom: 1.06, focus: 0.35}},
+			{at: 4.7, len: 1, to: {zoom: 1.04, focus: 1}},
 		],
+		screen: (t, motion) => {
+			const state = discoverAt(t, motion.beat, motion);
+			const loading = 1 - progress(t, 0.8 * motion.beat - motion.dur.fast, motion.dur.fast, motion.ease.standard);
+			return (
+				<>
+					<DiscoverScreen state={state} />
+					{loading > 0 ? <LoadingScreen opacity={loading} /> : null}
+				</>
+			);
+		},
+		stills: [0.4, 1.9, 3.0, 4.8, 5.55],
 	},
-	s4: {
-		headline: COPY.store.s4.headline,
-		poses: [
-			{id: 'typing', at: 0, accent: 'brand', still: true, camera: {zoom: 1.06, focus: 1}, screen: <ComposerScreen typed={20} />},
-			{id: 'send', at: 3.5, accent: 'brand', still: true, camera: {zoom: 1.06, focus: 1}, screen: <ComposerScreen typed={MESSAGE_LENGTH} tapSend />},
-			{id: 'sent', at: 5, accent: 'brand', still: true, camera: {zoom: 1.02, focus: 1}, screen: <SentScreen />},
-		],
-	},
+	s4: fromPoses(COPY.store.s4.headline, [
+		{at: 0, accent: 'brand', still: true, camera: {zoom: 1.06, focus: 1}, screen: <ComposerScreen typed={20} />},
+		{at: 3.5, accent: 'brand', still: true, camera: {zoom: 1.06, focus: 1}, screen: <ComposerScreen typed={MESSAGE_LENGTH} tapSend />},
+		{at: 5, accent: 'brand', still: true, camera: {zoom: 1.02, focus: 1}, screen: <SentScreen />},
+	]),
 	// A day passes before the match: the match needs the other person too.
 	// The celebration ring is the match frame's one gradient, so «گفتگو» is flat.
-	s5: {
-		headline: COPY.store.s5.headline,
-		poses: [
-			{id: 'later', at: 0, accent: null, later: true, still: true, camera: {zoom: 1, focus: 0.3}, screen: <RestScreen />},
-			{id: 'match', at: 3, accent: 'flat', still: true, camera: {zoom: 1, focus: 0.5}, screen: <MatchScreen />},
-			{id: 'start', at: 4.25, accent: 'flat', camera: {zoom: 1, focus: 0.8}, screen: <MatchScreen tapStart />},
-		],
-	},
-	// The slowest scene: one message per beat, a slow drift.
-	s6: {
-		headline: COPY.store.s6.headline,
-		poses: [
-			{id: 'reply', at: 0, accent: 'brand', still: true, camera: {zoom: 1, focus: 1}, screen: <ChatScreen count={1} />},
-			{id: 'mine1', at: 1.5, accent: 'brand', camera: {zoom: 1.01, focus: 1}, screen: <ChatScreen count={2} />},
-			{id: 'voice', at: 3, accent: 'brand', still: true, camera: {zoom: 1.02, focus: 1}, screen: <ChatScreen count={3} />},
-			{id: 'mine2', at: 4.5, accent: 'brand', camera: {zoom: 1.03, focus: 1}, screen: <ChatScreen count={4} />},
-			{id: 'typing', at: 6, accent: 'brand', camera: {zoom: 1.04, focus: 1}, screen: <ChatScreen count={4} typing />},
-			{id: 'last', at: 7.5, accent: 'brand', still: true, camera: {zoom: 1.05, focus: 1}, screen: <ChatScreen count={5} />},
-		],
-	},
+	s5: fromPoses(COPY.store.s5.headline, [
+		{at: 0, accent: null, later: true, still: true, camera: {zoom: 1, focus: 0.3}, screen: <RestScreen />},
+		{at: 3, accent: 'flat', still: true, camera: {zoom: 1, focus: 0.5}, screen: <MatchScreen />},
+		{at: 4.25, accent: 'flat', camera: {zoom: 1, focus: 0.8}, screen: <MatchScreen tapStart />},
+	]),
+	// The slowest scene: one message about every 1.5 beats, a slow drift.
+	s6: fromPoses(COPY.store.s6.headline, [
+		{at: 0, accent: 'brand', still: true, camera: {zoom: 1, focus: 1}, screen: <ChatScreen count={1} />},
+		{at: 1.5, accent: 'brand', camera: {zoom: 1.01, focus: 1}, screen: <ChatScreen count={2} />},
+		{at: 3, accent: 'brand', still: true, camera: {zoom: 1.02, focus: 1}, screen: <ChatScreen count={3} />},
+		{at: 4.5, accent: 'brand', camera: {zoom: 1.03, focus: 1}, screen: <ChatScreen count={4} />},
+		{at: 6, accent: 'brand', camera: {zoom: 1.04, focus: 1}, screen: <ChatScreen count={4} typing />},
+		{at: 7.5, accent: 'brand', still: true, camera: {zoom: 1.05, focus: 1}, screen: <ChatScreen count={5} />},
+	]),
 };
 
 export const FLOW_SCENES = Object.keys(FLOW) as FlowSceneId[];
+
+const slotOf = (id: SceneId) => SCENES.find((s) => s.id === id)!;
+
+/** The flow scene playing at film time `sec`. */
+const sceneAt = (sec: number): FlowSceneId =>
+	[...FLOW_SCENES].reverse().find((id) => slotOf(id).start <= sec + 1e-6) ?? 's2';
+
+/** The camera at film time `sec`: every move so far, each easing from where the last one left it. */
+const cameraAt = (sec: number, motion: Motion, portrait: boolean): Camera => {
+	let camera: Camera = {zoom: 1, focus: 0};
+	for (const id of FLOW_SCENES) {
+		const start = slotOf(id).start;
+		for (const move of FLOW[id].moves) {
+			const from = start + move.at * motion.beat;
+			if (sec < from) {
+				return camera;
+			}
+			const p = progress(sec, from, move.len * motion.beat, motion.ease.inOut);
+			const to = (!portrait && move.landscape) || move.to;
+			camera = {zoom: mix(camera.zoom, to.zoom, p), focus: mix(camera.focus, to.focus, p)};
+		}
+	}
+	return camera;
+};
 
 /** The time marker that stands in for the headline while a day passes. */
 const Later: React.FC = () => {
@@ -133,36 +219,51 @@ const Later: React.FC = () => {
 };
 
 /**
- * The camera's window: below the headline in portrait, the inline-end half
- * in landscape. The phone rests at the same place in every pose, larger than
- * the window, so the camera pans (focus) and pushes in (zoom) inside it and
- * never over the headline.
+ * The camera's window: below the headline in portrait, the inline-end side in
+ * landscape. The phone rests at the same place throughout, larger than the
+ * window, so the camera pans (focus) and pushes in (zoom) inside it and never
+ * over the headline.
  */
 const WINDOW = {
-	portrait: {top: 470, phoneHeight: 1780, margin: 24},
-	landscape: {top: 0, phoneHeight: 1250, margin: 48},
+	portrait: {top: 470, phoneHeight: 1780, margin: 24, width: '100%'},
+	landscape: {top: 0, phoneHeight: 1560, margin: 48, width: '56%'},
 } as const;
 
-/**
- * One pose of the flow: headline (or time marker) outside, the continuous
- * phone inside the camera window.
- */
-export const FlowFrame: React.FC<{readonly scene: FlowSceneId; readonly pose: Pose}> = ({scene, pose}) => {
+/** The journey at film time `sec` (seconds): headline outside, the phone in the camera window. */
+export const FlowFrame: React.FC<{readonly sec: number}> = ({sec}) => {
+	const motion = useMotion();
 	const {u, orientation, safe, height} = useLayout();
 	const portrait = orientation === 'portrait';
 	const win = WINDOW[portrait ? 'portrait' : 'landscape'];
-	const camera = pose.camera ?? REST;
+
+	const scene = sceneAt(sec);
+	const slot = slotOf(scene);
+	const def = FLOW[scene];
+	const t = sec - slot.start;
+	const b = t / motion.beat;
+
+	const camera = cameraAt(sec, motion, portrait);
 	const phoneHeight = win.phoneHeight * u;
 	const zoom = phoneHeight / ((PHONE_SCREEN_DP.height * 1080 * u) / 393);
 	const windowHeight = height - win.top * u;
 	const margin = win.margin * u;
-	// focus 0 shows the phone's top, 1 its bottom (at the current zoom).
 	const pan = camera.focus * Math.max(0, phoneHeight * camera.zoom + 2 * margin - windowHeight);
+	// The phone unfolds in at the start of S2 and then stays.
+	const phoneIn = progress(sec, slotOf('s2').start, motion.dur.unfold, motion.ease.outSoft);
 
-	const headline = pose.later ? (
+	// Headline: word by word in reading order (one per half beat), folding out
+	// together over --dur-base before the scene's cut. The last flow scene
+	// leaves with its own cut to S7.
+	const out = scene === 's6' ? 1 : 1 - progress(sec, slot.end - motion.dur.base, motion.dur.base, motion.ease.standard);
+	const wordStyle = (i: number) => {
+		const inP = def.reveal ? progress(t, 0.1 + (i * motion.beat) / 2, motion.dur.unfold, motion.ease.outSoft) : 1;
+		return unfoldStyle(Math.min(inP, out), 14 * u);
+	};
+	const accent = def.accent(b);
+	const headline = def.later?.(b) ? (
 		<Later />
-	) : pose.accent ? (
-		<Headline copy={FLOW[scene].headline} accent={pose.accent} />
+	) : accent ? (
+		<Headline copy={def.headline} accent={accent} wordStyle={wordStyle} />
 	) : null;
 
 	return (
@@ -175,7 +276,7 @@ export const FlowFrame: React.FC<{readonly scene: FlowSceneId; readonly pose: Po
 					justifyContent: portrait ? 'center' : 'flex-start',
 					...(portrait
 						? {insetInline: safe.inline, insetBlockStart: 130 * u, blockSize: 320 * u}
-						: {insetInlineStart: safe.inline, insetBlock: 0, inlineSize: '42%'}),
+						: {insetInlineStart: safe.inline, insetBlock: 0, inlineSize: '36%'}),
 				}}
 			>
 				{headline}
@@ -186,40 +287,39 @@ export const FlowFrame: React.FC<{readonly scene: FlowSceneId; readonly pose: Po
 					overflow: 'hidden',
 					insetBlockStart: win.top * u,
 					insetBlockEnd: 0,
-					...(portrait ? {insetInline: 0} : {insetInlineEnd: 0, inlineSize: '50%'}),
+					insetInlineEnd: 0,
+					inlineSize: win.width,
 				}}
 			>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						paddingBlockStart: margin,
-						transform: `translateY(${-pan}px) scale(${String(camera.zoom)})`,
-						transformOrigin: 'center top',
-						opacity: pose.later ? 0.45 : 1,
-					}}
-				>
-					<Phone zoom={zoom}>{pose.screen}</Phone>
+				<div style={unfoldStyle(phoneIn, 40 * u)}>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							paddingBlockStart: margin,
+							transform: `translateY(${-pan}px) scale(${String(camera.zoom)})`,
+							transformOrigin: 'center top',
+							opacity: def.later?.(b) ? 0.45 : 1,
+						}}
+					>
+						<Phone zoom={zoom}>{def.screen(t, motion)}</Phone>
+					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-/** The pose of `scene` on film frame `frame` (compared in frames, as the cuts are). */
-const poseAt = (scene: FlowSceneId, frame: number, fps: number): Pose => {
-	const slot = SCENES.find((s) => s.id === scene)!;
-	const beat = 60 / MUSIC.beatMap.bpm;
-	const poses = FLOW[scene].poses;
-	return [...poses].reverse().find((p) => toFrame(slot.start + p.at * beat, fps) <= frame) ?? poses[0];
-};
-
 /** S2-S6 in one sequence (starting at S2), so the phone is one element throughout. */
 export const FlowTimeline: React.FC = () => {
-	const local = useCurrentFrame();
+	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const start = (id: SceneId) => toFrame(SCENES.find((s) => s.id === id)!.start, fps);
-	const frame = start('s2') + local;
-	const scene = [...FLOW_SCENES].reverse().find((id) => start(id) <= frame) ?? 's2';
-	return <FlowFrame scene={scene} pose={poseAt(scene, frame, fps)} />;
+	// Film time from the absolute frame, so it agrees with the (rounded) cuts.
+	return <FlowFrame sec={(toFrame(slotOf('s2').start, fps) + frame) / fps} />;
 };
+
+/** Film seconds of each storyboard still of the flow, with a name. */
+export const flowStills = (beat: number) =>
+	FLOW_SCENES.flatMap((id) => FLOW[id].stills.map((b) => ({name: `${id}-b${b}`, sec: slotOf(id).start + b * beat})));
+
+export const BEAT_SECONDS = 60 / MUSIC.beatMap.bpm;

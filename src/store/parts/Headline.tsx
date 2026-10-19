@@ -36,7 +36,9 @@ export const Headline: React.FC<{
 	readonly copy: HeadlineCopy;
 	readonly accent: Accent;
 	readonly style?: React.CSSProperties;
-}> = ({copy, accent, style}) => {
+	/** Per-word motion (index in reading order), e.g. a word-by-word unfold. */
+	readonly wordStyle?: (index: number) => React.CSSProperties;
+}> = ({copy, accent, style, wordStyle}) => {
 	const {u, orientation} = useLayout();
 	const words = copy.text.split(' ');
 	// The highlighted word may carry trailing punctuation («بخون،»), which stays unhighlighted.
@@ -68,7 +70,7 @@ export const Headline: React.FC<{
 			{words.map((word, i) => (
 				<React.Fragment key={i}>
 					{i > 0 ? ' ' : null}
-					<span style={{display: 'inline-block'}}>
+					<span style={{display: 'inline-block', ...wordStyle?.(i)}}>
 						{isHighlight(word) ? (
 							<>
 								<span style={highlightStyle(accent)}>{copy.highlight}</span>

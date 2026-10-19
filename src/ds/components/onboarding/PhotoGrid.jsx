@@ -61,7 +61,7 @@ export function PhotoGrid({ slots=[], count=6, onAdd, onRemove, onRetry, classNa
           return <div key={i} className={['dt-pslot', s.dragging&&'dt-pslot--dragging'].filter(Boolean).join(' ')} draggable>
             <img className="dt-pslot__img" src={s.src} alt={`عکس ${fa(i+1)}`}/>
             <div className="dt-pslot__scrim"/>
-            {i===firstFilled && <span className="dt-pslot__primary"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6 6.5.9-4.7 4.6 1.1 6.5L12 17.9 6.2 20l1.1-6.5L2.6 8.9 9.1 8 12 2z"/></svg>عکس اصلی</span>}
+            {i===firstFilled && <span className="dt-pslot__primary"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6 6.5.9-4.7 4.6 1.1 6.5L12 17.9 6.2 20l1.1-6.5L2.6 8.9 9.1 8 12 2z"/></svg>عکس اول</span>}
             <button type="button" className="dt-pslot__x" aria-label="حذف" onClick={()=>onRemove&&onRemove(i)}><CloseGlyph/></button>
             <span className="dt-pslot__drag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
           </div>;
